@@ -24,7 +24,7 @@ class Make
     /**
      * @var string
      *
-     * @ORM\Column(name="Make", type="string", length=255)
+     * @ORM\Column(name="Make", type="string", length=255, unique=true)
      */
     private $make;
 
