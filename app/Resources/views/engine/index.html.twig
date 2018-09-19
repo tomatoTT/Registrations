@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Engines list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Type</th>
+                <th>Displacement</th>
+                <th>Powerkw</th>
+                <th>Powerhp</th>
+                <th>Torque</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for engine in engines %}
+            <tr>
+                <td><a href="{{ path('engine_show', { 'id': engine.id }) }}">{{ engine.id }}</a></td>
+                <td>{{ engine.type }}</td>
+                <td>{{ engine.displacement }}</td>
+                <td>{{ engine.powerkW }}</td>
+                <td>{{ engine.powerHP }}</td>
+                <td>{{ engine.torque }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('engine_show', { 'id': engine.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('engine_edit', { 'id': engine.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('engine_new') }}">Create a new engine</a>
+        </li>
+    </ul>
+{% endblock %}
