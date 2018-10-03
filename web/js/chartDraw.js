@@ -5,7 +5,7 @@
  */
 
 
-function drawChart (chartId, labels) {
+function chartDraw (chartId, labels) {
     var ctx = document.getElementById(chartId);
     var myChart = new Chart(ctx, {
         type: 'line',
