@@ -4,5 +4,16 @@
  * and open the template in the editor.
  */
 
-
+$.ajax({
+    url: "",
+    method: "POST",
+    dataType: "json",
+    async: true,
+    success: function(data) {
+        
+    },
+    error: function(xhr, textStatus, errorThrown) {
+        alert(errorThrown);
+    }
+});
 
