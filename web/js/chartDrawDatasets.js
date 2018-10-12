@@ -8,6 +8,7 @@ function chartDrawDatasets(data) {
     var datasetsObjTable = [];
     
     for (i=0; i<data.length; i++) {
+        var labels = [];
         
     }
     
