@@ -3,17 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-$.ajax({
-    url: "",
-    method: "POST",
-    dataType: "json",
-    async: true,
-    success: function(data) {
-        
-    },
-    error: function(xhr, textStatus, errorThrown) {
-        alert(errorThrown);
-    }
-});
-
+function loadDataForChart(url, chartId) {
+    $.ajax({
+        url: url,
+        method: "POST",
+        dataType: "json",
+        async: true,
+        success: function(data) {
+            
+            chartDraw(chartId, labelsForMainChart(data));
+        },
+        error: function(xhr, textStatus, errorThrown) {
+            alert(errorThrown);
+        }
+    });
+}
