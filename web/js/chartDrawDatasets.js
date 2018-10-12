@@ -6,19 +6,38 @@
 function chartDrawDatasets(data) {
     
     var datasetsObjTable = []; /*Table to supply main chart*/
-    var labels = []; /*list of dates MonthYears, x axle for main chart*/
-    var makes = []; /*list of unique makes from Registrations table*/
     
     for (i=0; i<data.length; i++) {
-             
-        if (!makes.find(data[i].make)) {
-            makes.push(data[i].make)
+        
+        var datasetsObj = {};
+            
+        datasetsObj = {
+            label: data[i].make,
+            yAxisID: 'A', 
+            data: dataForDatasetsObj(data[i].make, data), 
+            backgroundColor: ['rgba(255, 99, 132, 0)'], 
+            borderColor: ['rgba(255,99,132,1)'], 
+            borderWidth: 2
+        };
+        
+        datasetsObjTable.push(datasetsObj);
+    }
+        
+    return datasetsObjTable;
+}
+
+function dataForDatasetsObj(make, data) {
+    
+    var units = [];
+    
+    for (j=0; j<data.length; j++) {
+        
+        if (make === data[j].make) {
+            units.push(data[j].units);
         }
-        
-        
-        
+
     }
     
-    return datasetsObjTable;
+    return units;   
 }
 
