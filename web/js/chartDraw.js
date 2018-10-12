@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 
-
 function chartDraw (chartId, labels) {
     var ctx = document.getElementById(chartId);
     var myChart = new Chart(ctx, {
