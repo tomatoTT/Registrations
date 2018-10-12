@@ -27,6 +27,14 @@ class Make
      * @ORM\Column(name="Make", type="string", length=255, unique=true)
      */
     private $make;
+    
+    /**
+     *
+     * @var string
+     * 
+     * @ORM\Column(name="Color", type="string", length=255, unique=true) 
+     */
+    private $color;
 
 
     /**
@@ -62,5 +70,30 @@ class Make
     {
         return $this->make;
     }
+    
+    /**
+     * Set color
+     *
+     * @param string $color
+     *
+     * @return Color
+     */
+    function setColor($color) 
+    {
+        $this->color = $color;
+        
+        return $this;
+    }
+    
+    /**
+     * Get color
+     *
+     * @return string
+     */
+    function getColor() 
+    {
+        return $this->color;
+    }
+    
 }
 
