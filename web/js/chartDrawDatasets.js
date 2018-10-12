@@ -5,10 +5,17 @@
  */
 function chartDrawDatasets(data) {
     
-    var datasetsObjTable = [];
+    var datasetsObjTable = []; /*Table to supply main chart*/
+    var labels = []; /*list of dates MonthYears, x axle for main chart*/
+    var makes = []; /*list of unique makes from Registrations table*/
     
     for (i=0; i<data.length; i++) {
-        var labels = [];
+             
+        if (!makes.find(data[i].make)) {
+            makes.push(data[i].make)
+        }
+        
+        
         
     }
     
