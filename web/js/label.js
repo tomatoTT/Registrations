@@ -7,11 +7,16 @@ function label(data) {
     
     var label = [];
     label.push(data[0].make);
+
     for (i=1; i<data.length; i++) {
-        if (!label.find(data[i].make)) {
+
+        if (label.indexOf(data[i].make) === -1) {
             label.push(data[i].make);
         }
     }
+    
+    return label;
+
 }
 
 

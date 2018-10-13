@@ -6,23 +6,23 @@
 function chartDrawDatasets(data) {
     
     var datasetsObjTable = []; /*Table to supply main chart*/
-    
-    for (i=0; i<data.length; i++) {
+    var makes = label(data);
+
+    for (i=0; i<makes.length; i++) {
         
         var datasetsObj = {};
-            
+    
         datasetsObj = {
-            label: label(data),
+            label: makes[i],
             yAxisID: 'A', 
-            data: dataForDatasetsObj(data[i].make, data), 
+            data: dataForDatasetsObj(makes[i], data), 
             backgroundColor: ['rgba(255, 99, 132, 0)'], 
             borderColor: ['rgba(255,99,132,1)'], 
             borderWidth: 2
         };
         
         datasetsObjTable.push(datasetsObj);
-    }
-        
+    }  
     return datasetsObjTable;
 }
 
