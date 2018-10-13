@@ -12,7 +12,7 @@ function chartDrawDatasets(data) {
         var datasetsObj = {};
             
         datasetsObj = {
-            label: data[i].make,
+            label: label(data),
             yAxisID: 'A', 
             data: dataForDatasetsObj(data[i].make, data), 
             backgroundColor: ['rgba(255, 99, 132, 0)'], 
