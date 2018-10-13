@@ -15,18 +15,19 @@ function chartDrawDatasets(data) {
         datasetsObj = {
             label: makes[i],
             yAxisID: 'A', 
-            data: dataForDatasetsObj(makes[i], data), 
+            data: unitsForDatasetsObj(makes[i], data), 
             backgroundColor: ['rgba(255, 99, 132, 0)'], 
-            borderColor: ['rgba(255,99,132,1)'], 
+            borderColor: [colorForDatasetsObj(makes[i], data)], 
             borderWidth: 2
         };
         
         datasetsObjTable.push(datasetsObj);
-    }  
+    }
+    console.log(datasetsObjTable);
     return datasetsObjTable;
 }
 
-function dataForDatasetsObj(make, data) {
+function unitsForDatasetsObj(make, data) {
     
     var units = [];
     
@@ -39,5 +40,18 @@ function dataForDatasetsObj(make, data) {
     }
     
     return units;   
+}
+
+function colorForDatasetsObj(make, data) {
+    
+    var color = '';
+
+    for (k=0; k<data.length; k++) {
+        if (make === data[k].make) {
+            color = data[k].color;
+
+            return color;
+        }
+    }
 }
 

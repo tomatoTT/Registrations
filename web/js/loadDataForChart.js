@@ -10,7 +10,7 @@ function loadDataForChart(url, chartId) {
         dataType: "json",
         async: true,
         success: function(data) {
-            
+
             chartDraw(chartId, labelsForMainChart(data), data);
         },
         error: function(xhr, textStatus, errorThrown) {

@@ -23,15 +23,24 @@ class RegistrationsController extends Controller
         $registrationsData = $this->getDoctrine()
                 ->getRepository('AppBundle:Registrations')
                 ->findAll();
+        $colors = $this->getDoctrine()->getRepository('AppBundle:Make')->findAll();
+
         if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1) {
             $jsonData = array();
             $idx = 0;
             foreach ($registrationsData as $registrationsDataSingle) {
+                
+                foreach ($colors as $color) {
+                    if ($color->getMake() === $registrationsDataSingle->getMake()) {
+                        $colorMake = $color->getColor();
+                    }
+                }
                 $temp = array(
                     'make' => $registrationsDataSingle->getMake(),
                     'regYear' => $registrationsDataSingle->getRegYear(),
                     'regMonth' => $registrationsDataSingle->getRegMonth(),
-                    'units' => $registrationsDataSingle->getUnits()
+                    'units' => $registrationsDataSingle->getUnits(),
+                    'color' => $colorMake
                 );
                 $jsonData[$idx++] = $temp;
             }
