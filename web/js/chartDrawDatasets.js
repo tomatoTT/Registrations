@@ -23,7 +23,6 @@ function chartDrawDatasets(data) {
         
         datasetsObjTable.push(datasetsObj);
     }
-    console.log(datasetsObjTable);
     return datasetsObjTable;
 }
 
