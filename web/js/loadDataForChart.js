@@ -11,7 +11,7 @@ function loadDataForChart(url, chartId) {
         async: true,
         success: function(data) {
             
-            chartDraw(chartId, labelsForMainChart(data));
+            chartDraw(chartId, labelsForMainChart(data), data);
         },
         error: function(xhr, textStatus, errorThrown) {
             alert(errorThrown);
