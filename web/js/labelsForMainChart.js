@@ -11,7 +11,10 @@ function labelsForMainChart(data) {
     
     for (i=0; i<data.length; i++) {
         
-        labels.push(label.concat(data[i].regMonth, "/", data[i].regYear));
+        if (labels.indexOf(label.concat(data[i].regMonth, "/", data[i].regYear)) === -1) {
+        
+            labels.push(label.concat(data[i].regMonth, "/", data[i].regYear));
+        }
     }
     
     return labels;
