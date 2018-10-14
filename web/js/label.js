@@ -14,7 +14,6 @@ function label(data) {
             label.push(data[i].make);
         }
     }
-    
     return label;
 
 }
