@@ -16,9 +16,10 @@ function chartDrawDatasets(data, labels) {
             label: make,
             yAxisID: 'A', 
             data: unitsForDatasetsObj(make, data, labels), 
-            backgroundColor: 'rgba(255, 99, 132, 0)', 
+            backgroundColor: 'rgba(0, 0, 0, 0)', 
             borderColor: colorForDatasetsObj(make, data), 
-            borderWidth: 2
+            borderWidth: 2,
+            pointRadius: 0
         };
         
         datasetsObjTable.push(datasetsObj);

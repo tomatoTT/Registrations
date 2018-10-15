@@ -24,6 +24,11 @@ function chartDraw(chartId, labels, data) {
                     type: 'linear',
                     position: 'right'
                 }]
+            },
+            legend: {
+                labels: {
+                    usePointStyle: false
+                }
             }
         }                
     });
