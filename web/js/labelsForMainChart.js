@@ -42,7 +42,7 @@ function labelsForMainChart(data) {
     
     for (i=yearMin+1; i<=yearMax-1; i++) {
         for (j=1; j<=12; j++) {
-            labels.push(label.concat(j, "/", i));
+            labels.push(label.concat(i, "/", j));
         }
     }
     if (yearMin !== yearMax) {
@@ -50,14 +50,7 @@ function labelsForMainChart(data) {
                 labels.push(label.concat(yearMax, "/", i));
             }
     }
-    console.log(yearMin);
-    console.log(monthYearMin);
-    
-    console.log(yearMax);
-    console.log(monthYearMax);
-    
-    
-    console.log(labels);
+
     return labels;
 }
 

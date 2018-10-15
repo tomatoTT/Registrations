@@ -5,12 +5,13 @@
  */
 
 function chartDraw(chartId, labels, data) {
+
     var ctx = document.getElementById(chartId);
     var myChart = new Chart(ctx, {
         type: 'line',
         data: {
             labels: labels,
-            datasets: chartDrawDatasets(data)
+            datasets: chartDrawDatasets(data, labels)
         },
         options: {
             scales: {
