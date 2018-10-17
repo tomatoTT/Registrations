@@ -32,7 +32,7 @@ class Make
      *
      * @var string
      * 
-     * @ORM\Column(name="Color", type="string", length=255, unique=true) 
+     * @ORM\Column(name="Color", type="string", length=255) 
      */
     private $color;
 
