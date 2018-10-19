@@ -41,7 +41,13 @@ class MainChartData
      * @ORM\Column(name="RegMonth", type="integer")
      */
     private $regMonth;
-
+    
+    /**
+     * @var int
+     * 
+     * @ORM\Column(name="Units", type="integer")
+     */
+    private $units;
 
     /**
      * Get id
@@ -124,5 +130,31 @@ class MainChartData
     {
         return $this->regMonth;
     }
+    
+    /**
+     * Set units
+     * 
+     * @param integer $units
+     * 
+     * @return MainChartData
+     */
+    function setUnits($units) 
+    {    
+        $this->units = $units;
+        
+        return $this;
+    }
+    
+    /**
+     * Get units
+     * 
+     * @return int
+     */
+    function getUnits() 
+    {
+        return $this->units;
+    }
+
+
 }
 

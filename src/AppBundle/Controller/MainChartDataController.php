@@ -4,6 +4,8 @@ namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use AppBundle\Entity\MainChartData;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Main Chart controller
@@ -42,6 +44,22 @@ class MainChartDataController extends Controller
             $maiChartData[] = $registrationsRaw[$i];
             a:
         }
+        
+        foreach ($maiChartData as $maiChartDataSingle) {
+            $newMaiDataChart = new MainChartData();
+            $newMaiDataChart->setMake($maiChartDataSingle['make']);
+            $newMaiDataChart->setRegYear($maiChartDataSingle['regYear']);
+            $newMaiDataChart->setRegMonth($maiChartDataSingle['regMonth']);
+            $newMaiDataChart->setUnits($maiChartDataSingle['units']);
+            
+            $em->persist($newMaiDataChart);
+            
+            $em->flush();
+        }
+        
+        $liczba = count($maiChartData);
+        return new Response('<html><body>'.$liczba.'</body></html>');
+        
         
     }
 
