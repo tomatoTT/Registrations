@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\MainChartData;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Main Chart controller
@@ -26,40 +28,74 @@ class MainChartDataController extends Controller
                 );
         $registrationsRaw = $query->getResult();
         
-        $maiChartData[0] = $registrationsRaw[0];
+        $mainChartData[0] = $registrationsRaw[0];
 
         for ($i=1; $i< count($registrationsRaw); $i++ ) {
 
-            $maiChartDataCount = count($maiChartData);
-            for ($j=0; $j<$maiChartDataCount; $j++) {
+            $mainChartDataCount = count($mainChartData);
+            for ($j=0; $j<$mainChartDataCount; $j++) {
 
-                if ($maiChartData[$j]['make'] === $registrationsRaw[$i]['make'] && 
-                        $maiChartData[$j]['regYear'] === $registrationsRaw[$i]['regYear'] && 
-                        $maiChartData[$j]['regMonth'] === $registrationsRaw[$i]['regMonth']) {
+                if ($mainChartData[$j]['make'] === $registrationsRaw[$i]['make'] && 
+                        $mainChartData[$j]['regYear'] === $registrationsRaw[$i]['regYear'] && 
+                        $mainChartData[$j]['regMonth'] === $registrationsRaw[$i]['regMonth']) {
                     
-                    $maiChartData[$j]['units'] += $registrationsRaw[$i]['units'];
+                    $mainChartData[$j]['units'] += $registrationsRaw[$i]['units'];
                     goto a;
                 }
             }
-            $maiChartData[] = $registrationsRaw[$i];
+            $mainChartData[] = $registrationsRaw[$i];
             a:
         }
         
-        foreach ($maiChartData as $maiChartDataSingle) {
-            $newMaiDataChart = new MainChartData();
-            $newMaiDataChart->setMake($maiChartDataSingle['make']);
-            $newMaiDataChart->setRegYear($maiChartDataSingle['regYear']);
-            $newMaiDataChart->setRegMonth($maiChartDataSingle['regMonth']);
-            $newMaiDataChart->setUnits($maiChartDataSingle['units']);
+        foreach ($mainChartData as $mainChartDataSingle) {
+            $newMainDataChart = new MainChartData();
+            $newMainDataChart->setMake($mainChartDataSingle['make']);
+            $newMainDataChart->setRegYear($mainChartDataSingle['regYear']);
+            $newMainDataChart->setRegMonth($mainChartDataSingle['regMonth']);
+            $newMainDataChart->setUnits($mainChartDataSingle['units']);
             
-            $em->persist($newMaiDataChart);
+            $em->persist($newMainDataChart);
             
             $em->flush();
         }
         
-        $liczba = count($maiChartData);
+        $liczba = count($mainChartData);
         return new Response('<html><body>'.$liczba.'</body></html>');
         
+        
+    }
+    
+    /**
+     * @Route("sendData")
+     */
+    public function sendDataAction(Request $request) 
+    {
+        $mainChartData = $this->getDoctrine()
+                ->getRepository('AppBundle:MainChartData')
+                ->findAll();
+        $colors = $this->getDoctrine()
+                ->getRepository('AppBundle:Make')
+                ->findAll();
+        
+        if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1) {
+            $jsonData = array();
+            $idx = 0;
+            foreach ($mainChartData as $mainChartDataSingle) {
+                $colorMake = $colors[array_search($mainChartDataSingle['make'], $colors)];
+                
+            $temp = array(
+                'make' => $mainChartDataSingle->getMake(),
+                'regYear' => $mainChartDataSingle->getRegYear(),
+                'regMonth' => $mainChartDataSingle->getRegMonth(),
+                'units' => $mainChartDataSingle->getUnits(),
+                'color' => $colorMake
+            );
+                $jsonData[$idx++] = $temp;
+            }
+            return new JsonResponse($jsonData);
+        } else {
+            return new Response('<html><body>nie ma jsona</body></html>');
+        }
         
     }
 
