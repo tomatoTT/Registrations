@@ -8,7 +8,7 @@ function chartDrawDatasets(data, labels) {
     var datasetsObjTable = []; /*Table to supply main chart*/
     var makes = label(data);
 
-    for (i=0; i<makes.length; i++) {
+    for (var i=0; i<makes.length; i++) {
 
         var datasetsObj = {};
         var make = makes[i];
@@ -25,7 +25,6 @@ function chartDrawDatasets(data, labels) {
         datasetsObjTable.push(datasetsObj);
 
     }
-
     return datasetsObjTable;
 }
 
@@ -33,7 +32,7 @@ function unitsForDatasetsObj(make, data, labels) {
     
     var units = [];
     
-    for (i=0; i<labels.length; i++) {
+    for (var i=0; i<labels.length; i++) {
 
         var query = {
             regYear: parseInt(labels[i].slice(0, 4)), 
@@ -61,12 +60,11 @@ function unitsForDatasetsObj(make, data, labels) {
 function colorForDatasetsObj(make, data) {
     
     var color = '';
-    
-    for (i=0; i<data.length; i++) {
+
+    for (var i=0; i<data.length; i++) {
         
         if (make === data[i].make) {
             color = data[i].color;
-
             return color;
         }
     }

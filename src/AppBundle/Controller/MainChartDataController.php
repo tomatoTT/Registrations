@@ -66,7 +66,7 @@ class MainChartDataController extends Controller
     }
     
     /**
-     * @Route("sendData")
+     * @Route("/sendData")
      */
     public function sendDataAction(Request $request) 
     {
@@ -76,20 +76,26 @@ class MainChartDataController extends Controller
         $colors = $this->getDoctrine()
                 ->getRepository('AppBundle:Make')
                 ->findAll();
-        
-        if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1) {
+
+        if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1)
+        {
             $jsonData = array();
             $idx = 0;
             foreach ($mainChartData as $mainChartDataSingle) {
-                $colorMake = $colors[array_search($mainChartDataSingle['make'], $colors)];
-                
-            $temp = array(
-                'make' => $mainChartDataSingle->getMake(),
-                'regYear' => $mainChartDataSingle->getRegYear(),
-                'regMonth' => $mainChartDataSingle->getRegMonth(),
-                'units' => $mainChartDataSingle->getUnits(),
-                'color' => $colorMake
-            );
+
+                foreach ($colors as $color) {
+                    if ($color->getMake() === $mainChartDataSingle->getMake()) {
+                        $colorMake = $color->getColor();
+                    }
+                }
+                $temp = array(
+                    'make' => $mainChartDataSingle->getMake(),
+                    'regYear' => $mainChartDataSingle->getRegYear(),
+                    'regMonth' => $mainChartDataSingle->getRegMonth(),
+                    'units' => $mainChartDataSingle->getUnits(),
+                    'color' => $colorMake
+                );
+
                 $jsonData[$idx++] = $temp;
             }
             return new JsonResponse($jsonData);

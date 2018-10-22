@@ -14,7 +14,7 @@ function labelsForMainChart(data) {
     var monthYearMax = data[0].regMonth;
 
     
-    for (i=0; i<data.length; i++) {
+    for (var i=0; i<data.length; i++) {
         
         if (yearMin > data[i].regYear) {            
             yearMin = data[i].regYear;           
@@ -25,7 +25,7 @@ function labelsForMainChart(data) {
         }
     }
     
-    for (i=0; i<data.length; i++) {
+    for (var i=0; i<data.length; i++) {
         
         if (yearMin === data[i].regYear && monthYearMin < data[i].regMonth) {
             monthYearMin = data[i].regMonth;
@@ -36,21 +36,20 @@ function labelsForMainChart(data) {
         }        
     }
     
-    for (i=monthYearMin; i<=12; i++) {
+    for (var i=monthYearMin; i<=12; i++) {
             labels.push(label.concat(yearMin, "/", i));
         }
     
-    for (i=yearMin+1; i<=yearMax-1; i++) {
-        for (j=1; j<=12; j++) {
+    for (var i=yearMin+1; i<=yearMax-1; i++) {
+        for (var j=1; j<=12; j++) {
             labels.push(label.concat(i, "/", j));
         }
     }
     if (yearMin !== yearMax) {
-        for (i=1; i<=monthYearMax; i++) {
+        for (var i=1; i<=monthYearMax; i++) {
                 labels.push(label.concat(yearMax, "/", i));
             }
     }
-
     return labels;
 }
 

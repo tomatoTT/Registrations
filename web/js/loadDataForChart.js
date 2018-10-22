@@ -14,7 +14,7 @@ function loadDataForChart(url, chartId) {
             chartDraw(chartId, labelsForMainChart(data), data);
         },
         error: function(xhr, textStatus, errorThrown) {
-            alert(errorThrown);
+            alert(errorThrown, textStatus, xhr);
         }
     });
 }
