@@ -27,7 +27,7 @@ function labelsForMainChart(data) {
     
     for (var i=0; i<data.length; i++) {
         
-        if (yearMin === data[i].regYear && monthYearMin < data[i].regMonth) {
+        if (yearMin === data[i].regYear && monthYearMin > data[i].regMonth) {
             monthYearMin = data[i].regMonth;
         }
         

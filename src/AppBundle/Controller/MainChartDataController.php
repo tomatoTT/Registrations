@@ -59,8 +59,7 @@ class MainChartDataController extends Controller
             $em->flush();
         }
         
-        $liczba = count($mainChartData);
-        return new Response('<html><body>'.$liczba.'</body></html>');
+        return new Response($this->redirect('/registrations/delete_all'));
         
         
     }

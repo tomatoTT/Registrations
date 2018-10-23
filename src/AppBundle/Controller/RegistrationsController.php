@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 /**
  * Registrations controller
@@ -48,5 +49,20 @@ class RegistrationsController extends Controller
         } else {
             return new Response('<html><body>nie ma jsona</body></html>');
         }
+    }
+    
+    /**
+     * @Route("/delete_all")
+     * @Method("DELETE")
+     */
+    public function deleteAllAction() {
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        $query = $em->createQuery('DELETE AppBundle:Registrations');
+        $query->getResult();
+        $query->execute();
+        
+        return new Response($this->redirect('/'));
     }
 }
