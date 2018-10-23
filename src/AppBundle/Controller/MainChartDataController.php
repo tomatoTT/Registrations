@@ -59,6 +59,11 @@ class MainChartDataController extends Controller
             $em->flush();
         }
         
+        $registrationsTot = $em->getRepository('AppBundle:Registrations')->findAll();
+        
+        foreach ($registrationsTot as $registrationsTotSingle) {
+            
+        }
         return new Response($this->redirect('/registrations/delete_all'));
         
         
