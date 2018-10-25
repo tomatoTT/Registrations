@@ -65,4 +65,38 @@ class RegistrationsController extends Controller
         
         return new Response($this->redirect('/'));
     }
+    
+    /**
+     * @Route("/checkDouble")
+     */
+    public function checkDoubleAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $query1 = $em->createQuery(
+                'SELECT r.make, r.model, r.serie, r.regYear, r.regMonth, r.units, r.rEGON, r.regType, r.tERYT'
+                . ' FROM AppBundle:Registrations r'
+                );
+        $registrations = $query1->getResult();
+        
+        if (empty($registrations)) {
+            return new Response('<html><body>Załaduj dane</body></html>');
+        }
+        
+        $query2 = $em->createQuery(
+                'SELECT r.make, r.model, r.serie, r.regYear, r.regMonth, r.units, r.rEGON, r.regType, r.tERYT'
+                . ' FROM AppBundle:RegTot r'
+                );
+        $regTot = $query2->getResult();
+        
+        if (empty($regTot)) {
+            return new Response($this->redirect('/main_chart/calculate'));
+        }
+
+        foreach ($registrations as $registrationsSingle) {
+            if (array_search($registrationsSingle, $regTot)) {
+                return new Response('<html><body>Znaleziono podwójne wiersze</body></html>');
+            }
+        }
+        return new Response($this->redirect('/main_chart/calculate'));
+    }
 }

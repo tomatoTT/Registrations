@@ -12,7 +12,7 @@
             <li>O nas</li>
         </ul>
     </nav>
-    
+    <a href="/registrations/checkDouble"><button type="button">Wprowadź nowe dane</button></a>
     <div>
         {{ render(controller('FOSUserBundle:Security:login')) }}
     </div>
@@ -40,6 +40,8 @@
     <script src="{{ asset('js/label.js') }}"></script>
     
     <script>
-        loadDataForChart("main_chart/sendData", "myChart");
+        $(document).ready(function() {
+            loadDataForChart("main_chart/sendData", "myChart");
+        });    
     </script>
 {% endblock %}

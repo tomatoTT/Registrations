@@ -35,9 +35,9 @@ class MainChartDataController extends Controller
             for ($j=0; $j<$mainChartDataCount; $j++) {
 
                 if ($mainChartData[$j]['make'] === $registrationsRaw[$i]['make'] && 
-                        $mainChartData[$j]['regYear'] === $registrationsRaw[$i]['regYear'] && 
-                        $mainChartData[$j]['regMonth'] === $registrationsRaw[$i]['regMonth']) {
-                    
+                    $mainChartData[$j]['regYear'] === $registrationsRaw[$i]['regYear'] && 
+                    $mainChartData[$j]['regMonth'] === $registrationsRaw[$i]['regMonth']) 
+                {    
                     $mainChartData[$j]['units'] += $registrationsRaw[$i]['units'];
                     goto a;
                 }
@@ -126,5 +126,4 @@ class MainChartDataController extends Controller
         }
         
     }
-
 }
