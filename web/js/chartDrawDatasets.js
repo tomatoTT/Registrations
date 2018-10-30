@@ -6,7 +6,7 @@
 function chartDrawDatasets(data, labels) {
     
     var datasetsObjTable = []; /*Table to supply main chart*/
-    var makes = label(data);
+    var makes = labelMakeConditions(data, 10);
 
     for (var i=0; i<makes.length; i++) {
 
