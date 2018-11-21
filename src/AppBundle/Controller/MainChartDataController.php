@@ -29,7 +29,7 @@ class MainChartDataController extends Controller
         $registrationsRaw = $query->getResult();
         
         $mainChartData[0] = $registrationsRaw[0];
-        for ($i=1; $i< count($registrationsRaw); $i++ ) {
+        for ($i=1; $i< count($registrationsRaw); $i++) {
 
             $mainChartDataCount = count($mainChartData);
             for ($j=0; $j<$mainChartDataCount; $j++) {
