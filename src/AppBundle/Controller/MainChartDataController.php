@@ -22,7 +22,7 @@ class MainChartDataController extends Controller
      */
     public function calculateAction()
     {
-        $em = $this->getDoctrine()->getManager();        
+        $em = $this->getDoctrine()->getManager();
         $query = $em->createQuery(
                 'SELECT r.make, r.regYear, r.regMonth, r.units FROM AppBundle:Registrations r'
                 );

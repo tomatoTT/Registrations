@@ -5,10 +5,10 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * main_chart_data_MS
+ * MainChartDataMS
  *
  * @ORM\Table(name="main_chart_data__m_s")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\main_chart_data_MSRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\MainChartDataMSRepository")
  */
 class main_chart_data_MS
 {
