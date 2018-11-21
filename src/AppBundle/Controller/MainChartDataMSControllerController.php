@@ -5,6 +5,11 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
+/**
+ * Main Chart controller
+ * 
+ * @Route("main_chart_MS")
+ */
 class MainChartDataMSControllerController extends Controller
 {
     /**
@@ -14,9 +19,15 @@ class MainChartDataMSControllerController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $query = $em->createQuery(
-                'SELECT m.make, m.regYear, m.regMonth, m.units FROM AppBundle:main_chart_data m'
+                'SELECT m.make, m.regYear, m.regMonth, m.units FROM AppBundle:MainChartData m'
                 );
-        return $this->render('AppBundle:MainChartDataMSController:calculate.html.twig', array(
+        $mainChartData = $query->getResult();
+        
+        $minYear = min(array_column($mainChartData, 'regYear'));
+        $maxYear = max(array_column($mainChartData, 'regYear'));
+        var_dump($minYear);        
+        var_dump($maxYear);
+        return $this->render('@App/MainChartDataMS/calculate.html.twig', array(
             // ...
         ));
     }
