@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="main_chart_data__m_s")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\MainChartDataMSRepository")
  */
-class main_chart_data_MS
+class MainChartDataMS
 {
     /**
      * @var int
@@ -48,6 +48,13 @@ class main_chart_data_MS
      * @ORM\Column(name="Units", type="integer")
      */
     private $units;
+    
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="TIV", type="integer")
+     */
+    private $tIV;
 
     /**
      * @var string
@@ -162,7 +169,32 @@ class main_chart_data_MS
     {
         return $this->units;
     }
-
+    
+    /**
+     * Set tIV
+     *
+     * @param integer $tIV
+     *
+     * @return main_chart_data_MS
+     */
+    function setTIV($tIV) 
+    {
+        
+        $this->tIV = $tIV;
+        
+        return $this;
+    }
+    
+    /**
+     * Get tIV
+     *
+     * @return int
+     */
+    function getTIV() 
+    {
+        return $this->tIV;
+    }
+    
     /**
      * Set mS
      *

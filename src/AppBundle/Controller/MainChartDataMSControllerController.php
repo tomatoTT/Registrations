@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use AppBundle\Entity\MainChartDataMS;
 
 /**
  * Main Chart controller
@@ -49,17 +50,32 @@ class MainChartDataMSControllerController extends Controller
             a:
         }
         
-       
-        $minYear = min(array_column($mainChartData, 'regYear'));
-        $maxYear = max(array_column($mainChartData, 'regYear'));        
-        
-        
-        $keys = array_keys(array_column($mainChartData, 'regYear'), 2007);
+        foreach ($mainChartData as $mainChartDataSingle) 
+        {
+            $keys = array_keys(array_column($tiv, 'regYear'), $mainChartDataSingle['regYear']);
 
-        
-        $key = array_search(2007, array_column($mainChartData, 'regYear'));
-        
-        
+            for ($i=$keys[0]; $i<count($keys)+12; $i++) 
+            {
+
+                if ($mainChartDataSingle['regMonth'] === $tiv[$i]['regMonth'])
+                {
+                    $marketShare = $mainChartDataSingle['units'] / $tiv[$i]['units'];
+                    $tivSet = $tiv[$i]['units'];
+                    break;
+                }
+            }
+            
+            $newMainChartDataMS = new MainChartDataMS();
+            $newMainChartDataMS->setMake($mainChartDataSingle['make']);
+            $newMainChartDataMS->setRegYear($mainChartDataSingle['regYear']);
+            $newMainChartDataMS->setRegMonth($mainChartDataSingle['regMonth']);
+            $newMainChartDataMS->setUnits($mainChartDataSingle['units']);
+            $newMainChartDataMS->setTIV($tivSet);
+            $newMainChartDataMS->setMS($marketShare);
+            
+            $em->persist($newMainChartDataMS);            
+        }
+        $em->flush();
         return $this->render('@App/MainChartDataMS/calculate.html.twig', array(
             // ...
         ));
