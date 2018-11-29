@@ -26,23 +26,7 @@ function labelMakeConditions(data, condition) {
             labelsMake[index][1] = actualUnits + data[i].units;
         }
     }
-    /*for (var i=1; i<data.length; i++) {
-        var dataTab = [];
-        dataTab = [data[i].make, data[i].units];
-        console.log(dataTab);
-        function labelTest(object) {
-            return object === dataTab;
-        }
-        console.log(labels.find(labelTest));
-        if (!labels.find(labelTest)) {
 
-            labels.push(dataTab);
-            console.log(labels);
-        } else {
-            var unitsAfter = labels[labels.indexOf(data[i].make)][1] + data[i].units;
-            labels[labels.indexOf(data[i].make)][1] = unitsAfter;
-        }
-    }*/
     labelsMake.sort(function(a, b) {return b[1] - a[1];});
     var labelShort = labelsMake.slice(0, condition);
 

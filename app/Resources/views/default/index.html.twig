@@ -40,10 +40,17 @@
     <script src="{{ asset('js/mainChart/loadDataForChart.js') }}"></script>
     <script src="{{ asset('js/mainChart/label.js') }}"></script>
     <script src="{{ asset('js/mainChart/labelMakeConditions.js') }}"></script>
+    <script src="{{ asset('js/mapChart/loadDataMap.js') }}"></script>
     
     <script>
         $(document).ready(function() {
             loadDataForChart("main_chart/sendData", "myChart");
         });    
     </script>
+    <script>
+        $(document).ready(function() {
+            loadDataMap("mapChart/loadData", 1, 2);
+        });    
+    </script>
+    
 {% endblock %}

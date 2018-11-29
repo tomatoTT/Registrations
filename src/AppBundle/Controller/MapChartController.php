@@ -1,0 +1,37 @@
+<?php
+
+namespace AppBundle\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
+/**
+ * Map Chart controller
+ * 
+ * @Route("mapChart")
+ */
+class MapChartController extends Controller
+{
+    /**
+     * @Route("/loadData")
+     */
+    public function loadDataAction(Request $request)
+    {
+        if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1)
+        {
+            
+            
+            $jsonData = ['test', 'ala', $_POST];
+
+            return new JsonResponse($jsonData);
+        } else {
+            return new Response('<html><body>nie ma jsona</body></html>');
+        }
+        
+
+    }
+
+}
