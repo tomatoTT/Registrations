@@ -4,7 +4,7 @@ namespace AppBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class MainChartDataMSControllerControllerTest extends WebTestCase
+class MainChartDataMSControllerTest extends WebTestCase
 {
     public function testCalculate()
     {

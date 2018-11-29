@@ -11,7 +11,7 @@ use AppBundle\Entity\MainChartDataMS;
  * 
  * @Route("main_chart_MS")
  */
-class MainChartDataMSControllerController extends Controller
+class MainChartDataMSController extends Controller
 {
     /**
      * @Route("/calculate")
