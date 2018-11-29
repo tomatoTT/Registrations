@@ -31,7 +31,7 @@ class TerytPow
     /**
      * @var string
      *
-     * @ORM\Column(name="Powiat", type="string", length=255)
+     * @ORM\Column(name="Powiat", type="string", length=255, nullable=true)
      */
     private $powiat;
 
