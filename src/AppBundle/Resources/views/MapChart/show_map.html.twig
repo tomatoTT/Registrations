@@ -1,0 +1,29 @@
+{% extends "base.html.twig" %}
+
+{% block title %}AppBundle:MapChart:showMap{% endblock %}
+
+{% block stylesheets %}
+    <link href="{{ asset('css/mapapolski.css') }}" type="text/css" rel="stylesheet" />
+{% endblock %}
+
+{% block body %}
+<h1>Welcome to the MapChart:showMap page</h1>
+
+ {% include "@Web/svg/mapapolski.svg" %}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/mapChart/loadDataMap.js') }}"></script>
+    
+    <script>
+        $(document).ready(function() {
+            loadDataMap("/mapChart/loadData", "2016");
+        });    
+    </script>
+    
+    <script>
+        $(document).ready(function() {
+            $('#pyrzycki').css('fill' , 'red');
+        });    
+    </script>
+{% endblock %}

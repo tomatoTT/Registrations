@@ -22,16 +22,36 @@ class MapChartController extends Controller
     {
         if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1)
         {
+            $em = $this->getDoctrine()->getManager();
             
+            $myPost = filter_input_array(INPUT_POST);
             
-            $jsonData = ['test', 'ala', $_POST];
+            $regYear = $myPost['regYear'];
+            
+            $result = $em->getRepository('AppBundle:RegTot')->findByRegYear($regYear);
+            
+            $wynik = array();
+            foreach ($result as $value) {
+                $wynik[] = $value->getMake();
+            }
+            
+            $jsonData = $wynik;
 
             return new JsonResponse($jsonData);
         } else {
             return new Response('<html><body>nie ma jsona</body></html>');
         }
+    }
+    
+    /**
+     * @Route("/showMap")
+     */
+    public function showMapAction()
+    {
         
-
+        return $this->render('@App/MapChart/show_map.html.twig', array(
+            // ...
+        ));
     }
 
 }
