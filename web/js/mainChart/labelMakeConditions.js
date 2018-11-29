@@ -8,9 +8,6 @@ function labelMakeConditions(data, condition) {
     var labelsMake = [];
 
     labelsMake[0] = [data[0].make, data[0].units];
-
-
-    
     
     for (var i=1; i<data.length; i++) {
         var dataTab = [data[i].make, data[i].units];
@@ -21,7 +18,6 @@ function labelMakeConditions(data, condition) {
         var index = labelsMake.findIndex(labelTest);
 
         if (index === -1) {
-
 
             labelsMake.push(dataTab);
 
@@ -49,15 +45,14 @@ function labelMakeConditions(data, condition) {
     }*/
     labelsMake.sort(function(a, b) {return b[1] - a[1];});
     var labelShort = labelsMake.slice(0, condition);
-    console.log(labelShort);
+
     var labels = [];
     for (var i=0; i<labelShort.length; i++) {
         labels.push(labelShort[i][0]);
     }
     labels.sort();
-    console.log(labels);
-    return labels;
 
+    return labels;
 }
 
 
