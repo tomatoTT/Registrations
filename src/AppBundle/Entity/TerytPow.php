@@ -35,7 +35,13 @@ class TerytPow
      */
     private $powiat;
 
-
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="FullTeryt", type="string", length=255, nullable=true)
+     */
+    private $fullTeryt;
+    
     /**
      * Get id
      *
@@ -92,6 +98,30 @@ class TerytPow
     public function getPowiat()
     {
         return $this->powiat;
+    }
+    
+    /**
+     * Set fullTeryt
+     *
+     * @param string $fullTeryt
+     *
+     * @return TerytPow
+     */
+    function setFullTeryt($fullTeryt)
+    {
+        $this->fullTeryt = $fullTeryt;
+        
+        return $this;
+    }
+    
+    /**
+     * Get fullTeryt
+     *
+     * @return string
+     */
+    function getFullTeryt()
+    {
+        return $this->fullTeryt;
     }
 }
 
