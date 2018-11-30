@@ -30,12 +30,12 @@ class MapChartController extends Controller
             
             $result = $em->getRepository('AppBundle:RegTot')->findByRegYear($regYear);
             
-            $wynik = array();
+            $sourceMap = array();
             foreach ($result as $value) {
-                $wynik[] = $value->getMake();
+                $sourceMap[] = $value->getMake();
             }
             
-            $jsonData = $wynik;
+            $jsonData = $sourceMap;
 
             return new JsonResponse($jsonData);
         } else {
