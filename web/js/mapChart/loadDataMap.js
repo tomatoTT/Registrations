@@ -3,13 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-function loadDataMap(url, regYear) {
+function loadDataMap(url, inputData) {
     $.ajax({
         type: 'POST',
         url: url,
-        data:{regYear:regYear
-            
-        },
+        data: inputData,
         dataType: "json",
         success: function(data) {
             console.log(data);
