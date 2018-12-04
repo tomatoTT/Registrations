@@ -18,7 +18,14 @@
     <script>
         $(document).ready(function() {
             var inputData;
-            inputData = {regYear:"2016"};
+            
+            inputData = {
+                make: "JCB",
+                regYearMin: "2017",
+                regMonthMin: "4",
+                regYearMax: "2018",
+                regMonthMax: "11"
+            };
             
             loadDataMap("/mapChart/loadData", inputData);
         });    

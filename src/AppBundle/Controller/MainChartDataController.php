@@ -29,11 +29,10 @@ class MainChartDataController extends Controller
         $registrationsRaw = $query->getResult();
         
         $mainChartData[0] = $registrationsRaw[0];
-        for ($i=1; $i< count($registrationsRaw); $i++) {
-
-            $mainChartDataCount = count($mainChartData);
-            for ($j=0; $j<$mainChartDataCount; $j++) {
-
+        for ($i=1; $i<count($registrationsRaw); $i++)
+        {
+            for ($j=0; $j<count($mainChartData); $j++)
+            {
                 if ($mainChartData[$j]['make'] === $registrationsRaw[$i]['make'] && 
                     $mainChartData[$j]['regYear'] === $registrationsRaw[$i]['regYear'] && 
                     $mainChartData[$j]['regMonth'] === $registrationsRaw[$i]['regMonth']) 
