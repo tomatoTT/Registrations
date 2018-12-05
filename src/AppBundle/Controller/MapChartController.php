@@ -128,7 +128,7 @@ class MapChartController extends Controller
      */
     public function showMapAction()
     {   
-        $em = $this->getDoctrine()->getManager();
+        /**$em = $this->getDoctrine()->getManager();
             
             $myPost = filter_input_array(INPUT_POST);
             
@@ -221,7 +221,7 @@ class MapChartController extends Controller
                 ];
                 a:                
             }
-        
+            var_dump($sourceMap);*/
         return $this->render('@App/MapChart/show_map.html.twig', array(
             // ...
         ));

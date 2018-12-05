@@ -13,27 +13,29 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="{{ asset('js/mapChart/loadDataMap.js') }}"></script>
+    <script src="{{ asset('js/mapChart/dataMapLoad.js') }}"></script>
+    <script src="{{ asset('js/mapChart/dataMapCss.js') }}"></script>
+    <script src="{{ asset('js/mapChart/dataMapMS.js') }}"></script>
     
     <script>
         $(document).ready(function() {
             var inputData;
             
             inputData = {
-                make: "JCB",
+                make: "CASEIH",
                 regYearMin: "2017",
                 regMonthMin: "4",
                 regYearMax: "2018",
                 regMonthMax: "11"
             };
             
-            loadDataMap("/mapChart/loadData", inputData);
+            dataMapLoad("/mapChart/loadData", inputData);
         });    
     </script>
     
     <script>
         $(document).ready(function() {
-            $('#pyrzycki').css('fill' , 'red');
+            $('#pyrzycki').css('fill' , "rgba(255, 99, 132, 0.07692307692307693)");
         });    
     </script>
 {% endblock %}
