@@ -24,23 +24,16 @@ class TerytPow
     /**
      * @var string
      *
-     * @ORM\Column(name="Teryt", type="string", length=255)
+     * @ORM\Column(name="CountyCode", type="string", length=255)
      */
-    private $teryt;
+    private $countyCode;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Powiat", type="string", length=255, nullable=true)
+     * @ORM\Column(name="CountyName", type="string", length=255, nullable=true)
      */
-    private $powiat;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="FullTeryt", type="string", length=255, nullable=true)
-     */
-    private $fullTeryt;
+    private $countyName;
     
     /**
      * Get id
@@ -53,75 +46,50 @@ class TerytPow
     }
 
     /**
-     * Set teryt
+     * Set countyCode
      *
-     * @param string $teryt
+     * @param string $countyCode
      *
      * @return TerytPow
      */
-    public function setTeryt($teryt)
+    public function setCountyCode($countyCode)
     {
-        $this->teryt = $teryt;
+        $this->countyCode = $countyCode;
 
         return $this;
     }
 
     /**
-     * Get teryt
+     * Get countyCode
      *
      * @return string
      */
-    public function getTeryt()
+    public function getCountyCode()
     {
         return $this->teryt;
     }
 
     /**
-     * Set powiat
+     * Set countyName
      *
-     * @param string $powiat
+     * @param string $countyName
      *
      * @return TerytPow
      */
-    public function setPowiat($powiat)
+    public function setCountyName($countyName)
     {
-        $this->powiat = $powiat;
+        $this->countyName = $countyName;
 
         return $this;
     }
 
     /**
-     * Get powiat
+     * Get countyName
      *
      * @return string
      */
-    public function getPowiat()
+    public function getCountyName()
     {
-        return $this->powiat;
-    }
-    
-    /**
-     * Set fullTeryt
-     *
-     * @param string $fullTeryt
-     *
-     * @return TerytPow
-     */
-    function setFullTeryt($fullTeryt)
-    {
-        $this->fullTeryt = $fullTeryt;
-        
-        return $this;
-    }
-    
-    /**
-     * Get fullTeryt
-     *
-     * @return string
-     */
-    function getFullTeryt()
-    {
-        return $this->fullTeryt;
+        return $this->countyName;
     }
 }
-

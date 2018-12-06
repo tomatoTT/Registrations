@@ -45,9 +45,9 @@ class MainChartDataMSPowiat
     /**
      * @var string
      *
-     * @ORM\Column(name="Powiat", type="string", length=255)
+     * @ORM\Column(name="countyName", type="string", length=255)
      */
-    private $powiat;
+    private $countyName;
 
     /**
      * @var int
@@ -55,6 +55,13 @@ class MainChartDataMSPowiat
      * @ORM\Column(name="Units", type="integer")
      */
     private $units;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="countyCode", type="string", length=255)
+     */
+    private $countyCode;
 
     /**
      * @var int
@@ -147,27 +154,27 @@ class MainChartDataMSPowiat
     }
 
     /**
-     * Set powiat
+     * Set countyName
      *
-     * @param string $powiat
+     * @param string $countyName
      *
      * @return MainChartDataMSPowiat
      */
-    public function setPowiat($powiat)
+    public function setCountyName($countyName)
     {
-        $this->powiat = $powiat;
+        $this->countyName = $countyName;
 
         return $this;
     }
 
     /**
-     * Get powiat
+     * Get countyName
      *
      * @return string
      */
-    public function getPowiat()
+    public function getCountyName()
     {
-        return $this->powiat;
+        return $this->countyName;
     }
 
     /**
@@ -216,6 +223,30 @@ class MainChartDataMSPowiat
     public function getTIV()
     {
         return $this->tIV;
+    }
+    
+    /**
+     * Set countyCode
+     *
+     * @param string $countyCode
+     *
+     * @return MainChartDataMSPowiat
+     */
+    function setCountyCode($countyCode)
+    {
+        $this->countyCode = $countyCode;
+        
+        return $this;
+    }
+    
+    /**
+     * Get countyCode
+     *
+     * @return string
+     */
+    function getCountyCode()
+    {
+        return $this->countyCode;
     }
 }
 
