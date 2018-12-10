@@ -13,10 +13,8 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="{{ asset('js/mapChart/dataMapLoad.js') }}"></script>
-    <script src="{{ asset('js/mapChart/dataMapCss.js') }}"></script>
-    <script src="{{ asset('js/mapChart/dataMapMS.js') }}"></script>
-    
+    <script src="{{ asset('js/mapChart/dataMapTopLoad.js') }}"></script>
+        
     <script>
         $(document).ready(function() {
             var inputData;
@@ -29,7 +27,7 @@
                 regMonthMax: "12"
             };
             
-            dataMapLoad("/mapChart/loadDataMS", inputData);
+            dataMapTopLoad("/mapChart/loadDataTopMake", inputData);
         });    
     </script>
     
