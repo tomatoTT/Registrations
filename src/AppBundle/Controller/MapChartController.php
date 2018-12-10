@@ -34,8 +34,8 @@ class MapChartController extends Controller
             if ($regYearMin === $regYearMax)
             {
                 $qb = $em->createQueryBuilder();
-                $q = $qb->select('r.make, r.regYear, r.regMonth, r.units, r.tERYT')
-                        ->from('AppBundle:RegTot', 'r')
+                $q = $qb->select('r.make, r.regYear, r.regMonth, r.units, r.countyName, r.tIV')
+                        ->from('AppBundle:MainChartDataMSPowiat', 'r')
                         ->where(
                                 $qb->expr()->andX(
                                         $qb->expr()->eq('r.regYear', $regYearMin),
@@ -48,8 +48,8 @@ class MapChartController extends Controller
                 goto b;
             }
             $qb1 = $em->createQueryBuilder();
-            $q1 = $qb1->select('r.make, r.regYear, r.regMonth, r.units, r.tERYT')
-                    ->from('AppBundle:RegTot', 'r')
+            $q1 = $qb1->select('r.make, r.regYear, r.regMonth, r.units, r.countyName, r.tIV')
+                    ->from('AppBundle:MainChartDataMSPowiat', 'r')
                     ->where(
                             $qb1->expr()->andX(
                                     $qb1->expr()->eq('r.regYear', $regYearMin),
@@ -61,8 +61,8 @@ class MapChartController extends Controller
             $resultMin = $q1->getResult();
 
             $qb2 = $em->createQueryBuilder();
-            $q2 = $qb2->select('r.make, r.regYear, r.regMonth, r.units, r.tERYT')
-                    ->from('AppBundle:RegTot', 'r')
+            $q2 = $qb2->select('r.make, r.regYear, r.regMonth, r.units, r.countyName, r.tIV')
+                    ->from('AppBundle:MainChartDataMSPowiat', 'r')
                     ->where(
                             $qb2->expr()->andX(
                                     $qb2->expr()->eq('r.regYear', $regYearMax),
@@ -78,18 +78,17 @@ class MapChartController extends Controller
                     'SELECT c.make, c.color FROM AppBundle:Make c');
             $colorArray = $queryColor->getResult();
             $color = $colorArray[array_search($result[0]["make"], array_column($colorArray, 'make'))]['color'];
-            $query = $em->createQuery(
+            /**$query = $em->createQuery(
                 'SELECT t.teryt, t.powiat FROM AppBundle:TerytPow t'
                 );
             $terytPow = $query->getResult();           
             $powiatKey = array_search($result[0]["tERYT"], array_column($terytPow, 'teryt'));
-            $tiv = array_sum(array_column($result,'units'));
+            $tiv = array_sum(array_column($result,'units'));*/
             $sourceMap[0] = [
                 "make" => $result[0]['make'],
                 "units" => $result[0]['units'],
-                "tiv" => $tiv,
-                "county" => $terytPow[$powiatKey]['powiat'],
-                "teryt" => $result[0]['tERYT'],
+                "tiv" => $result[0]["tIV"],
+                "county" => $result[0]["countyName"],
                 "color" => $color
             ];
             for ($i=1; $i<count($result); $i++)
@@ -97,20 +96,18 @@ class MapChartController extends Controller
                 for ($j=0; $j<count($sourceMap); $j++)
                 {
                     if ($sourceMap[$j]['make'] === $result[$i]['make'] &&
-                        $sourceMap[$j]['county'] === array_search(
-                                $result[$i]["tERYT"], array_column($terytPow, 'teryt')))
+                        $sourceMap[$j]['county'] === $result[$i]['countyName'])
                     {
-                        $sourceMap[$j]['units'] += $result[$i]['units'];                        
+                        $sourceMap[$j]['units'] += $result[$i]['units'];
+                        $sourceMap[$j]['tiv'] += $result[$i]['tIV'];
                         goto a;
                     }
                 }
                 $sourceMap[] = [
                     "make" => $result[$i]['make'],
                     "units" => $result[$i]['units'],
-                    "tiv" => $tiv,
-                    "county" => $terytPow[array_search(
-                            $result[$i]["tERYT"], array_column($terytPow, 'teryt'))]['powiat'],
-                    "teryt" => $result[$i]['tERYT'],
+                    "tiv" => $result[$i]["tIV"],
+                    "county" => $result[$i]["countyName"],
                     "color" => $color
                 ];
                 a:                
