@@ -5,8 +5,7 @@ function dataMapTopLoad(url, inputData) {
         data: inputData,
         dataType: "json",
         success: function(data) {
-
-            console.log(data);
+            dataMapTopCss(data);
         },
         error: function(xhr, textStatus, errorThrown) {
             alert(errorThrown, textStatus, xhr);

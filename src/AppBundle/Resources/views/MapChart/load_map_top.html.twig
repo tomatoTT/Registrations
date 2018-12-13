@@ -4,6 +4,7 @@
 
 {% block stylesheets %}
     <link href="{{ asset('css/mapapolski.css') }}" type="text/css" rel="stylesheet" />
+    
 {% endblock %}
 
 {% block body %}
@@ -14,14 +15,14 @@
 
 {% block javascripts %}
     <script src="{{ asset('js/mapChart/dataMapTopLoad.js') }}"></script>
-        
+    <script src="{{ asset('js/mapChart/dataMapTopCss.js') }}"></script>
+    
     <script>
         $(document).ready(function() {
             var inputData;
             
             inputData = {
-                make: "JOHNDEERE",
-                regYearMin: "2007",
+                regYearMin: "2007$xxx",
                 regMonthMin: "1",
                 regYearMax: "2007",
                 regMonthMax: "12"
@@ -30,10 +31,5 @@
             dataMapTopLoad("/mapChart/loadDataTopMake", inputData);
         });    
     </script>
-    
-    <script>
-        $(document).ready(function() {
-            $('#pyrzycki').css('fill' , "rgba(255, 99, 132, 0.07692307692307693)");
-        });    
-    </script>
+
 {% endblock %}
