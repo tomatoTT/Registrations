@@ -1,0 +1,35 @@
+{% extends "base.html.twig" %}
+
+{% block title %}AppBundle:MapChart:showMap{% endblock %}
+
+{% block stylesheets %}
+    <link href="{{ asset('css/mapapolski.css') }}" type="text/css" rel="stylesheet" />
+    
+{% endblock %}
+
+{% block body %}
+    <h1>Welcome to the MapChart:showMap page</h1>
+
+{% include "@Web/svg/mapapolski.svg" %}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/mapChart/dataMapTivLoad.js') }}"></script>
+    <script src="{{ asset('js/mapChart/dataMapTivCss.js') }}"></script>
+    
+    <script>
+        $(document).ready(function() {
+            var inputData;
+            
+            inputData = {
+                regYearMin: "2007$xxx",
+                regMonthMin: "1",
+                regYearMax: "2007",
+                regMonthMax: "12"
+            };
+            
+            dataMapTopLoad("/mapChart/loadDataTiv", inputData);
+        });    
+    </script>
+
+{% endblock %}

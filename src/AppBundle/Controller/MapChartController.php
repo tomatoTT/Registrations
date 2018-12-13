@@ -16,6 +16,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class MapChartController extends Controller
 {
     /**
+     * Load source for map chart make MS
+     * 
      * @Route("/loadDataMS")
      */
     public function loadDataAction(Request $request)
@@ -113,7 +115,7 @@ class MapChartController extends Controller
                 a:                
             }            
             $jsonData = $sourceMap;
-            return new JsonResponse($sourceMap);
+            return new JsonResponse($jsonData);
         } else {
             return new Response('<html><body>nie ma jsona</body></html>');
         }
@@ -131,6 +133,8 @@ class MapChartController extends Controller
     }
     
     /**
+     * Load source for map chart top make county
+     * 
      * @Route("/loadDataTopMake")
      */
     public function loadDataTopMakeAction(Request $request)
@@ -276,5 +280,101 @@ class MapChartController extends Controller
         return $this->render('@App/MapChart/load_map_top.html.twig', array(
             // ...
         ));
-    }    
+    }
+    
+    /**
+     * Load source for map chart tiv
+     * 
+     * @Route("/loadDataTiv")
+     */
+    public function loadDataTivAction(Request $request)
+    {
+        if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1)
+        {
+            $em = $this->getDoctrine()->getManager();
+            $filters = array(
+                "regYearMin" => array('filter' => FILTER_SANITIZE_NUMBER_INT),
+                "regYearMax" => array('filter' => FILTER_SANITIZE_NUMBER_INT),
+                "regMonthMin" => array('filter' => FILTER_SANITIZE_NUMBER_INT),
+                "regMonthMax" => array('filter' => FILTER_SANITIZE_NUMBER_INT)
+            );
+            $myPost = filter_input_array(INPUT_POST, $filters);
+            $regYearMin = $myPost['regYearMin'];
+            $regMonthMin = $myPost['regMonthMin'];
+            $regYearMax = $myPost['regYearMax'];
+            $regMonthMax = $myPost['regMonthMax'];
+            if ($regYearMin === $regYearMax)
+            {
+                $qb = $em->createQueryBuilder();
+                $q = $qb->select('r.regYear, r.regMonth, r.units, r.countyName')
+                        ->from('AppBundle:MainChartDataMSPowiat', 'r')
+                        ->where(
+                                $qb->expr()->andX(
+                                        $qb->expr()->eq('r.regYear', $regYearMin),
+                                        $qb->expr()->between('r.regMonth', $regMonthMin, $regMonthMax)
+                                        )
+                        )
+                        ->getQuery();
+                $result = $q->getResult();
+                goto b;
+            }
+            $qb1 = $em->createQueryBuilder();
+            $q1 = $qb1->select('r.regYear, r.regMonth, r.units, r.countyName')
+                    ->from('AppBundle:MainChartDataMSPowiat', 'r')
+                    ->where(
+                            $qb1->expr()->andX(
+                                    $qb1->expr()->eq('r.regYear', $regYearMin),
+                                    $qb1->expr()->gte('r.regMonth', $regMonthMin)
+                                    )
+                    )
+                    ->getQuery();
+            $resultMin = $q1->getResult();
+
+            $qb2 = $em->createQueryBuilder();
+            $q2 = $qb2->select('r.regYear, r.regMonth, r.units, r.countyName')
+                    ->from('AppBundle:MainChartDataMSPowiat', 'r')
+                    ->where(
+                            $qb2->expr()->andX(
+                                    $qb2->expr()->eq('r.regYear', $regYearMax),
+                                    $qb2->expr()->lte('r.regMonth', $regMonthMax)
+                                    )
+                    )
+                    ->getQuery();
+            $resultMax = $q2->getResult();            
+            $result = array_merge($resultMin, $resultMax);
+            b:
+            $sourceMap[0] = [
+                "county" => $result[0]["countyName"],
+                "tiv" => $result[0]["units"]
+            ];
+            for ($i=1; $i<count($result); $i++)
+            {
+                $countyKey = array_search($result[$i]["countyName"], array_column($sourceMap, "county"));
+                if ($countyKey)
+                {
+                    $sourceMap[$countyKey]["tiv"] += $result[$i]["units"];
+                } else {
+                    $sourceMap[] = [
+                        "county" => $result[$i]["countyName"],
+                        "tiv" => $result[$i]["units"]
+                    ];
+                }
+            }
+            $jsonData = $sourceMap;            
+            return new JsonResponse($jsonData);
+        } else {
+            return new Response('<html><body>nie ma jsona</body></html>');
+        }
+    }
+    
+    /**
+     * @Route("/showMapTiv")
+     */
+    public function loadMapTivAction()
+    {
+
+        return $this->render('@App/MapChart/load_map_tiv.html.twig', array(
+            // ...
+        ));
+    }
 }
