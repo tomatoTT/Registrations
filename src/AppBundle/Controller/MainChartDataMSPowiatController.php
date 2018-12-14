@@ -29,8 +29,8 @@ class MainChartDataMSPowiatController extends Controller
                     ->from('AppBundle:RegTot', 'r')
                     ->where(
                             $qb1->expr()->andX(
-                                    $qb1->expr()->eq('r.regYear', "2008"),
-                                    $qb1->expr()->between('r.regMonth', "7", "12")
+                                    $qb1->expr()->eq('r.regYear', "2018"),
+                                    $qb1->expr()->between('r.regMonth', "7", "11")
                                     )
                     )
                     ->getQuery();

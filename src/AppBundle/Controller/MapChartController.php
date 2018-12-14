@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use AppBundle\Entity\Make;
 
 /**
  * Map Chart controller
@@ -374,6 +375,17 @@ class MapChartController extends Controller
     {
 
         return $this->render('@App/MapChart/load_map_tiv.html.twig', array(
+            // ...
+        ));
+    }
+    
+    /**
+     * @Route("/formInputMap")
+     */
+    public function functionName()
+    {
+        
+        return $this->render('@App/MapChart/input_map.html.twig', array(
             // ...
         ));
     }

@@ -1,4 +1,4 @@
-function dataMapTopLoad(url, inputData) {
+function dataMapTivLoad(url, inputData) {
     $.ajax({
         type: 'POST',
         url: url,

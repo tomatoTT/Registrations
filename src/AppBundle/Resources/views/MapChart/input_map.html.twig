@@ -1,0 +1,29 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Input{% endblock %}
+
+{% block stylesheets %}{% endblock %}
+
+{% block body %}
+    <div id="inputForm"></div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/mapChart/createInputMapChart.js') }}"></script>
+    <script src="{{ asset('js/mapChart/sendInputMapChart.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            
+            var input = [
+                "YTD",
+                "Rolling12",
+                "QTD",
+                "Rolling3",
+                "Customize"
+            ];
+            createInputMapChart(input);
+            
+        });
+    </script>
+
+{% endblock %}

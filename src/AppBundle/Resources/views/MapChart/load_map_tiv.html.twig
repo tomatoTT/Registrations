@@ -9,8 +9,9 @@
 
 {% block body %}
     <h1>Welcome to the MapChart:showMap page</h1>
-
+{% include "@App/MapChart/input_map.html.twig" %}
 {% include "@Web/svg/mapapolski.svg" %}
+
 {% endblock %}
 
 {% block javascripts %}
@@ -22,13 +23,25 @@
             var inputData;
             
             inputData = {
-                regYearMin: "2007$xxx",
-                regMonthMin: "1",
-                regYearMax: "2007",
-                regMonthMax: "12"
-            };
+                regYearMin: 2007,
+                regMonthMin: 1,
+                regYearMax: 2007,
+                regMonthMax: 12
+            };                        
+            dataMapTivLoad("/mapChart/loadDataTiv", inputData);
             
-            dataMapTopLoad("/mapChart/loadDataTiv", inputData);
+            $("#YTD").click(function(){
+                inputData = ytd();
+                console.log(inputData);
+                dataMapTivLoad("/mapChart/loadDataTiv", inputData);
+            });
+        
+            $("#Rolling12").click(function(){
+                inputData = rolling12();
+                console.log(inputData);
+                dataMapTivLoad("/mapChart/loadDataTiv", inputData);
+            });
+            
         });    
     </script>
 
