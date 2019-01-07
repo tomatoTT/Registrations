@@ -4,11 +4,13 @@
 
 {% block stylesheets %}
     <link href="{{ asset('css/mapapolski.css') }}" type="text/css" rel="stylesheet" />
+    <link href="{{ asset('js/jQRangeSlider-5.7.2/css/iThing.css') }}" type="text/css" rel="stylesheet" />
     
 {% endblock %}
 
 {% block body %}
     <h1>Welcome to the MapChart:showMap page</h1>
+    <div id="slider"></div>
 {% include "@App/MapChart/input_map.html.twig" %}
 {% include "@Web/svg/mapapolski.svg" %}
 
@@ -17,6 +19,9 @@
 {% block javascripts %}
     <script src="{{ asset('js/mapChart/dataMapTivLoad.js') }}"></script>
     <script src="{{ asset('js/mapChart/dataMapTivCss.js') }}"></script>
+    <script src="{{ asset('js/jQueryUI/jquery-ui.min.js') }}"></script>
+    <script src="{{ asset('js/jQRangeSlider-5.7.2/jQRangeSlider-min.js') }}"></script>
+    <script src="{{ asset('js/jQRangeSlider-5.7.2/jQDateRangeSlider-min.js') }}"></script>
     
     <script>
         $(document).ready(function() {
@@ -41,6 +46,20 @@
                 console.log(inputData);
                 dataMapTivLoad("/mapChart/loadDataTiv", inputData);
             });
+            
+            $("#QTD").click(function(){
+                inputData = qtd();
+                console.log(inputData);
+                dataMapTivLoad("/mapChart/loadDataTiv", inputData);
+            });
+            
+            $("#Rolling3").click(function(){
+                inputData = rolling3();
+                console.log(inputData);
+                dataMapTivLoad("/mapChart/loadDataTiv", inputData);
+            });
+            
+            $("#slider").dateRangeSlider();
             
         });    
     </script>
