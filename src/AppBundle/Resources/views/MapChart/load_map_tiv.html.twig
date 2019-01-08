@@ -4,24 +4,25 @@
 
 {% block stylesheets %}
     <link href="{{ asset('css/mapapolski.css') }}" type="text/css" rel="stylesheet" />
-    <link href="{{ asset('js/jQRangeSlider-5.7.2/css/iThing.css') }}" type="text/css" rel="stylesheet" />
-    
+    <link href="{{ asset('js/jquery-ui/jquery-ui.min.css') }}" type="text/css" rel="stylesheet" />
 {% endblock %}
 
 {% block body %}
     <h1>Welcome to the MapChart:showMap page</h1>
-    <div id="slider"></div>
+
+    <div id="slider-range"></div>
 {% include "@App/MapChart/input_map.html.twig" %}
 {% include "@Web/svg/mapapolski.svg" %}
+
 
 {% endblock %}
 
 {% block javascripts %}
     <script src="{{ asset('js/mapChart/dataMapTivLoad.js') }}"></script>
     <script src="{{ asset('js/mapChart/dataMapTivCss.js') }}"></script>
-    <script src="{{ asset('js/jQueryUI/jquery-ui.min.js') }}"></script>
-    <script src="{{ asset('js/jQRangeSlider-5.7.2/jQRangeSlider-min.js') }}"></script>
-    <script src="{{ asset('js/jQRangeSlider-5.7.2/jQDateRangeSlider-min.js') }}"></script>
+    <script src="{{ asset('js/jquery-ui/jquery-ui.min.js') }}"></script>
+
+    
     
     <script>
         $(document).ready(function() {
@@ -59,9 +60,17 @@
                 dataMapTivLoad("/mapChart/loadDataTiv", inputData);
             });
             
-            $("#slider").dateRangeSlider();
+
             
-        });    
+            $("#slider-range").slider({
+                range: true,
+                slide: function( event, ui ) {
+                    console.log(ui.values);
+                }
+            });
+            
+    });
+    
     </script>
 
 {% endblock %}
