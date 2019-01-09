@@ -21,7 +21,7 @@
     <script src="{{ asset('js/mapChart/dataMapTivLoad.js') }}"></script>
     <script src="{{ asset('js/mapChart/dataMapTivCss.js') }}"></script>
     <script src="{{ asset('js/jquery-ui/jquery-ui.min.js') }}"></script>
-
+    <script src="{{ asset('js/mapChart/slideRange/slideRangeLoad.js') }}"></script>
     
     
     <script>
@@ -68,6 +68,8 @@
                     console.log(ui.values);
                 }
             });
+            
+            slideRangeLoad("/mapChart/slideRangeSource");
             
     });
     

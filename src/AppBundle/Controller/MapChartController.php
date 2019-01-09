@@ -126,8 +126,7 @@ class MapChartController extends Controller
      * @Route("/showMap")
      */
     public function showMapAction()
-    {   
-        
+    {           
         return $this->render('@App/MapChart/show_map.html.twig', array(
             // ...
         ));
@@ -382,11 +381,73 @@ class MapChartController extends Controller
     /**
      * @Route("/formInputMap")
      */
-    public function functionName()
-    {
-        
+    public function formInputAction()
+    {        
         return $this->render('@App/MapChart/input_map.html.twig', array(
             // ...
         ));
     }
+    
+    /**
+     * @Route("/slideRangeSource")
+     */
+    public function slideRangeSourceAction(Request $request)
+    {
+        if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1)
+        {
+            $em = $this->getDoctrine()->getManager();
+            $qb = $em->createQueryBuilder();
+            $qRegYearMax = $qb->select('MAX(r.regYear) AS max_regYear')
+                    ->from('AppBundle:MainChartDataMSPowiat', 'r')
+                    ->getQuery();
+            $maxRegYear = $qRegYearMax->getResult()[0]['max_regYear'];            
+            
+            $qRegMonthMax = $qb->select('r.regYear, r.regMonth')
+                    ->from('AppBundle:MainChartDataMSPowiat', 'r')
+                    
+                    ->getQuery();
+            $maxRegMonth = $qRegMonthMax->getResult();
+            return new JsonResponse($maxRegMonth);
+            
+        } else {
+            return new Response('<html><body>nie ma jsona</body></html>');
+        }
+    }
+    /**
+     * @Route("/slideRangeSourceTest")
+     */
+    public function slideRangeSourceTestAction()
+    {
+        
+            $em = $this->getDoctrine()->getManager();
+            $qb = $em->createQueryBuilder();
+            $qRegYearMax = $qb->select('MAX(r.regYear) AS max_regYear')
+                    ->from('AppBundle:MainChartDataMSPowiat', 'r')
+                    ->getQuery();
+            $maxRegYear = $qRegYearMax->getResult()[0]['max_regYear'];            
+            $qb1 = $em->createQueryBuilder();
+            $qRegMonthMax = $qb1->select('r.regYear, MAX(r.regMonth) AS max_regMonth')
+                    ->from('AppBundle:MainChartDataMSPowiat', 'r')
+                    ->where($qb1->expr()->eq('r.regYear', $maxRegYear))
+                    ->getQuery();
+            $maxRegMonth = $qRegMonthMax->getResult()[0]['max_regMonth'];
+            $qb2 = $em->createQueryBuilder();
+            $qRegYearMin = $qb2->select('MIN(r.regYear) AS min_regYear')
+                    ->from('AppBundle:MainChartDataMSPowiat', 'r')
+                    ->getQuery();
+            $minRegYear = $qRegYearMin->getResult()[0]['min_regYear'];            
+            $qb3 = $em->createQueryBuilder();
+            $qRegMonthMin = $qb3->select('r.regYear, MIN(r.regMonth) AS min_regMonth')
+                    ->from('AppBundle:MainChartDataMSPowiat', 'r')
+                    ->where($qb3->expr()->eq('r.regYear', $minRegYear))
+                    ->getQuery();
+            $minRegMonth = $qRegMonthMin->getResult()[0]['min_regMonth'];
+            var_dump($minRegYear);
+            var_dump($minRegMonth);
+            var_dump($maxRegYear);
+            var_dump($maxRegMonth);
+            
+        
+    }
+    
 }
