@@ -395,19 +395,38 @@ class MapChartController extends Controller
     {
         if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1)
         {
-            $em = $this->getDoctrine()->getManager();
+           $em = $this->getDoctrine()->getManager();
             $qb = $em->createQueryBuilder();
             $qRegYearMax = $qb->select('MAX(r.regYear) AS max_regYear')
                     ->from('AppBundle:MainChartDataMSPowiat', 'r')
                     ->getQuery();
             $maxRegYear = $qRegYearMax->getResult()[0]['max_regYear'];            
-            
-            $qRegMonthMax = $qb->select('r.regYear, r.regMonth')
+            $qb1 = $em->createQueryBuilder();
+            $qRegMonthMax = $qb1->select('r.regYear, MAX(r.regMonth) AS max_regMonth')
                     ->from('AppBundle:MainChartDataMSPowiat', 'r')
-                    
+                    ->where($qb1->expr()->eq('r.regYear', $maxRegYear))
                     ->getQuery();
-            $maxRegMonth = $qRegMonthMax->getResult();
-            return new JsonResponse($maxRegMonth);
+            $maxRegMonth = $qRegMonthMax->getResult()[0]['max_regMonth'];
+            $qb2 = $em->createQueryBuilder();
+            $qRegYearMin = $qb2->select('MIN(r.regYear) AS min_regYear')
+                    ->from('AppBundle:MainChartDataMSPowiat', 'r')
+                    ->getQuery();
+            $minRegYear = $qRegYearMin->getResult()[0]['min_regYear'];            
+            $qb3 = $em->createQueryBuilder();
+            $qRegMonthMin = $qb3->select('r.regYear, MIN(r.regMonth) AS min_regMonth')
+                    ->from('AppBundle:MainChartDataMSPowiat', 'r')
+                    ->where($qb3->expr()->eq('r.regYear', $minRegYear))
+                    ->getQuery();
+            $minRegMonth = $qRegMonthMin->getResult()[0]['min_regMonth'];
+            
+            $jsonData = 
+            [
+                'yearMin' => $minRegYear,
+                'monthMin' => $minRegMonth,
+                'yearMax' => $maxRegYear,
+                'monthMax' => $maxRegMonth
+            ];
+            return new JsonResponse($jsonData);
             
         } else {
             return new Response('<html><body>nie ma jsona</body></html>');
