@@ -60,16 +60,6 @@
                 dataMapTivLoad("/mapChart/loadDataTiv", inputData);
             });
             
-
-            
-            //$("#slider-range").slider({
-            //    range: true,
-            //    slide: function( event, ui ) {
-            //        console.log(ui.values);
-            //    }
-            //});
-            
-            //slideRangeLoad("/mapChart/slideRangeSource");
             
             ajaxConnection("/mapChart/slideRangeSource", 0, function(){ rangeSlider("#slider-range") });
     });
