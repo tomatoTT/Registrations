@@ -1,19 +1,28 @@
 function rangeSlider(selector, data) {
+
     $(selector).slider({
         range: true,
+        min: 1,
+        max: rangeArray(data),
+        values: [1, 12],
         slide: function( event, ui ) {
             console.log(ui.values);
+            console.log(rangeArray(data));
+            $("#rangeDate").val(ui.values[ 0 ] + " " + ui.values[ 1 ])
         }
     });
 }
 
 function rangeArray(data) {
-    if (data[0].yearMin === data[0].yearMax) {
-        var rangeNum = data[0].monthMax - data[0].monthMin + 1;
-        var labels = array();
-        for (var i=0; i<=rangeNum; i++) {
-            
-        }
+    var rangeNum;
+    if (data.yearMin === data.yearMax) {
+        rangeNum = (13 - parseInt(data.monthMin)) + parseInt(data.monthMax);
+        return rangeNum;
     }
+    rangeNum = (13 - parseInt(data.monthMin)) + 
+            ((parseInt(data.yearMax) - parseInt(data.yearMin) - 1) * 12) + 
+            parseInt(data.monthMax);
+    return rangeNum;
 }
+
 

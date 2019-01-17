@@ -11,6 +11,10 @@
     <h1>Welcome to the MapChart:showMap page</h1>
 
     <div id="slider-range"></div>
+    <p>
+        <label for = "rangeDate">Zakres dat:</label>
+        <input type = "text" id = "rangeDate" value = "1 12">
+    </p>
 {% include "@App/MapChart/input_map.html.twig" %}
 {% include "@Web/svg/mapapolski.svg" %}
 
@@ -22,7 +26,7 @@
     <script src="{{ asset('js/mapChart/dataMapTivCss.js') }}"></script>
     <script src="{{ asset('js/jquery-ui/jquery-ui.min.js') }}"></script>
     <script src="{{ asset('js/mapChart/slideRange/slideRangeLoad.js') }}"></script>
-    <script src="{{ asset('js/mapChart/slideRange/ajaxConnection.js') }}"></script>
+    <script src="{{ asset('js/mapChart/slideRange/slideRangeLoad.js') }}"></script>
     <script src="{{ asset('js/mapChart/slideRange/rangeSlider.js') }}"></script>
     <script>
         $(document).ready(function() {
@@ -61,8 +65,8 @@
             });
             
             
-            ajaxConnection("/mapChart/slideRangeSource", 0, function(){ rangeSlider("#slider-range") });
-    });
+            slideRangeLoad("/mapChart/slideRangeSource", "#slider-range");
+        });
     
     </script>
 
