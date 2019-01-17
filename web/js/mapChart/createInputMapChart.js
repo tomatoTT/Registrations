@@ -18,8 +18,10 @@ function slideRangeLoad(url, selector) {
         url: url,
         dataType: 'json',
         success: function(data) {
-
-            rangeSlider(selector, data);
+            var max = rangeArray(data);
+            var dates = rangeDates(max, data);
+            rangeSlider(selector, max, dates);
+            console.log(rangeDates(max, data));
         },
         error: function(xhr, textStatus, errorThrown) {
             alert(errorThrown, textStatus, xhr);
@@ -27,16 +29,17 @@ function slideRangeLoad(url, selector) {
     });
 }
 
-function rangeSlider(selector, data) {
+function rangeSlider(selector, maximum, dates) {
     $(selector).slider({
         range: true,
         min: 1,
-        max: rangeArray(data),
+        max: maximum,
         values: [1, 12],
         slide: function( event, ui ) {
             console.log(ui.values);
-            console.log(rangeArray(data));
-            $("#rangeDate").val(ui.values[ 0 ] + " " + ui.values[ 1 ])
+            console.log(maximum);
+
+            $("#rangeDate").val(dates[ui.values[0]] + " " + dates[ui.values[1]])
         }
     });
 }
@@ -51,4 +54,21 @@ function rangeArray(data) {
             ((parseInt(data.yearMax) - parseInt(data.yearMin) - 1) * 12) + 
             parseInt(data.monthMax);
     return rangeNum;
+}
+
+function rangeDates(max, data) {
+    var dates = [];
+    var counterMonth = parseInt(data.monthMin);
+    var counterYear = parseInt(data.yearMin);
+    for (var i=1; i<=max; i++) {
+        if (counterMonth <= 12) {
+            dates[i] = counterMonth+"/"+counterYear;
+            counterMonth++;
+        } else {
+            counterMonth = 1;
+            counterYear++;
+            i--;
+        }
+    }
+    return dates;
 }
