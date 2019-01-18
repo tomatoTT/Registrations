@@ -21,7 +21,6 @@ function slideRangeLoad(url, selector) {
             var max = rangeArray(data);
             var dates = rangeDates(max, data);
             rangeSlider(selector, max, dates);
-            console.log(rangeDates(max, data));
         },
         error: function(xhr, textStatus, errorThrown) {
             alert(errorThrown, textStatus, xhr);
@@ -36,10 +35,8 @@ function rangeSlider(selector, maximum, dates) {
         max: maximum,
         values: [1, 12],
         slide: function( event, ui ) {
-            console.log(ui.values);
-            console.log(maximum);
-
-            $("#rangeDate").val(dates[ui.values[0]] + " " + dates[ui.values[1]])
+            $("#rangeDate").val(dates[ui.values[0]] + " " + dates[ui.values[1]]);
+            $("#hiddenRangeDate").val(dates[ui.values[0]] + "/" + dates[ui.values[1]]);
         }
     });
 }

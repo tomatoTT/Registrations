@@ -51,7 +51,13 @@
                 inputData = rolling3();
                 console.log(inputData);
                 dataMapTivLoad("/mapChart/loadDataTiv", inputData);
-            });                        
+            });
+            
+            $("#submitCustomDates").click(function(){
+                inputData = customize("#hiddenRangeDate");
+                console.log(inputData);
+                dataMapTivLoad("/mapChart/loadDataTiv", inputData);
+            });
         });
     
     </script>
