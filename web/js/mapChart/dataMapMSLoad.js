@@ -1,11 +1,13 @@
-function dataMapLoad(url, inputData) {
+function dataMapMSLoad(url, inputData) {
     $.ajax({
         type: 'POST',
         url: url,
         data: inputData,
         dataType: "json",
         success: function(data) {
-            dataMapCss(dataMapMS(data));
+            var ms = dataMapMS(data);
+            dataMapMSCss(ms);
+            mapKey(ms);
         },
         error: function(xhr, textStatus, errorThrown) {
             alert(errorThrown, textStatus, xhr);

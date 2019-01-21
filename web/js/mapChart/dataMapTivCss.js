@@ -1,4 +1,6 @@
-function dataMapTivCss(data) {    
+function dataMapTivCss(data) {
+    $(".st0").css('fill', 'rgba(255,255,255,0)');
+    $(".st1").css('fill', 'rgba(255,255,255,0)');
     var maxTiv = Math.max.apply(Math, data.map(function(o) { return o.tiv; }));    
     for (var i=0; i<data.length; i++) {
         $("#" + data[i].county).css('fill', 'rgba(0, 0, 0, '+data[i].tiv/maxTiv+')');

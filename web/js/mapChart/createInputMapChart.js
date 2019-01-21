@@ -1,30 +1,56 @@
-function createInputMapChart(input=Array, inputSelector, sliderSelector, url) {
-    /*Generate input buttons*/
+/*Generate input buttons*/
+function createInputMapChart(
+    input=Array, 
+    inputSelector, 
+    sliderSelector,
+    urlSelector, 
+    urlMakeLIst)
+{
     if (Array.isArray(input)) {
         for (var i=0; i<input.length; i++) {
-            $(inputSelector).append('<button id="'+input[i]+'" class="inputButton">'+input[i]+'</button></br>');
+            $(inputSelector).append('<input id="'+input[i]+'" class="inputButton" type="button" value="'+input[i]+'">');
+            if (input[i] === "Make") {
+                $("#"+input[i]).attr("type","hidden");
+                makeListLoad(urlMakeLIst, "#"+input[i]);
+                $("#"+input[i]).after('<button id="makeSubmit">Wybierz</button></br>');
+            };
         }        
     }
     createSliderButtons(sliderSelector);
-    slideRangeLoad(url, sliderSelector);
-    $(sliderSelector).hide();
+    sliderRangeLoad(urlSelector, sliderSelector);
+    $(sliderSelector).hide();    
     $("#"+input[i - 1]).click(function(){
         $(sliderSelector).toggle();
-    });    
+    });
 }
 
 function createSliderButtons(selector) {
-    $(selector).append('<p><label for = "rangeDate">Zakres dat:</label>\n\
-                        <input type = "text" id = "rangeDate" value = "1/2007 12/2007">\n\
-                        <input type = "hidden" id = "hiddenRangeDate" value = "1/2007/12/2007">\n\
-                        <button id ="submitCustomDates">Akceptuj</button></p>');
+    $(selector).append(
+        '<p>\n\
+            <label for="rangeDate">Zakres dat:</label>\n\
+            <input type="text" id="rangeDate" value="1/2007 12/2007">\n\
+            <input type="hidden" id="hiddenRangeDate" value="1/2007/12/2007">\n\
+            <button id="submitCustomDates">Akceptuj</button>\n\
+        </p>'
+    );
 }
 
-function createMakeInput() {
-    
+function createMakeInputButtons(selector, data) {
+    var option = "";
+    data.sort();
+    for (var i=0; i<data.length; i++) {
+        if (data[i] === "JOHNDEERE") {
+            option += '<option value="'+data[i]+'" selected>'+data[i]+'</option>';
+        } else {
+            option += '<option value="'+data[i]+'">'+data[i]+'</option>';
+        }
+    }
+    $(selector).before(
+        '<select id="makeList">'+option+'</seclect>'
+    );
 }
 
-function slideRangeLoad(url, selector) {
+function sliderRangeLoad(url, selector) {
     $.ajax({
         type: 'POST',
         url: url,
@@ -82,16 +108,17 @@ function rangeDates(max, data) {
     return dates;
 }
 
-function makeListLoad(url) {
+function makeListLoad(url, selector) {
     $.ajax({
         type: 'POST',
         url: url,
         dataType: 'json',
         success: function(data) {
-            console.log(data);
+            createMakeInputButtons(selector, data);
         },
         error: function(xhr, textStatus, errorThrown) {
             alert(errorThrown, textStatus, xhr);
         }
     });
 }
+

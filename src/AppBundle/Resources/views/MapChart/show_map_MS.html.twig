@@ -1,28 +1,32 @@
 {% extends "base.html.twig" %}
 
 {% block title %}AppBundle:MapChart:showMap{% endblock %}
-
+    
 {% block stylesheets %}
     <link href="{{ asset('css/mapapolski.css') }}" type="text/css" rel="stylesheet" />
-    <link href="{{ asset('js/jquery-ui/jquery-ui.min.css') }}" type="text/css" rel="stylesheet" />
+    <link href="{{ asset('css/jquery-ui/jquery-ui.min.css') }}" type="text/css" rel="stylesheet" />
+    <link href="{{ asset('css/mapChart/mapChartMS.css') }}" type="text/css" rel="stylesheet" />
 {% endblock %}
 
 {% block body %}
     <h1>Welcome to the MapChart:showMap page</h1>
     <div id="inputForm"></div>
     <div id="slider-range"></div>
-{% include "@Web/svg/mapapolski.svg" %}
+    <div id="polandSVG">
+        {% include "@Web/svg/mapapolski.svg" %}
+    </div>
+    <div id="mapKey"></div>
 {% endblock %}
 
 {% block javascripts %}
-    <script src="{{ asset('js/mapChart/dataMapLoad.js') }}"></script>
-    <script src="{{ asset('js/mapChart/dataMapCss.js') }}"></script>
+    <script src="{{ asset('js/mapChart/dataMapMSLoad.js') }}"></script>
+    <script src="{{ asset('js/mapChart/dataMapMSCss.js') }}"></script>
     <script src="{{ asset('js/mapChart/dataMapMS.js') }}"></script>
     <script src="{{ asset('js/jquery-ui/jquery-ui.min.js') }}"></script>
     <script src="{{ asset('js/mapChart/createInputMapChart.js') }}"></script>
     <script src="{{ asset('js/mapChart/sendInputMapChart.js') }}"></script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function() {        
             var input = [
                 "Make",
                 "YTD",
@@ -31,8 +35,13 @@
                 "Rolling3",
                 "Customize"
             ];
-            createInputMapChart(input, "#inputForm", "#slider-range", "/mapChart/slideRangeSource");
-            
+            createInputMapChart(
+                    input, 
+                    "#inputForm", 
+                    "#slider-range", 
+                    "/mapChart/slideRangeSource", 
+                    "/mapChart/makeListSource"
+            );
             var inputData = {
                 make: "JOHNDEERE",
                 regYearMin: "2007",
@@ -40,9 +49,49 @@
                 regYearMax: "2007",
                 regMonthMax: "12"
             };            
-            dataMapLoad("/mapChart/loadDataMS", inputData);
-            makeListLoad("/mapChart/makeListSource");
+            dataMapMSLoad("/mapChart/loadDataMS", inputData);
             
+            $("#makeSubmit").click(function(){
+                var make = $("#makeList").val();
+                inputData.make = make;
+                console.log(inputData);
+                dataMapMSLoad("/mapChart/loadDataMS", inputData);                
+            });
+            $("#YTD").click(function(){
+                var make = $("#makeList").val();
+                inputData = ytd();
+                inputData.make = make;
+                console.log(inputData);
+                dataMapMSLoad("/mapChart/loadDataMS", inputData);
+            });
+            $("#Rolling12").click(function(){
+                var make = $("#makeList").val();
+                inputData = rolling12();
+                inputData.make = make;
+                console.log(inputData);
+                dataMapMSLoad("/mapChart/loadDataMS", inputData);
+            });
+            $("#QTD").click(function(){
+                var make = $("#makeList").val();
+                inputData = qtd();
+                inputData.make = make;
+                console.log(inputData);
+                dataMapMSLoad("/mapChart/loadDataMS", inputData);
+            });
+            $("#Rolling3").click(function(){
+                var make = $("#makeList").val();
+                inputData = rolling3();
+                inputData.make = make;
+                console.log(inputData);
+                dataMapMSLoad("/mapChart/loadDataMS", inputData);
+            });
+            $("#submitCustomDates").click(function(){
+                var make = $("#makeList").val();
+                inputData = customize("#hiddenRangeDate");
+                inputData.make = make;
+                console.log(inputData);
+                dataMapMSLoad("/mapChart/loadDataMS", inputData);
+            });
         });    
     </script>
 {% endblock %}

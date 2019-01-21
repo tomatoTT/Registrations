@@ -1,4 +1,6 @@
-function dataMapTopCss(data) {    
+function dataMapTopCss(data) {
+    $(".st0").css('fill', 'rgba(255,255,255,0)');
+    $(".st1").css('fill', 'rgba(255,255,255,0)');
     Object.keys(data).forEach(function(key) {
         var obj1 = data[key];
         var county = key;

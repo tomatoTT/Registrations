@@ -4,7 +4,6 @@ function dataMapMS(data) {
         var msSingle = [data[i].county, data[i].units/data[i].tiv, data[i].color];
         ms.push(msSingle);        
     }
-
     return ms;
 }
 
