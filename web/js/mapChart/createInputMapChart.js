@@ -1,15 +1,27 @@
-function createInputMapChart(input=Array, selector, url) {
+function createInputMapChart(input=Array, inputSelector, sliderSelector, url) {
     /*Generate input buttons*/
     if (Array.isArray(input)) {
         for (var i=0; i<input.length; i++) {
-            $("#inputForm").append('<button id="'+input[i]+'" class="inputButton">'+input[i]+'</button></br>');
+            $(inputSelector).append('<button id="'+input[i]+'" class="inputButton">'+input[i]+'</button></br>');
         }        
     }
-    slideRangeLoad(url, selector);
-    $(selector).hide();
+    createSliderButtons(sliderSelector);
+    slideRangeLoad(url, sliderSelector);
+    $(sliderSelector).hide();
     $("#"+input[i - 1]).click(function(){
-        $(selector).toggle();
+        $(sliderSelector).toggle();
     });    
+}
+
+function createSliderButtons(selector) {
+    $(selector).append('<p><label for = "rangeDate">Zakres dat:</label>\n\
+                        <input type = "text" id = "rangeDate" value = "1/2007 12/2007">\n\
+                        <input type = "hidden" id = "hiddenRangeDate" value = "1/2007/12/2007">\n\
+                        <button id ="submitCustomDates">Akceptuj</button></p>');
+}
+
+function createMakeInput() {
+    
 }
 
 function slideRangeLoad(url, selector) {
@@ -68,4 +80,18 @@ function rangeDates(max, data) {
         }
     }
     return dates;
+}
+
+function makeListLoad(url) {
+    $.ajax({
+        type: 'POST',
+        url: url,
+        dataType: 'json',
+        success: function(data) {
+            console.log(data);
+        },
+        error: function(xhr, textStatus, errorThrown) {
+            alert(errorThrown, textStatus, xhr);
+        }
+    });
 }

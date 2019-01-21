@@ -7,7 +7,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use AppBundle\Entity\Make;
 
 /**
  * Map Chart controller
@@ -123,11 +122,11 @@ class MapChartController extends Controller
     }
     
     /**
-     * @Route("/showMap")
+     * @Route("/showMapMS")
      */
     public function showMapAction()
     {           
-        return $this->render('@App/MapChart/show_map.html.twig', array(
+        return $this->render('@App/MapChart/show_map_MS.html.twig', array(
             // ...
         ));
     }
@@ -274,10 +273,9 @@ class MapChartController extends Controller
     /**
      * @Route("/showMapTop")
      */
-    public function loadMapTopAction()
+    public function showMapTopAction()
     {
-
-        return $this->render('@App/MapChart/load_map_top.html.twig', array(
+        return $this->render('@App/MapChart/show_map_top.html.twig', array(
             // ...
         ));
     }
@@ -370,20 +368,9 @@ class MapChartController extends Controller
     /**
      * @Route("/showMapTiv")
      */
-    public function loadMapTivAction()
+    public function showMapTivAction()
     {
-
-        return $this->render('@App/MapChart/load_map_tiv.html.twig', array(
-            // ...
-        ));
-    }
-    
-    /**
-     * @Route("/formInputMap")
-     */
-    public function formInputAction()
-    {        
-        return $this->render('@App/MapChart/input_map.html.twig', array(
+        return $this->render('@App/MapChart/show_map_tiv.html.twig', array(
             // ...
         ));
     }
@@ -395,49 +382,6 @@ class MapChartController extends Controller
     {
         if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1)
         {
-           $em = $this->getDoctrine()->getManager();
-            $qb = $em->createQueryBuilder();
-            $qRegYearMax = $qb->select('MAX(r.regYear) AS max_regYear')
-                    ->from('AppBundle:MainChartDataMSPowiat', 'r')
-                    ->getQuery();
-            $maxRegYear = $qRegYearMax->getResult()[0]['max_regYear'];            
-            $qb1 = $em->createQueryBuilder();
-            $qRegMonthMax = $qb1->select('r.regYear, MAX(r.regMonth) AS max_regMonth')
-                    ->from('AppBundle:MainChartDataMSPowiat', 'r')
-                    ->where($qb1->expr()->eq('r.regYear', $maxRegYear))
-                    ->getQuery();
-            $maxRegMonth = $qRegMonthMax->getResult()[0]['max_regMonth'];
-            $qb2 = $em->createQueryBuilder();
-            $qRegYearMin = $qb2->select('MIN(r.regYear) AS min_regYear')
-                    ->from('AppBundle:MainChartDataMSPowiat', 'r')
-                    ->getQuery();
-            $minRegYear = $qRegYearMin->getResult()[0]['min_regYear'];            
-            $qb3 = $em->createQueryBuilder();
-            $qRegMonthMin = $qb3->select('r.regYear, MIN(r.regMonth) AS min_regMonth')
-                    ->from('AppBundle:MainChartDataMSPowiat', 'r')
-                    ->where($qb3->expr()->eq('r.regYear', $minRegYear))
-                    ->getQuery();
-            $minRegMonth = $qRegMonthMin->getResult()[0]['min_regMonth'];
-            
-            $jsonData = 
-            [
-                'yearMin' => $minRegYear,
-                'monthMin' => $minRegMonth,
-                'yearMax' => $maxRegYear,
-                'monthMax' => $maxRegMonth
-            ];
-            return new JsonResponse($jsonData);
-            
-        } else {
-            return new Response('<html><body>nie ma jsona</body></html>');
-        }
-    }
-    /**
-     * @Route("/slideRangeSourceTest")
-     */
-    public function slideRangeSourceTestAction()
-    {
-        
             $em = $this->getDoctrine()->getManager();
             $qb = $em->createQueryBuilder();
             $qRegYearMax = $qb->select('MAX(r.regYear) AS max_regYear')
@@ -460,13 +404,38 @@ class MapChartController extends Controller
                     ->from('AppBundle:MainChartDataMSPowiat', 'r')
                     ->where($qb3->expr()->eq('r.regYear', $minRegYear))
                     ->getQuery();
-            $minRegMonth = $qRegMonthMin->getResult()[0]['min_regMonth'];
-            var_dump($minRegYear);
-            var_dump($minRegMonth);
-            var_dump($maxRegYear);
-            var_dump($maxRegMonth);
-            
-        
+            $minRegMonth = $qRegMonthMin->getResult()[0]['min_regMonth'];            
+            $jsonData = 
+            [
+                'yearMin' => $minRegYear,
+                'monthMin' => $minRegMonth,
+                'yearMax' => $maxRegYear,
+                'monthMax' => $maxRegMonth
+            ];
+            return new JsonResponse($jsonData);            
+        } else {
+            return new Response('<html><body>nie ma jsona</body></html>');
+        }
     }
     
+    /**
+     * @Route("/makeListSource")
+     */
+    public function makeListSourceAction(Request $request)
+    {
+        if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1)
+        {
+            $em = $this->getDoctrine()->getManager();
+            $query = $em->createQuery(
+                    'SELECT DISTINCT r.make FROM AppBundle:MainChartDataMSPowiat r'
+                    );
+            $makeList = $query->getResult();
+            $make = array_column($makeList, "make");
+            $jsonData = $make;            
+            return new JsonResponse($jsonData);
+            
+        } else {
+            return new Response('<html><body>nie ma jsona</body></html>');
+        }
+    }
 }

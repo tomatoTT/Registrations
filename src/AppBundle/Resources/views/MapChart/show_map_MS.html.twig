@@ -4,11 +4,13 @@
 
 {% block stylesheets %}
     <link href="{{ asset('css/mapapolski.css') }}" type="text/css" rel="stylesheet" />
+    <link href="{{ asset('js/jquery-ui/jquery-ui.min.css') }}" type="text/css" rel="stylesheet" />
 {% endblock %}
 
 {% block body %}
     <h1>Welcome to the MapChart:showMap page</h1>
-
+    <div id="inputForm"></div>
+    <div id="slider-range"></div>
 {% include "@Web/svg/mapapolski.svg" %}
 {% endblock %}
 
@@ -16,26 +18,31 @@
     <script src="{{ asset('js/mapChart/dataMapLoad.js') }}"></script>
     <script src="{{ asset('js/mapChart/dataMapCss.js') }}"></script>
     <script src="{{ asset('js/mapChart/dataMapMS.js') }}"></script>
-    
+    <script src="{{ asset('js/jquery-ui/jquery-ui.min.js') }}"></script>
+    <script src="{{ asset('js/mapChart/createInputMapChart.js') }}"></script>
+    <script src="{{ asset('js/mapChart/sendInputMapChart.js') }}"></script>
     <script>
         $(document).ready(function() {
-            var inputData;
+            var input = [
+                "Make",
+                "YTD",
+                "Rolling12",
+                "QTD",
+                "Rolling3",
+                "Customize"
+            ];
+            createInputMapChart(input, "#inputForm", "#slider-range", "/mapChart/slideRangeSource");
             
-            inputData = {
+            var inputData = {
                 make: "JOHNDEERE",
                 regYearMin: "2007",
                 regMonthMin: "1",
                 regYearMax: "2007",
                 regMonthMax: "12"
-            };
-            
+            };            
             dataMapLoad("/mapChart/loadDataMS", inputData);
-        });    
-    </script>
-    
-    <script>
-        $(document).ready(function() {
-            $('#pyrzycki').css('fill' , "rgba(255, 99, 132, 0.07692307692307693)");
+            makeListLoad("/mapChart/makeListSource");
+            
         });    
     </script>
 {% endblock %}

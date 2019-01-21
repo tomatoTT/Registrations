@@ -9,7 +9,8 @@
 
 {% block body %}
     <h1>Welcome to the MapChart:showMap page</h1>
-{% include "@App/MapChart/input_map.html.twig" %}
+    <div id="inputForm"></div>
+    <div id="slider-range"></div>
 {% include "@Web/svg/mapapolski.svg" %}
 {% endblock %}
 
@@ -17,11 +18,20 @@
     <script src="{{ asset('js/mapChart/dataMapTivLoad.js') }}"></script>
     <script src="{{ asset('js/mapChart/dataMapTivCss.js') }}"></script>
     <script src="{{ asset('js/jquery-ui/jquery-ui.min.js') }}"></script>
+    <script src="{{ asset('js/mapChart/createInputMapChart.js') }}"></script>
+    <script src="{{ asset('js/mapChart/sendInputMapChart.js') }}"></script>
     <script>
         $(document).ready(function() {
-            var inputData;
-            
-            inputData = {
+            var input = [
+                "YTD",
+                "Rolling12",
+                "QTD",
+                "Rolling3",
+                "Customize"
+            ];
+            createInputMapChart(input, "#inputForm", "#slider-range", "/mapChart/slideRangeSource");
+        
+            var inputData = {
                 regYearMin: 2007,
                 regMonthMin: 1,
                 regYearMax: 2007,

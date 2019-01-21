@@ -124,8 +124,7 @@ function rolling3() {
 
 function customize(selector) {
     var values = $(selector).val().split("/");
-    var inputData = {};
-    inputData = {
+    var inputData = {
         regYearMin: parseInt(values[1]),
         regMonthMin: parseInt(values[0]),
         regYearMax: parseInt(values[3]),
