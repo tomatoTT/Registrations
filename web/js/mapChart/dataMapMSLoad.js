@@ -8,6 +8,7 @@ function dataMapMSLoad(url, inputData) {
             var ms = dataMapMS(data);
             dataMapMSCss(ms);
             mapKey(ms);
+            mapKeyTitle(data);
         },
         error: function(xhr, textStatus, errorThrown) {
             alert(errorThrown, textStatus, xhr);

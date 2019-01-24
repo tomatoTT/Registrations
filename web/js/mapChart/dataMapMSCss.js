@@ -7,8 +7,32 @@ function dataMapMSCss(ms) {
 }
 
 function mapKey(ms) {
-    for (var i=0; i<10; i++) {
-        $("#mapKey").append('<div id="mapKey'+i+'" class="mapKey"></div>');
-    }
+    var color = ms[0][2].substr(4, ms[0][2].length-8);
+    if ($("#gradMapKey").length) {
+        $("#gradMapKey").remove(); 
+        var linearGradient = 
+        '<svg>\n\
+            <linearGradient id="gradMapKey" x1="0%" y1="0%" x2="0%" y2="100%">\n\
+                <stop offset="0%" style="stop-color:rgb'+color+'); stop-opacity:1" />\n\
+                <stop offset="100%" style="stop-color:rgb'+color+'); stop-opacity:0" />\n\
+            </linearGradient>\n\
+        </svg>';
+        $('body').append(linearGradient);
+    } else {
+        var linearGradient = 
+        '<svg>\n\
+            <linearGradient id="gradMapKey" x1="0%" y1="0%" x2="0%" y2="100%">\n\
+                <stop offset="0%" style="stop-color:rgb'+color+'); stop-opacity:1" />\n\
+                <stop offset="100%" style="stop-color:rgb'+color+'); stop-opacity:0" />\n\
+            </linearGradient>\n\
+        </svg>';
+        $('body').append(linearGradient); 
+    }    
+    $("#mapKeyGraph").css('fill', 'url(#gradMapKey)');
+}
+
+function mapKeyTitle(data) {
+    var make = data[0].make;
+    $("#mapKeyTitle").text(make);
 }
 

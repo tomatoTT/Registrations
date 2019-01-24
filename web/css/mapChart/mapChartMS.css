@@ -1,24 +1,31 @@
-.mapKey {
-    height: 20px;
-    width: 20px;
+#mapKey {
+    height: 30vh;
+    width: 2%;
     border-style: solid;
-    border-color: black;
+    border-color: orangered;
     border-width: 1px;
     background-color: red;
-
-}
-
-#mapKey {
     display: inline-block;
 }
 
-#Polska {
-    
-}
-
-#polandSVG {
+#mapChart {
     display: inline-block;
+
     width: 50%;
-    border-width: 2px;
+    border-style: solid;
+    border-color: blue;
+    border-width: 1px;
+}
+
+#polska {
+    display: inline;
+    width: 100%;
+    border-style: solid;
+    border-color: green;
+    border-width: 1px;
+}
+
+.mapKeyTitle {
+    font-size: 20px;
 }
 

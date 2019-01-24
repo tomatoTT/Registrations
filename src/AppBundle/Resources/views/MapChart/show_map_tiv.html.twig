@@ -5,13 +5,15 @@
 {% block stylesheets %}
     <link href="{{ asset('css/mapapolski.css') }}" type="text/css" rel="stylesheet" />
     <link href="{{ asset('js/jquery-ui/jquery-ui.min.css') }}" type="text/css" rel="stylesheet" />
+    <link href="{{ asset('css/mapChart/mapChartMS.css') }}" type="text/css" rel="stylesheet" />
 {% endblock %}
 
 {% block body %}
-    <h1>Welcome to the MapChart:showMap page</h1>
     <div id="inputForm"></div>
     <div id="slider-range"></div>
-{% include "@Web/svg/mapapolski.svg" %}
+    <div id="mapChart">
+            {% include "@Web/svg/mapapolski.svg" %}        
+    </div>
 {% endblock %}
 
 {% block javascripts %}

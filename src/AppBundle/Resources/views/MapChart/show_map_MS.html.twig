@@ -9,13 +9,12 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Welcome to the MapChart:showMap page</h1>
     <div id="inputForm"></div>
     <div id="slider-range"></div>
-    <div id="polandSVG">
-        {% include "@Web/svg/mapapolski.svg" %}
+    <div id="mapChart">
+            {% include "@Web/svg/mapapolski.svg" %}        
     </div>
-    <div id="mapKey"></div>
+
 {% endblock %}
 
 {% block javascripts %}
@@ -44,10 +43,10 @@
             );
             var inputData = {
                 make: "JOHNDEERE",
-                regYearMin: "2007",
-                regMonthMin: "1",
-                regYearMax: "2007",
-                regMonthMax: "12"
+                regYearMin: 2007,
+                regMonthMin: 1,
+                regYearMax: 2007,
+                regMonthMax: 12
             };            
             dataMapMSLoad("/mapChart/loadDataMS", inputData);
             
