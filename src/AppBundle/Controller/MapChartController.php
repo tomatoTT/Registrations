@@ -338,8 +338,22 @@ class MapChartController extends Controller
                                     )
                     )
                     ->getQuery();
-            $resultMax = $q2->getResult();            
-            $result = array_merge($resultMin, $resultMax);
+            $resultMax = $q2->getResult();
+            
+            if ($regYearMax - $regYearMin > 1)
+            {
+                $qb3 = $em->createQueryBuilder();
+                $q3 = $qb3->select('r.regYear, r.regMonth, r.units, r.countyName')
+                        ->from('AppBundle:MainChartDataMSPowiat', 'r')
+                        ->where(
+                                $qb3->expr()->between('r.regYear', $regYearMin+1, $regYearMax-1)
+                        )
+                        ->getQuery();
+                $resultMid = $q3->getResult(); 
+            } else {
+                $resultMid = [];
+            }
+            $result = array_merge($resultMin, $resultMid, $resultMax);
             b:
             $sourceMap[0] = [
                 "county" => $result[0]["countyName"],
@@ -437,5 +451,22 @@ class MapChartController extends Controller
         } else {
             return new Response('<html><body>nie ma jsona</body></html>');
         }
+    }
+    
+    /**
+     * @Route("/loadDataTivTest")
+     */
+    public function loadDataTivTestAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $qb3 = $em->createQueryBuilder();
+            $q3 = $qb3->select('r.regYear, r.regMonth, r.units, r.countyName')
+                    ->from('AppBundle:MainChartDataMSPowiat', 'r')
+                    ->where(
+                            $qb3->expr()->between('r.regYear', 2007, 2008)
+                    )
+                    ->getQuery();
+            $resultMid = $q3->getResult();
+            var_dump($resultMid);
     }
 }

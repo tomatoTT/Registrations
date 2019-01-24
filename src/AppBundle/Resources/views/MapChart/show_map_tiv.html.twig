@@ -4,7 +4,7 @@
 
 {% block stylesheets %}
     <link href="{{ asset('css/mapapolski.css') }}" type="text/css" rel="stylesheet" />
-    <link href="{{ asset('js/jquery-ui/jquery-ui.min.css') }}" type="text/css" rel="stylesheet" />
+    <link href="{{ asset('css/jquery-ui/jquery-ui.min.css') }}" type="text/css" rel="stylesheet" />
     <link href="{{ asset('css/mapChart/mapChartMS.css') }}" type="text/css" rel="stylesheet" />
 {% endblock %}
 
@@ -30,8 +30,7 @@
                 "QTD",
                 "Rolling3",
                 "Customize"
-            ];
-            
+            ];            
             createInputMapChart(
                     input, 
                     "#inputForm", 

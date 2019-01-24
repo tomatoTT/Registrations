@@ -6,7 +6,7 @@ function dataMapMSCss(ms) {
     }    
 }
 
-function mapKey(ms) {
+function mapKeyMS(ms) {
     var color = ms[0][2].substr(4, ms[0][2].length-8);
     if ($("#gradMapKey").length) {
         $("#gradMapKey").remove(); 
@@ -31,8 +31,8 @@ function mapKey(ms) {
     $("#mapKeyGraph").css('fill', 'url(#gradMapKey)');
 }
 
-function mapKeyTitle(data) {
+function mapKeyTitleMS(data) {
     var make = data[0].make;
-    $("#mapKeyTitle").text(make);
+    $("#mapKeyTitleMake").text(make);
 }
 
