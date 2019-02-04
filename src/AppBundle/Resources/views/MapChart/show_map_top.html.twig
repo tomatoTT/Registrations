@@ -3,32 +3,78 @@
 {% block title %}AppBundle:MapChart:showMap{% endblock %}
 
 {% block stylesheets %}
-    <link href="{{ asset('css/mapapolski.css') }}" type="text/css" rel="stylesheet" />
-    
+    <link href="{{ asset('css/jquery-ui/jquery-ui.min.css') }}" type="text/css" rel="stylesheet" />
+    <link href="{{ asset('css/mapChart/mapapolski.css') }}" type="text/css" rel="stylesheet" />
+    <link href="{{ asset('css/mapChart/mapChartMS.css') }}" type="text/css" rel="stylesheet" />
 {% endblock %}
 
-{% block body %}
-    <h1>Welcome to the MapChart:showMap page</h1>
-{% include "@Web/svg/mapapolski.svg" %}
-{% include "@Views/MapChart/input_map.html.twig" %}
+{% block body %}    
+    <div id="inputForm"></div>
+    <div id="slider-range"></div>
+    <div id="mapChart">
+            {% include "@Web/svg/mapapolski.svg" %}        
+    </div>
 {% endblock %}
 
 {% block javascripts %}
+    <script src="{{ asset('js/jquery-ui/jquery-ui.min.js') }}"></script>
+    <script src="{{ asset('js/mapChart/createInputMapChart.js') }}"></script>
+    <script src="{{ asset('js/mapChart/sendInputMapChart.js') }}"></script>
     <script src="{{ asset('js/mapChart/dataMapTopLoad.js') }}"></script>
-    <script src="{{ asset('js/mapChart/dataMapTopCss.js') }}"></script>
-    
+    <script src="{{ asset('js/mapChart/dataMapTopCss.js') }}"></script>    
     <script>
         $(document).ready(function() {
-            var inputData;
+            var input = [
+                "YTD",
+                "Rolling12",
+                "QTD",
+                "Rolling3",
+                "Customize"
+            ];
+             createInputMapChart(
+                    input, 
+                    "#inputForm", 
+                    "#slider-range", 
+                    "/mapChart/slideRangeSource", 
+                    "/mapChart/makeListSource");
             
-            inputData = {
+            var inputData = {
                 regYearMin: "2007$xxx",
                 regMonthMin: "1",
                 regYearMax: "2007",
                 regMonthMax: "12"
-            };
-            
+            };            
             dataMapTopLoad("/mapChart/loadDataTopMake", inputData);
+            
+            $("#YTD").click(function(){
+                inputData = ytd();
+                console.log(inputData);
+                dataMapTopLoad("/mapChart/loadDataTopMake", inputData);
+            });
+        
+            $("#Rolling12").click(function(){
+                inputData = rolling12();
+                console.log(inputData);
+                dataMapTopLoad("/mapChart/loadDataTopMake", inputData);
+            });
+            
+            $("#QTD").click(function(){
+                inputData = qtd();
+                console.log(inputData);
+               dataMapTopLoad("/mapChart/loadDataTopMake", inputData);
+            });
+            
+            $("#Rolling3").click(function(){
+                inputData = rolling3();
+                console.log(inputData);
+                dataMapTopLoad("/mapChart/loadDataTopMake", inputData);
+            });
+            
+            $("#submitCustomDates").click(function(){
+                inputData = customize("#hiddenRangeDate");
+                console.log(inputData);
+                dataMapTopLoad("/mapChart/loadDataTopMake", inputData);
+            });
         });    
     </script>
 

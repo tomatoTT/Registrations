@@ -5056,7 +5056,7 @@
     <g id="mapKey">
         <text id="mapKeyTitleMake" class="mapKeyTitle" x="870" y="400"></text>
         <text id="mapKeyTitle1" class="mapKeyTitle" x="870" y="430"></text>
-        <text id="mapKeyTitle2" class="mapKeyTitle" x="870" y="460">w powiatach</text>
+        <text id="mapKeyTitle2" class="mapKeyTitle" x="870" y="460"></text>
         <text id="mapKeyTitleTop" class="mapKeyTitle" x="900" y="507"></text>
         <text id="mapKeyTitleDown" class="mapKeyTitle" x="900" y="786"></text>
         <rect id="mapKeyGraph" x="870" y="500" width="20" height="280" stroke="black" fill="transparent" stroke-width="1"/>

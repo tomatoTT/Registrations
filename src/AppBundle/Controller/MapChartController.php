@@ -124,7 +124,7 @@ class MapChartController extends Controller
     /**
      * @Route("/showMapMS")
      */
-    public function showMapAction()
+    public function showMapMSAction()
     {           
         return $this->render('@App/MapChart/show_map_MS.html.twig', array(
             // ...
@@ -166,33 +166,44 @@ class MapChartController extends Controller
                         )
                         ->getQuery();
                 $result = $q->getResult();
-                goto b;
+            } else {
+                $qb1 = $em->createQueryBuilder();
+                $q1 = $qb1->select('r.make, r.regYear, r.regMonth, r.units, r.countyName')
+                        ->from('AppBundle:MainChartDataMSPowiat', 'r')
+                        ->where(
+                                $qb1->expr()->andX(
+                                        $qb1->expr()->eq('r.regYear', $regYearMin),
+                                        $qb1->expr()->gte('r.regMonth', $regMonthMin)
+                                        )
+                        )
+                        ->getQuery();
+                $resultMin = $q1->getResult();
+                $qb2 = $em->createQueryBuilder();
+                $q2 = $qb2->select('r.make, r.regYear, r.regMonth, r.units, r.countyName')
+                        ->from('AppBundle:MainChartDataMSPowiat', 'r')
+                        ->where(
+                                $qb2->expr()->andX(
+                                        $qb2->expr()->eq('r.regYear', $regYearMax),
+                                        $qb2->expr()->lte('r.regMonth', $regMonthMax)
+                                        )
+                        )
+                        ->getQuery();
+                $resultMax = $q2->getResult();
+                if ($regYearMax - $regYearMin > 1)
+                {
+                    $qb3 = $em->createQueryBuilder();
+                    $q3 = $qb3->select('r.make, r.regYear, r.regMonth, r.units, r.countyName')
+                            ->from('AppBundle:MainChartDataMSPowiat', 'r')
+                            ->where(
+                                    $qb3->expr()->between('r.regYear', $regYearMin+1, $regYearMax-1)
+                            )
+                            ->getQuery();
+                    $resultMid = $q3->getResult(); 
+                } else {
+                    $resultMid = [];
+                }                
+                $result = array_merge($resultMin, $resultMid, $resultMax);
             }
-            $qb1 = $em->createQueryBuilder();
-            $q1 = $qb1->select('r.make, r.regYear, r.regMonth, r.units, r.countyName')
-                    ->from('AppBundle:MainChartDataMSPowiat', 'r')
-                    ->where(
-                            $qb1->expr()->andX(
-                                    $qb1->expr()->eq('r.regYear', $regYearMin),
-                                    $qb1->expr()->gte('r.regMonth', $regMonthMin)
-                                    )
-                    )
-                    ->getQuery();
-            $resultMin = $q1->getResult();
-
-            $qb2 = $em->createQueryBuilder();
-            $q2 = $qb2->select('r.make, r.regYear, r.regMonth, r.units, r.countyName')
-                    ->from('AppBundle:MainChartDataMSPowiat', 'r')
-                    ->where(
-                            $qb2->expr()->andX(
-                                    $qb2->expr()->eq('r.regYear', $regYearMax),
-                                    $qb2->expr()->lte('r.regMonth', $regMonthMax)
-                                    )
-                    )
-                    ->getQuery();
-            $resultMax = $q2->getResult();            
-            $result = array_merge($resultMin, $resultMax);
-            b:
             $queryColor = $em->createQuery(
                     'SELECT c.make, c.color FROM AppBundle:Make c');
             $colorArray = $queryColor->getResult();
@@ -249,7 +260,6 @@ class MapChartController extends Controller
                     {                    
                         $subCountySourceMap[$j] = [
                             "make" => $temp[$valueMax][0],
-                            "county" => $valueCounty,
                             "color" => $temp[$valueMax][2]
                         ];
                         $j++;
@@ -258,7 +268,6 @@ class MapChartController extends Controller
                 } else {
                     $countySourceMap[$i] = [
                             "make" => $temp[0][0],
-                            "county" => $valueCounty,
                             "color" => $temp[0][2]
                         ];
                 }
@@ -314,47 +323,46 @@ class MapChartController extends Controller
                         )
                         ->getQuery();
                 $result = $q->getResult();
-                goto b;
-            }
-            $qb1 = $em->createQueryBuilder();
-            $q1 = $qb1->select('r.regYear, r.regMonth, r.units, r.countyName')
-                    ->from('AppBundle:MainChartDataMSPowiat', 'r')
-                    ->where(
-                            $qb1->expr()->andX(
-                                    $qb1->expr()->eq('r.regYear', $regYearMin),
-                                    $qb1->expr()->gte('r.regMonth', $regMonthMin)
-                                    )
-                    )
-                    ->getQuery();
-            $resultMin = $q1->getResult();
-
-            $qb2 = $em->createQueryBuilder();
-            $q2 = $qb2->select('r.regYear, r.regMonth, r.units, r.countyName')
-                    ->from('AppBundle:MainChartDataMSPowiat', 'r')
-                    ->where(
-                            $qb2->expr()->andX(
-                                    $qb2->expr()->eq('r.regYear', $regYearMax),
-                                    $qb2->expr()->lte('r.regMonth', $regMonthMax)
-                                    )
-                    )
-                    ->getQuery();
-            $resultMax = $q2->getResult();
-            
-            if ($regYearMax - $regYearMin > 1)
-            {
-                $qb3 = $em->createQueryBuilder();
-                $q3 = $qb3->select('r.regYear, r.regMonth, r.units, r.countyName')
+            } else {
+                $qb1 = $em->createQueryBuilder();
+                $q1 = $qb1->select('r.regYear, r.regMonth, r.units, r.countyName')
                         ->from('AppBundle:MainChartDataMSPowiat', 'r')
                         ->where(
-                                $qb3->expr()->between('r.regYear', $regYearMin+1, $regYearMax-1)
+                                $qb1->expr()->andX(
+                                        $qb1->expr()->eq('r.regYear', $regYearMin),
+                                        $qb1->expr()->gte('r.regMonth', $regMonthMin)
+                                        )
                         )
                         ->getQuery();
-                $resultMid = $q3->getResult(); 
-            } else {
-                $resultMid = [];
+                $resultMin = $q1->getResult();
+
+                $qb2 = $em->createQueryBuilder();
+                $q2 = $qb2->select('r.regYear, r.regMonth, r.units, r.countyName')
+                        ->from('AppBundle:MainChartDataMSPowiat', 'r')
+                        ->where(
+                                $qb2->expr()->andX(
+                                        $qb2->expr()->eq('r.regYear', $regYearMax),
+                                        $qb2->expr()->lte('r.regMonth', $regMonthMax)
+                                        )
+                        )
+                        ->getQuery();
+                $resultMax = $q2->getResult();
+
+                if ($regYearMax - $regYearMin > 1)
+                {
+                    $qb3 = $em->createQueryBuilder();
+                    $q3 = $qb3->select('r.regYear, r.regMonth, r.units, r.countyName')
+                            ->from('AppBundle:MainChartDataMSPowiat', 'r')
+                            ->where(
+                                    $qb3->expr()->between('r.regYear', $regYearMin+1, $regYearMax-1)
+                            )
+                            ->getQuery();
+                    $resultMid = $q3->getResult(); 
+                } else {
+                    $resultMid = [];
+                }
+                $result = array_merge($resultMin, $resultMid, $resultMax);
             }
-            $result = array_merge($resultMin, $resultMid, $resultMax);
-            b:
             $sourceMap[0] = [
                 "county" => $result[0]["countyName"],
                 "tiv" => $result[0]["units"]
