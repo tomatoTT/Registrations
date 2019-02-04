@@ -1,23 +1,15 @@
 .st0 {
-    fill-rule:evenodd;
-    clip-rule:evenodd;
     fill:none;
-    stroke:black
+    stroke:black;
 }
 
 .st1 {
-    fill-rule:evenodd;
-    clip-rule:evenodd;
     fill:none;
-    stroke:black
-}
-
-.st2 {
-    fill:none;
+    stroke:black;
 }
 
 .st3{
     fill:none;
-    stroke:none
+    stroke:none;
 }
 

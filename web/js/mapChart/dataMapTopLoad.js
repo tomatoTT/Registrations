@@ -6,7 +6,7 @@ function dataMapTopLoad(url, inputData) {
         dataType: "json",
         success: function(data) {
             dataMapTopCss(data);
-            makeTopSelect();
+            makeTopSelect(data);
         },
         error: function(xhr, textStatus, errorThrown) {
             alert(errorThrown, textStatus, xhr);
