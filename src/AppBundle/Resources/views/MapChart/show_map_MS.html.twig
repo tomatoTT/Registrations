@@ -3,7 +3,7 @@
 {% block title %}AppBundle:MapChart:showMap{% endblock %}
     
 {% block stylesheets %}
-    <link href="{{ asset('css/mapapolski.css') }}" type="text/css" rel="stylesheet" />
+    <link href="{{ asset('css/mapChart/mapapolski.css') }}" type="text/css" rel="stylesheet" />
     <link href="{{ asset('css/jquery-ui/jquery-ui.min.css') }}" type="text/css" rel="stylesheet" />
     <link href="{{ asset('css/mapChart/mapChartMS.css') }}" type="text/css" rel="stylesheet" />
 {% endblock %}
@@ -14,7 +14,6 @@
     <div id="mapChart">
             {% include "@Web/svg/mapapolski.svg" %}        
     </div>
-
 {% endblock %}
 
 {% block javascripts %}

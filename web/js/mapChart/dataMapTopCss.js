@@ -1,6 +1,7 @@
 function dataMapTopCss(data) {    
     $(".st0").css('fill', 'rgba(255,255,255,0)');
     $(".st1").css('fill', 'rgba(255,255,255,0)');
+    $(".makeTopSelect").remove();
     var mapKeySource = [];
     Object.keys(data).forEach(function(key) {
         var obj1 = data[key];
@@ -53,9 +54,6 @@ function makeTopSelect(data) {
             }            
         });
         if ($("#"+countyList[0]).css("fill") === "none") {
-            
-            //$(this).css("background-color", dataMapTopCssToggle(data, countyList));
-            //console.log(dataMapTopCssToggle(data, countyList));
             dataMapTopCssToggle(data, countyList, this.id);
         } else {
             $('[data-'+this.id+'="'+this.id+'"]').css('fill', 'none');
@@ -73,17 +71,12 @@ function dataMapTopCssToggle(data, countyList, make) {
             color = obj1.color;
         }
         if (countyList.indexOf(county) > -1) {
-            if (data[key].a) {
-               
-                
+            if (data[key].a) {                
                 $("#" + county).css('fill', 'url(#grad'+county+')');
-
             } else {
                 $("#" + county).css('fill', obj1.color);
-
             }
         }       
     });
     $("#"+make).css("background-color", color);
-
 }

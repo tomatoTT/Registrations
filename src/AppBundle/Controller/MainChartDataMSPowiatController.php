@@ -20,22 +20,19 @@ class MainChartDataMSPowiatController extends Controller
     public function calculataAction()
     {
         $em = $this->getDoctrine()->getManager();
-        /**$q1 = $em->createQuery(
-                'SELECT r.make, r.regYear, r.regMonth, r.units, r.tERYT FROM AppBundle:RegTot r'
-                );
-        $regTot = $q1->getResult();*/
+
         $qb1 = $em->createQueryBuilder();
         $q1 = $qb1->select('r.make, r.regYear, r.regMonth, r.units, r.tERYT')
                     ->from('AppBundle:RegTot', 'r')
                     ->where(
                             $qb1->expr()->andX(
-                                    $qb1->expr()->eq('r.regYear', "2018"),
-                                    $qb1->expr()->between('r.regMonth', "7", "11")
+                                    $qb1->expr()->eq('r.regYear', "2019"),
+                                    $qb1->expr()->between('r.regMonth', "1", "12")
                                     )
                     )
                     ->getQuery();
             $regTot = $q1->getResult();
-        
+
         $q2 = $em->createQuery(
                 'SELECT c.countyCode, c.countyName FROM AppBundle:TerytPow c'
                 );
