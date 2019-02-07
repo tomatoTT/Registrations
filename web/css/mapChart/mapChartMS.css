@@ -27,3 +27,10 @@
 .mapKeyTitle {
     font-size: 20px;
 }
+
+#mapDetails {
+    display: inline-block;
+    border-style: solid;
+    border-color: brown;
+    border-width: 1px;
+}

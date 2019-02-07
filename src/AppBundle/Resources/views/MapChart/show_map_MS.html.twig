@@ -14,6 +14,10 @@
     <div id="mapChart">
             {% include "@Web/svg/mapapolski.svg" %}        
     </div>
+    <div id="mapDetails">
+         
+                
+    </div>
 {% endblock %}
 
 {% block javascripts %}
@@ -24,6 +28,7 @@
     <script src="{{ asset('js/mapChart/createInputMapChart.js') }}"></script>
     <script src="{{ asset('js/mapChart/sendInputMapChart.js') }}"></script>
     <script src="{{ asset('js/mapChart/countyClick/countyClickLoad.js') }}"></script>
+
     <script>
         $(document).ready(function() {        
             var input = [
@@ -96,6 +101,7 @@
                 delete inputData.make;
                 console.log(inputData);
                 countyClickLoad("/mapChart/loadCountyDetails", inputData);
+                
                 
             });
 
