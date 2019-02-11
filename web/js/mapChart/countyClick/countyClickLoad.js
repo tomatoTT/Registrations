@@ -1,17 +1,11 @@
-function countyClickLoad(url, inputData) {
+function countyClickLoad(url, inputData, id) {
     $.ajax({
         type: 'POST',
         url: url,
         data: inputData,
         dataType: "json",
         success: function(data) {
-            if (document.getElementById("detailsTable")) {
-                mapChartDetailsUpdate(data);
-            } else {
-                mapChartDetails(data);
-            }
-            
-
+                mapChartDeatilsCss(id, data);
         },
         error: function(xhr, textStatus, errorThrown) {
             alert(errorThrown, textStatus, xhr);
@@ -77,26 +71,94 @@ function sortTable() {
   }
 }
 
-function mapChartDetailsUpdate(data) {
-    var table, rows, i, make, makeIndex, units, tiv, newUnits, newTiv;
+function mapChartDetailsAdd(data) {
+    var table, rows, i, j, make, makeIndex, units, tiv, newUnits, newTiv, rowsLength;
     table = document.getElementById("detailsTable");
     rows = table.rows;
+    rowsLength = rows.length;
+    loop:
+    for (j=0; j<data.length; j++) {        
+        for (i=1; i<rowsLength; i++) {
+            make = rows[i].getElementsByTagName("TD")[0].innerText;            
+            if (make === data[j].make) {
+                units = parseInt(rows[i].getElementsByTagName("TD")[1].innerText);
+                newUnits = units + data[j].units;
+                rows[i].getElementsByTagName("TD")[1].innerText = newUnits;
+                continue loop;
+            }            
+        }
+        $("#detailsTable").append('\
+            <tr>\n\
+            <td>'+data[j].make+'</td>\n\
+            <td>'+data[j].units+'</td>\n\
+            <td></td>\n\
+            <td></td>\n\
+            </tr>'
+        );
+    }
+    tiv = 0;
+    for (i=1; i<rows.length; i++) {    
+        tiv += parseInt(rows[i].getElementsByTagName("TD")[1].innerText);
+    }
+    for (i=1; i<rows.length; i++) {
+        units = rows[i].getElementsByTagName("TD")[1].innerText;
+        rows[i].getElementsByTagName("TD")[2].innerText = tiv;
+        rows[i].getElementsByTagName("TD")[3].innerText = (units/tiv*100).toFixed(2)+'%';
+    }
+}
 
-    for (i=1; i<(rows.length); i++) {
-        make = rows[i].getElementsByTagName("TD")[0].innerText;
-        makeIndex = data.findIndex(x => x.make === make);
-        
-        if (makeIndex > -1) {
-            console.log(make);
-            
-            units = parseInt(rows[i].getElementsByTagName("TD")[1].innerText);
-            tiv = parseInt(rows[i].getElementsByTagName("TD")[2].innerText);
-            newUnits = units + data[makeIndex].units;
-            newTiv = tiv + data[makeIndex].tiv;
-            rows[i].getElementsByTagName("TD")[1].innerText = newUnits;
-            rows[i].getElementsByTagName("TD")[2].innerText = newTiv;
-            console.log(tiv);
-            console.log(data[makeIndex].tiv);
+function mapChartDetailsSubtract(data) {
+    var table, rows, i, j, make, makeIndex, units, tiv, newUnits, newTiv, rowsLength;
+    table = document.getElementById("detailsTable");
+    rows = table.rows;
+    rowsLength = rows.length;
+    loop:
+    for (j=0; j<data.length; j++) {        
+        for (i=1; i<rowsLength; i++) {
+            make = rows[i].getElementsByTagName("TD")[0].innerText;            
+            if (make === data[j].make) {
+                units = parseInt(rows[i].getElementsByTagName("TD")[1].innerText);
+                newUnits = units - data[j].units;                
+                if (newUnits === 0) {
+                    $(rows[i]).remove();
+                    if (document.getElementById("detailsTable").rows.length === 1) {
+                        document.getElementById("detailsTable").remove();
+                    }
+                    continue loop;
+                } else {
+                    rows[i].getElementsByTagName("TD")[1].innerText = newUnits;
+                    continue loop;
+                }                
+            }            
         }
     }
+    tiv = 0;
+    for (i=1; i<rows.length; i++) {    
+        tiv += parseInt(rows[i].getElementsByTagName("TD")[1].innerText);
+    }
+    for (i=1; i<rows.length; i++) {
+        units = rows[i].getElementsByTagName("TD")[1].innerText;
+        rows[i].getElementsByTagName("TD")[2].innerText = tiv;
+        rows[i].getElementsByTagName("TD")[3].innerText = (units/tiv*100).toFixed(2)+'%';
+    }
+}
+
+function mapChartDeatilsCss(id, data) {
+    if ($("#"+id).data("click") === "on") {
+        mapChartDetailsSubtract(data);
+        $("#"+id).css("stroke-width", "1");
+        $("#"+id).data("click", "off");
+    } else {
+        if (document.getElementById("detailsTable")) {
+            mapChartDetailsAdd(data);
+            $("#"+id).css("stroke-width", "2");
+            $("#"+id).data("click", "on");
+        } else {
+            mapChartDetails(data);
+            $("#"+id).css("stroke-width", "2");
+            $("#"+id).data("click", "on");
+        }
+
+    }
+    
 }

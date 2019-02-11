@@ -97,10 +97,11 @@
                 dataMapMSLoad("/mapChart/loadDataMS", inputData);
             });
             $(".st0, .st1").click(function(){
-                inputData.county = this.id;
+                inputData.county = this.id;                
+
                 delete inputData.make;
                 console.log(inputData);
-                countyClickLoad("/mapChart/loadCountyDetails", inputData);
+                countyClickLoad("/mapChart/loadCountyDetails", inputData, inputData.county);
                 
                 
             });
