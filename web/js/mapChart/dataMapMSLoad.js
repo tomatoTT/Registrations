@@ -5,7 +5,6 @@ function dataMapMSLoad(url, inputData) {
         data: inputData,
         dataType: "json",
         success: function(data) {
-             console.log(data);
             var ms = dataMapMS(data);
             dataMapMSCss(ms);
             mapKeyMS(ms);

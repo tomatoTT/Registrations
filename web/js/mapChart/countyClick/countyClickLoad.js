@@ -1,11 +1,11 @@
-function countyClickLoad(url, inputData, id) {
+function countyClickLoad(url, inputData, countyList) {
     $.ajax({
         type: 'POST',
         url: url,
         data: inputData,
         dataType: "json",
         success: function(data) {
-                mapChartDeatilsCss(id, data);
+                mapChartDetailsCss(inputData.county, data, countyList);
         },
         error: function(xhr, textStatus, errorThrown) {
             alert(errorThrown, textStatus, xhr);
@@ -13,7 +13,8 @@ function countyClickLoad(url, inputData, id) {
     });
 }
 
-function mapChartDetails(data) {
+function mapChartDetails(data, county) {
+    $("#mapDetails").append('<div id="detailsTableCounty"><p id="county'+county+'">'+county+'</p></div>');
     $("#mapDetails").append('<table id="detailsTable"></table>');
     $("#detailsTable").append(
             '<tr>\n\
@@ -71,7 +72,8 @@ function sortTable() {
   }
 }
 
-function mapChartDetailsAdd(data) {
+function mapChartDetailsAdd(data, county) {
+    $("#detailsTableCounty").append('<p id="county'+county+'">'+county+'</p>');
     var table, rows, i, j, make, makeIndex, units, tiv, newUnits, newTiv, rowsLength;
     table = document.getElementById("detailsTable");
     rows = table.rows;
@@ -107,7 +109,8 @@ function mapChartDetailsAdd(data) {
     }
 }
 
-function mapChartDetailsSubtract(data) {
+function mapChartDetailsSubtract(data, county) {
+    $("#county"+county).remove();
     var table, rows, i, j, make, makeIndex, units, tiv, newUnits, newTiv, rowsLength;
     table = document.getElementById("detailsTable");
     rows = table.rows;
@@ -143,22 +146,91 @@ function mapChartDetailsSubtract(data) {
     }
 }
 
-function mapChartDeatilsCss(id, data) {
-    if ($("#"+id).data("click") === "on") {
-        mapChartDetailsSubtract(data);
-        $("#"+id).css("stroke-width", "1");
-        $("#"+id).data("click", "off");
-    } else {
-        if (document.getElementById("detailsTable")) {
-            mapChartDetailsAdd(data);
-            $("#"+id).css("stroke-width", "2");
-            $("#"+id).data("click", "on");
-        } else {
-            mapChartDetails(data);
-            $("#"+id).css("stroke-width", "2");
-            $("#"+id).data("click", "on");
+function mapChartDetailsCss(county, data, countyList) {
+    console.log(county);
+    if (countyList.isArray) {
+        for (var i=0; i<countyList.length; i++) {
+            if ($("#"+countyList[i]).data("click") === "on") {
+                console.log("tutaj");
+                mapChartDetailsSubtract(data, countyList[i]);
+                $("#"+countyList[i]).css("stroke-width", "1");
+                $("#"+countyList[i]).data("click", "off");
+            } else {
+                if (document.getElementById("detailsTable")) {
+                    mapChartDetailsAdd(data, countyList[i]);
+                    $("#"+countyList[i]).css("stroke-width", "3");
+                    $("#"+countyList[i]).data("click", "on");
+                } else {
+                    mapChartDetails(data, countyList[i]);
+                    $("#"+countyList[i]).css("stroke-width", "3");
+                    $("#"+countyList[i]).data("click", "on");
+                }
+            }
         }
-
+    } else {
+        if ($("#"+county).data("click") === "on") {
+            console.log("tutaj");
+            mapChartDetailsSubtract(data, county);
+            $("#"+county).css("stroke-width", "1");
+            $("#"+county).data("click", "off");
+        } else {
+            if (document.getElementById("detailsTable")) {
+                mapChartDetailsAdd(data, county);
+                $("#"+county).css("stroke-width", "3");
+                $("#"+county).data("click", "on");
+            } else {
+                mapChartDetails(data, county);
+                $("#"+county).css("stroke-width", "3");
+                $("#"+county).data("click", "on");
+            }
+        }
+        return true;
     }
     
 }
+
+function mapChartDetailsCssUpdate(inputData) {
+    var pList, countyList = [], table, rows, i, countyClick = false;
+    pList =$("#detailsTableCounty").find("p");
+    table = document.getElementById("detailsTable");
+    rows = table.rows;
+    $("#detailsTable").remove();
+    for (i=0; i<pList.length; i++) {        
+        countyList.push(pList[i].innerText);
+    }
+    $("#detailsTableCounty").remove();
+    console.log(countyList);
+    for (i=0; i<countyList.length; i++) {
+        $("#"+countyList[i]).css("stroke-width", "1");
+        $("#"+countyList[i]).data("click", "off");
+        console.log($("#"+countyList[i]).data("click"));
+    }
+
+    for (i=0; i<countyList.length; i++) {
+        inputData.county = countyList[i];
+        console.log(inputData);
+        console.log(i);
+        countyClickLoad("/mapChart/loadCountyDetails", inputData, countyList);
+
+        //countyClick = countyClickLoad("/mapChart/loadCountyDetails", inputData);
+        //console.log(countyClick);
+        /*while (!countyClick) {
+            setTimeout(function() {
+                if (countyClick === true) {
+                    console.log("już jest");
+                }
+            }, 1000);
+        }*/
+
+                
+    }
+    
+    /*i=0;
+    inputData.county = countyList[i];
+    countyClick = countyClickLoad("/mapChart/loadCountyDetails", inputData);
+    if (countyClick === true) {
+        
+    }*/
+    
+}
+
