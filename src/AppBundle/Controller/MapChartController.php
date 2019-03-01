@@ -627,6 +627,180 @@ class MapChartController extends Controller
      * @Route("/testy")
      */
     public function testyAction() {
-        
+        $em = $this->getDoctrine()->getManager();
+        $conditions = [ "r.countyName = giżycki", "r.countyName = węgorzewski" ];
+        $conditions1 = ['bielski', 'węgorzewski'];
+        $regYearMin = 2007;
+        $regMonthMin = 1;
+        $regYearMax = 2007;
+        $regMonthMax = 12;
+        $qb = $em->createQueryBuilder();
+                $q = $qb->select('r.make, r.regYear, r.regMonth, r.units, r.countyName')
+                        ->from('AppBundle:MainChartDataMSPowiat', 'r')
+                        ->where(
+                                $qb->expr()->andX(
+                                        $qb->expr()->eq('r.regYear', $regYearMin),
+                                        $qb->expr()->between('r.regMonth', $regMonthMin, $regMonthMax)
+
+                                        )
+                        )
+                        /**->where($qb->expr()->eq('r.countyName', 'giżycki'))*/;
+
+                /**$orCounty = $qb->expr()->orX();
+                foreach ($conditions as $condition) {
+                    $orCounty->add($condition);
+                }
+                $qb->add('andWhere', $orCounty);
+                /**$orCounty = $qb->expr()->orX();
+                $orCounty->$qb->expr()->eq('r.countyName', $qb->expr()->literal('giżycki'));
+                $qb->add('andWhere', $orCounty);*/
+                
+                $orStatements = $qb->expr()->orX();
+                foreach ($conditions1 as $condition1) {
+                    $orStatements->add(
+                    $qb->expr()->eq('r.countyName', $qb->expr()->literal($condition1))
+                    );
+                }
+                $qb->andWhere($orStatements);
+                $q1 = $q->getQuery();
+                $result = $q1->getResult(); 
+                var_dump($result);
+                //return new Response('<html><body>testy</body></html>');
+    }
+    
+    /**
+     * @Route("/loadCountyDetailsUpdate")
+     */
+    public function loadCountyDetailsUpdateAction(Request $request) {
+        if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1)
+        {
+            $em = $this->getDoctrine()->getManager();
+            $postSize = \sizeof($_POST);
+            $filters = array(
+                "regYearMin" => array('filter' => FILTER_SANITIZE_NUMBER_INT),
+                "regYearMax" => array('filter' => FILTER_SANITIZE_NUMBER_INT),
+                "regMonthMin" => array('filter' => FILTER_SANITIZE_NUMBER_INT),
+                "regMonthMax" => array('filter' => FILTER_SANITIZE_NUMBER_INT)
+            );
+            for ($i = 4; $i<$postSize; $i++) {
+                $filters["county".($i-4)] = array('filter' => FILTER_SANITIZE_STRING);
+            }
+            $myPost = filter_input_array(INPUT_POST, $filters);
+            $testArray = [
+            $regYearMin = $myPost['regYearMin'],
+            $regMonthMin = $myPost['regMonthMin'],
+            $regYearMax = $myPost['regYearMax'],
+            $regMonthMax = $myPost['regMonthMax']
+            ];
+            for ($i = 4; $i<$postSize; $i++) {
+                $testArray[] = 
+                ${"county".($i-4)} = $myPost["county" . ($i-4)];
+                $conditionsArray[] = "r.countyName = ".$myPost["county" . ($i-4)];
+            }
+            
+            /**
+
+            if ($regYearMin === $regYearMax)
+            {
+                $qb = $em->createQueryBuilder();
+                $q = $qb->select('r.make, r.regYear, r.regMonth, r.units, r.countyName')
+                        ->from('AppBundle:MainChartDataMSPowiat', 'r')
+                        ->where(
+                                $qb->expr()->andX(
+                                        $qb->expr()->eq('r.regYear', $regYearMin),
+                                        $qb->expr()->between('r.regMonth', $regMonthMin, $regMonthMax)
+
+                                        )
+                        );
+
+                $orCounty = $qb->expr()->andX();
+                foreach ($conditionsArray as $condition) {
+                    $orCounty->add($condition);
+                }
+                $qb->add('where', $orCounty);
+                $qb->getQuery();
+                $result = $q->getResult();
+            } else {
+                $qb1 = $em->createQueryBuilder();
+                $q1 = $qb1->select('r.make, r.regYear, r.regMonth, r.units, r.countyName')
+                        ->from('AppBundle:MainChartDataMSPowiat', 'r')
+                        ->where(
+                                $qb1->expr()->andX(
+                                        $qb1->expr()->eq('r.regYear', $regYearMin),
+                                        $qb1->expr()->gte('r.regMonth', $regMonthMin),
+                                        $qb1->expr()->eq('r.countyName', $qb1->expr()->literal($county))
+                                        )
+                        )
+                        ->getQuery();
+                $resultMin = $q1->getResult();
+                $qb2 = $em->createQueryBuilder();
+                $q2 = $qb2->select('r.make, r.regYear, r.regMonth, r.units, r.countyName')
+                        ->from('AppBundle:MainChartDataMSPowiat', 'r')
+                        ->where(
+                                $qb2->expr()->andX(
+                                        $qb2->expr()->eq('r.regYear', $regYearMax),
+                                        $qb2->expr()->lte('r.regMonth', $regMonthMax),
+                                        $qb2->expr()->eq('r.countyName', $qb2->expr()->literal($county))
+                                        )
+                        )
+                        ->getQuery();
+                $resultMax = $q2->getResult();
+                if ($regYearMax - $regYearMin > 1)
+                {
+                    $qb3 = $em->createQueryBuilder();
+                    $q3 = $qb3->select('r.make, r.regYear, r.regMonth, r.units, r.countyName ')
+                            ->from('AppBundle:MainChartDataMSPowiat', 'r')
+                            ->where(
+                                    $q3->expr()->andX(
+                                            $qb3->expr()->between('r.regYear', $regYearMin+1, $regYearMax-1),
+                                            $qb3->expr()->eq('r.countyName', $qb3->expr()->literal($county))
+                                            )
+                            )
+                            ->getQuery();
+                    $resultMid = $q3->getResult(); 
+                } else {
+                    $resultMid = [];
+                }
+                $result = array_merge($resultMin, $resultMid, $resultMax);
+            }
+            if (empty($result))
+            {
+                return new JsonResponse($result);
+            } else {
+                $tiv = 0;
+                foreach ($result as $resultSingle) {
+                    $tiv += $resultSingle["units"]; 
+                }
+                $sourceMap[0] = [
+                    "make" => $result[0]['make'],
+                    "units" => $result[0]['units'],
+                    "tiv" => $tiv,
+                    "county" => $result[0]["countyName"]
+                ];
+                for ($i=1; $i<count($result); $i++)
+                {
+                    
+                    for ($j=0; $j<count($sourceMap); $j++)
+                    {
+                        if ($sourceMap[$j]['make'] === $result[$i]['make'])
+                        {
+                            $sourceMap[$j]['units'] += $result[$i]['units'];
+                            goto a;
+                        }
+                    }
+                    $sourceMap[] = [
+                        "make" => $result[$i]['make'],
+                        "units" => $result[$i]['units'],
+                        "tiv" => $tiv,
+                        "county" => $result[$i]["countyName"]
+                    ];
+                    a:                
+                }     */   
+                $jsonData = $conditionsArray;
+                return new JsonResponse($jsonData);
+         //   }
+        } else {
+            return new Response('<html><body>nie ma jsona</body></html>');
+        }
     }
 }

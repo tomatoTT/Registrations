@@ -68,6 +68,7 @@
                 inputData.make = make;
                 console.log(inputData);
                 dataMapMSLoad("/mapChart/loadDataMS", inputData);
+                mapChartDetailsCssUpdate(inputData);
             });
             $("#Rolling12").click(function(){
                 var make = $("#makeList").val();
@@ -101,7 +102,7 @@
             $(".st0, .st1").click(function(){
                 inputData.county = this.id;
                 console.log(inputData);
-                countyClickLoad("/mapChart/loadCountyDetails", inputData, 0);
+                countyClickLoad("/mapChart/loadCountyDetails", inputData);
                 
                 
             });

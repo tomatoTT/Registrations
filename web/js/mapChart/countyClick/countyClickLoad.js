@@ -5,7 +5,7 @@ function countyClickLoad(url, inputData, countyList) {
         data: inputData,
         dataType: "json",
         success: function(data) {
-                mapChartDetailsCss(inputData.county, data, countyList);
+                mapChartDetailsCss(inputData.county, data);
         },
         error: function(xhr, textStatus, errorThrown) {
             alert(errorThrown, textStatus, xhr);
@@ -148,26 +148,6 @@ function mapChartDetailsSubtract(data, county) {
 
 function mapChartDetailsCss(county, data, countyList) {
     console.log(county);
-    if (countyList.isArray) {
-        for (var i=0; i<countyList.length; i++) {
-            if ($("#"+countyList[i]).data("click") === "on") {
-                console.log("tutaj");
-                mapChartDetailsSubtract(data, countyList[i]);
-                $("#"+countyList[i]).css("stroke-width", "1");
-                $("#"+countyList[i]).data("click", "off");
-            } else {
-                if (document.getElementById("detailsTable")) {
-                    mapChartDetailsAdd(data, countyList[i]);
-                    $("#"+countyList[i]).css("stroke-width", "3");
-                    $("#"+countyList[i]).data("click", "on");
-                } else {
-                    mapChartDetails(data, countyList[i]);
-                    $("#"+countyList[i]).css("stroke-width", "3");
-                    $("#"+countyList[i]).data("click", "on");
-                }
-            }
-        }
-    } else {
         if ($("#"+county).data("click") === "on") {
             console.log("tutaj");
             mapChartDetailsSubtract(data, county);
@@ -185,18 +165,19 @@ function mapChartDetailsCss(county, data, countyList) {
             }
         }
         return true;
-    }
     
 }
 
 function mapChartDetailsCssUpdate(inputData) {
-    var pList, countyList = [], table, rows, i, countyClick = false;
+    var pList, countyList = [], table, rows, i, countyClick = false, countyx;
     pList =$("#detailsTableCounty").find("p");
     table = document.getElementById("detailsTable");
     rows = table.rows;
     $("#detailsTable").remove();
     for (i=0; i<pList.length; i++) {        
         countyList.push(pList[i].innerText);
+        countyx = "county" + i;
+        inputData[countyx] = pList[i].innerText;
     }
     $("#detailsTableCounty").remove();
     console.log(countyList);
@@ -205,32 +186,45 @@ function mapChartDetailsCssUpdate(inputData) {
         $("#"+countyList[i]).data("click", "off");
         console.log($("#"+countyList[i]).data("click"));
     }
+    delete inputData.make;
+    console.log(inputData);
+    countyClickLoadUpdate("/mapChart/loadCountyDetailsUpdate", inputData);
+    
 
-    for (i=0; i<countyList.length; i++) {
+    /*inputData.county = countyList[0];
+    countyClickLoad("/mapChart/loadCountyDetails", inputData);
+    inputData.county = countyList[1];
+    countyClickLoadUpdate("/mapChart/loadCountyDetails", inputData);
+    /*for (i=1; i<countyList.length; i++) {
+        inputData.county = countyList[i];
+
+        countyClickLoadUpdate("/mapChart/loadCountyDetails", inputData);
+
+            
+        
+
+        
+    };
+    /*for (i=0; i<countyList.length; i++) {
         inputData.county = countyList[i];
         console.log(inputData);
         console.log(i);
-        countyClickLoad("/mapChart/loadCountyDetails", inputData, countyList);
-
-        //countyClick = countyClickLoad("/mapChart/loadCountyDetails", inputData);
-        //console.log(countyClick);
-        /*while (!countyClick) {
-            setTimeout(function() {
-                if (countyClick === true) {
-                    console.log("już jest");
-                }
-            }, 1000);
-        }*/
-
-                
-    }
+        forloop("/mapChart/loadCountyDetails", inputData);
     
-    /*i=0;
-    inputData.county = countyList[i];
-    countyClick = countyClickLoad("/mapChart/loadCountyDetails", inputData);
-    if (countyClick === true) {
-        
     }*/
-    
 }
 
+function countyClickLoadUpdate(url, inputData) {
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: inputData,
+        dataType: "json",
+        success: function(data) {
+                console.log(data);
+        },
+        error: function(xhr, textStatus, errorThrown) {
+            alert(errorThrown, textStatus, xhr);
+        }
+    });
+}
