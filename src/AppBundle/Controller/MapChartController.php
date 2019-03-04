@@ -643,18 +643,7 @@ class MapChartController extends Controller
                                         $qb->expr()->between('r.regMonth', $regMonthMin, $regMonthMax)
 
                                         )
-                        )
-                        /**->where($qb->expr()->eq('r.countyName', 'giżycki'))*/;
-
-                /**$orCounty = $qb->expr()->orX();
-                foreach ($conditions as $condition) {
-                    $orCounty->add($condition);
-                }
-                $qb->add('andWhere', $orCounty);
-                /**$orCounty = $qb->expr()->orX();
-                $orCounty->$qb->expr()->eq('r.countyName', $qb->expr()->literal('giżycki'));
-                $qb->add('andWhere', $orCounty);*/
-                
+                        );                
                 $orStatements = $qb->expr()->orX();
                 foreach ($conditions1 as $condition1) {
                     $orStatements->add(
@@ -662,10 +651,8 @@ class MapChartController extends Controller
                     );
                 }
                 $qb->andWhere($orStatements);
-                $q1 = $q->getQuery();
-                $result = $q1->getResult(); 
+                $result = $q->getQuery()->getResult(); 
                 var_dump($result);
-                //return new Response('<html><body>testy</body></html>');
     }
     
     /**
@@ -695,11 +682,8 @@ class MapChartController extends Controller
             for ($i = 4; $i<$postSize; $i++) {
                 $testArray[] = 
                 ${"county".($i-4)} = $myPost["county" . ($i-4)];
-                $conditionsArray[] = "r.countyName = ".$myPost["county" . ($i-4)];
+                $conditions[] = $myPost["county" . ($i-4)];
             }
-            
-            /**
-
             if ($regYearMin === $regYearMax)
             {
                 $qb = $em->createQueryBuilder();
@@ -709,17 +693,16 @@ class MapChartController extends Controller
                                 $qb->expr()->andX(
                                         $qb->expr()->eq('r.regYear', $regYearMin),
                                         $qb->expr()->between('r.regMonth', $regMonthMin, $regMonthMax)
-
                                         )
                         );
-
-                $orCounty = $qb->expr()->andX();
-                foreach ($conditionsArray as $condition) {
-                    $orCounty->add($condition);
+                $orStatements = $qb->expr()->orX();
+                foreach ($conditions as $condition) {
+                    $orStatements->add(
+                        $qb->expr()->eq('r.countyName', $qb->expr()->literal($condition))
+                    );
                 }
-                $qb->add('where', $orCounty);
-                $qb->getQuery();
-                $result = $q->getResult();
+                $qb->andWhere($orStatements);
+                $result = $q->getQuery()->getResult();                 
             } else {
                 $qb1 = $em->createQueryBuilder();
                 $q1 = $qb1->select('r.make, r.regYear, r.regMonth, r.units, r.countyName')
@@ -727,24 +710,34 @@ class MapChartController extends Controller
                         ->where(
                                 $qb1->expr()->andX(
                                         $qb1->expr()->eq('r.regYear', $regYearMin),
-                                        $qb1->expr()->gte('r.regMonth', $regMonthMin),
-                                        $qb1->expr()->eq('r.countyName', $qb1->expr()->literal($county))
+                                        $qb1->expr()->gte('r.regMonth', $regMonthMin)
                                         )
-                        )
-                        ->getQuery();
-                $resultMin = $q1->getResult();
+                        );
+                $orStatements = $qb1->expr()->orX();
+                foreach ($conditions as $condition) {
+                    $orStatements->add(
+                        $qb1->expr()->eq('r.countyName', $qb1->expr()->literal($condition))
+                    );
+                }
+                $qb1->andWhere($orStatements);
+                $resultMin = $q1->getQuery()->getResult();
                 $qb2 = $em->createQueryBuilder();
                 $q2 = $qb2->select('r.make, r.regYear, r.regMonth, r.units, r.countyName')
                         ->from('AppBundle:MainChartDataMSPowiat', 'r')
                         ->where(
                                 $qb2->expr()->andX(
                                         $qb2->expr()->eq('r.regYear', $regYearMax),
-                                        $qb2->expr()->lte('r.regMonth', $regMonthMax),
-                                        $qb2->expr()->eq('r.countyName', $qb2->expr()->literal($county))
+                                        $qb2->expr()->lte('r.regMonth', $regMonthMax)
                                         )
-                        )
-                        ->getQuery();
-                $resultMax = $q2->getResult();
+                        );
+                $orStatements = $qb2->expr()->orX();
+                foreach ($conditions as $condition) {
+                    $orStatements->add(
+                        $qb2->expr()->eq('r.countyName', $qb2->expr()->literal($condition))
+                    );
+                }
+                $qb2->andWhere($orStatements);
+                $resultMax = $q2->getQuery()->getResult();
                 if ($regYearMax - $regYearMin > 1)
                 {
                     $qb3 = $em->createQueryBuilder();
@@ -752,12 +745,17 @@ class MapChartController extends Controller
                             ->from('AppBundle:MainChartDataMSPowiat', 'r')
                             ->where(
                                     $q3->expr()->andX(
-                                            $qb3->expr()->between('r.regYear', $regYearMin+1, $regYearMax-1),
-                                            $qb3->expr()->eq('r.countyName', $qb3->expr()->literal($county))
+                                            $qb3->expr()->between('r.regYear', $regYearMin+1, $regYearMax-1)
                                             )
-                            )
-                            ->getQuery();
-                    $resultMid = $q3->getResult(); 
+                            );
+                    $orStatements = $qb3->expr()->orX();
+                    foreach ($conditions as $condition) {
+                        $orStatements->add(
+                            $qb3->expr()->eq('r.countyName', $qb3->expr()->literal($condition))
+                        );
+                    }
+                    $qb3->andWhere($orStatements);
+                    $resultMid = $q3->getQuery()->getResult(); 
                 } else {
                     $resultMid = [];
                 }
@@ -774,31 +772,24 @@ class MapChartController extends Controller
                 $sourceMap[0] = [
                     "make" => $result[0]['make'],
                     "units" => $result[0]['units'],
-                    "tiv" => $tiv,
-                    "county" => $result[0]["countyName"]
+                    "tiv" => $tiv
                 ];
                 for ($i=1; $i<count($result); $i++)
                 {
-                    
-                    for ($j=0; $j<count($sourceMap); $j++)
-                    {
-                        if ($sourceMap[$j]['make'] === $result[$i]['make'])
-                        {
-                            $sourceMap[$j]['units'] += $result[$i]['units'];
-                            goto a;
-                        }
-                    }
-                    $sourceMap[] = [
-                        "make" => $result[$i]['make'],
-                        "units" => $result[$i]['units'],
-                        "tiv" => $tiv,
-                        "county" => $result[$i]["countyName"]
-                    ];
-                    a:                
-                }     */   
-                $jsonData = $conditionsArray;
+                    $makeKey = array_search($result[$i]['make'], array_column($sourceMap, "make"));
+                    if (is_numeric($makeKey)) {
+                        $sourceMap[$makeKey]['units'] += $result[$i]['units'];
+                    } else {
+                        $sourceMap[] = [
+                            "make" => $result[$i]['make'],
+                            "units" => $result[$i]['units'],
+                            "tiv" => $tiv
+                        ];
+                    }              
+                }  
+                $jsonData = $sourceMap;
                 return new JsonResponse($jsonData);
-         //   }
+            }
         } else {
             return new Response('<html><body>nie ma jsona</body></html>');
         }

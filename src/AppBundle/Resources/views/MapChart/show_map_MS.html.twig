@@ -14,10 +14,7 @@
     <div id="mapChart">
             {% include "@Web/svg/mapapolski.svg" %}        
     </div>
-    <div id="mapDetails">
-         
-                
-    </div>
+    <div id="mapDetails"></div>
 {% endblock %}
 
 {% block javascripts %}
@@ -84,6 +81,7 @@
                 inputData.make = make;
                 console.log(inputData);
                 dataMapMSLoad("/mapChart/loadDataMS", inputData);
+                mapChartDetailsCssUpdate(inputData);
             });
             $("#Rolling3").click(function(){
                 var make = $("#makeList").val();
@@ -91,6 +89,7 @@
                 inputData.make = make;
                 console.log(inputData);
                 dataMapMSLoad("/mapChart/loadDataMS", inputData);
+                mapChartDetailsCssUpdate(inputData);
             });
             $("#submitCustomDates").click(function(){
                 var make = $("#makeList").val();
@@ -98,13 +97,12 @@
                 inputData.make = make;
                 console.log(inputData);
                 dataMapMSLoad("/mapChart/loadDataMS", inputData);
+                mapChartDetailsCssUpdate(inputData);
             });
             $(".st0, .st1").click(function(){
                 inputData.county = this.id;
                 console.log(inputData);
-                countyClickLoad("/mapChart/loadCountyDetails", inputData);
-                
-                
+                countyClickLoad("/mapChart/loadCountyDetails", inputData);                
             });
 
 
