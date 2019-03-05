@@ -1,0 +1,32 @@
+{% extends "base.html.twig" %}
+
+{% block title %}AppBundle:LineChart:loadData{% endblock %}
+
+{% block body %}
+    <div class="chart-container" style="position: relative; height:80vh; width:80vw">
+        <h1>Wykres1</h1>        
+        <canvas id="myChart"></canvas>        
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/mainChart/chart.js') }}"></script>
+    <script src="{{ asset('js/lineChart/lineChartDraw.js') }}"></script>
+    <script src="{{ asset('js/lineChart/chartDrawDatasets.js') }}"></script>
+    <script src="{{ asset('js/lineChart/labelsForLineChart.js') }}"></script>
+    <script src="{{ asset('js/lineChart/loadDataForLineChart.js') }}"></script>
+    <script src="{{ asset('js/lineChart/labelMakeConditions.js') }}"></script>
+    
+    <script>
+        $(document).ready(function() {
+            var inputData = {
+                regYearMin: 2007,
+                regMonthMin: 1,
+                regYearMax: 2009,
+                regMonthMax: 12
+            };
+            loadDataForLineChart("/lineChart/loadData", "myChart", inputData);
+        });    
+    </script>
+    
+{% endblock %}

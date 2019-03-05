@@ -627,32 +627,7 @@ class MapChartController extends Controller
      * @Route("/testy")
      */
     public function testyAction() {
-        $em = $this->getDoctrine()->getManager();
-        $conditions = [ "r.countyName = giżycki", "r.countyName = węgorzewski" ];
-        $conditions1 = ['bielski', 'węgorzewski'];
-        $regYearMin = 2007;
-        $regMonthMin = 1;
-        $regYearMax = 2007;
-        $regMonthMax = 12;
-        $qb = $em->createQueryBuilder();
-                $q = $qb->select('r.make, r.regYear, r.regMonth, r.units, r.countyName')
-                        ->from('AppBundle:MainChartDataMSPowiat', 'r')
-                        ->where(
-                                $qb->expr()->andX(
-                                        $qb->expr()->eq('r.regYear', $regYearMin),
-                                        $qb->expr()->between('r.regMonth', $regMonthMin, $regMonthMax)
 
-                                        )
-                        );                
-                $orStatements = $qb->expr()->orX();
-                foreach ($conditions1 as $condition1) {
-                    $orStatements->add(
-                    $qb->expr()->eq('r.countyName', $qb->expr()->literal($condition1))
-                    );
-                }
-                $qb->andWhere($orStatements);
-                $result = $q->getQuery()->getResult(); 
-                var_dump($result);
     }
     
     /**
@@ -664,24 +639,20 @@ class MapChartController extends Controller
             $em = $this->getDoctrine()->getManager();
             $postSize = \sizeof($_POST);
             $filters = array(
-                "regYearMin" => array('filter' => FILTER_SANITIZE_NUMBER_INT),
-                "regYearMax" => array('filter' => FILTER_SANITIZE_NUMBER_INT),
-                "regMonthMin" => array('filter' => FILTER_SANITIZE_NUMBER_INT),
-                "regMonthMax" => array('filter' => FILTER_SANITIZE_NUMBER_INT)
-            );
+                    "regYearMin" => array('filter' => FILTER_SANITIZE_NUMBER_INT),
+                    "regYearMax" => array('filter' => FILTER_SANITIZE_NUMBER_INT),
+                    "regMonthMin" => array('filter' => FILTER_SANITIZE_NUMBER_INT),
+                    "regMonthMax" => array('filter' => FILTER_SANITIZE_NUMBER_INT)
+                );
             for ($i = 4; $i<$postSize; $i++) {
                 $filters["county".($i-4)] = array('filter' => FILTER_SANITIZE_STRING);
             }
             $myPost = filter_input_array(INPUT_POST, $filters);
-            $testArray = [
-            $regYearMin = $myPost['regYearMin'],
-            $regMonthMin = $myPost['regMonthMin'],
-            $regYearMax = $myPost['regYearMax'],
-            $regMonthMax = $myPost['regMonthMax']
-            ];
+            $regYearMin = $myPost['regYearMin'];
+            $regMonthMin = $myPost['regMonthMin'];
+            $regYearMax = $myPost['regYearMax'];
+            $regMonthMax = $myPost['regMonthMax'];
             for ($i = 4; $i<$postSize; $i++) {
-                $testArray[] = 
-                ${"county".($i-4)} = $myPost["county" . ($i-4)];
                 $conditions[] = $myPost["county" . ($i-4)];
             }
             if ($regYearMin === $regYearMax)

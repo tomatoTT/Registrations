@@ -1,35 +1,26 @@
-function labelsForMainChart(data) {
-    
+function labelsForMainChart(data) {    
     var labels = [];
     var label = "";
     var yearMin = data[0].regYear;
     var yearMax = data[0].regYear;;
     var monthYearMin = data[0].regMonth;
-    var monthYearMax = data[0].regMonth;
-
-    
-    for (var i=0; i<data.length; i++) {
-        
+    var monthYearMax = data[0].regMonth;    
+    for (var i=0; i<data.length; i++) {        
         if (yearMin > data[i].regYear) {            
             yearMin = data[i].regYear;           
-        }
-        
+        }        
         if (yearMax < data[i].regYear) {            
             yearMax = data[i].regYear;           
         }
-    }
-    
-    for (var i=0; i<data.length; i++) {
-        
+    }    
+    for (var i=0; i<data.length; i++) {        
         if (yearMin === data[i].regYear && monthYearMin > data[i].regMonth) {
             monthYearMin = data[i].regMonth;
-        }
-        
+        }        
         if (yearMax === data[i].regYear && monthYearMax < data[i].regMonth) {
             monthYearMax = data[i].regMonth;
         }        
-    }
-    
+    }    
     if (yearMin !== yearMax) {
         for (var i=monthYearMin; i<=12; i++) {
             labels.push(label.concat(yearMin, "/", i));
@@ -49,5 +40,3 @@ function labelsForMainChart(data) {
     }
     return labels;
 }
-
-

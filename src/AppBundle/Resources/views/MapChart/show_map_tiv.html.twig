@@ -23,6 +23,7 @@
     <script src="{{ asset('js/jquery-ui/jquery-ui.min.js') }}"></script>
     <script src="{{ asset('js/mapChart/createInputMapChart.js') }}"></script>
     <script src="{{ asset('js/mapChart/sendInputMapChart.js') }}"></script>
+    <script src="{{ asset('js/mapChart/countyClick/countyClickLoad.js') }}"></script>
     <script>
         $(document).ready(function() {
             var input = [
@@ -51,30 +52,41 @@
                 inputData = ytd();
                 console.log(inputData);
                 dataMapTivLoad("/mapChart/loadDataTiv", inputData);
+                mapChartDetailsCssUpdate(inputData);
             });
         
             $("#Rolling12").click(function(){
                 inputData = rolling12();
                 console.log(inputData);
                 dataMapTivLoad("/mapChart/loadDataTiv", inputData);
+                mapChartDetailsCssUpdate(inputData);
             });
             
             $("#QTD").click(function(){
                 inputData = qtd();
                 console.log(inputData);
                 dataMapTivLoad("/mapChart/loadDataTiv", inputData);
+                mapChartDetailsCssUpdate(inputData);
             });
             
             $("#Rolling3").click(function(){
                 inputData = rolling3();
                 console.log(inputData);
                 dataMapTivLoad("/mapChart/loadDataTiv", inputData);
+                mapChartDetailsCssUpdate(inputData);
             });
             
             $("#submitCustomDates").click(function(){
                 inputData = customize("#hiddenRangeDate");
                 console.log(inputData);
                 dataMapTivLoad("/mapChart/loadDataTiv", inputData);
+                mapChartDetailsCssUpdate(inputData);
+            });
+            
+            $(".st0, .st1").click(function(){
+                inputData.county = this.id;
+                console.log(inputData);
+                countyClickLoad("/mapChart/loadCountyDetails", inputData);                
             });
         });
     

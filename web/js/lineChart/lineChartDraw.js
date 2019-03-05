@@ -1,4 +1,4 @@
-function chartDraw(chartId, labels, data) {
+function lineChartDraw(chartId, labels, data) {
     var ctx = document.getElementById(chartId);
     var myChart = new Chart(ctx, {
         type: 'line',
@@ -11,11 +11,13 @@ function chartDraw(chartId, labels, data) {
                 yAxes: [{
                     id: 'A',
                     type: 'linear',
-                    position: 'left'
+                    position: 'right',
+                    ticks: {beginAtZero: true}
                 }, {
                     id: 'B',
                     type: 'linear',
-                    position: 'right'
+                    position: 'left',
+                    ticks: {beginAtZero: true}
                 }]
             },
             legend: {
@@ -26,4 +28,3 @@ function chartDraw(chartId, labels, data) {
         }                
     });
 }
-
