@@ -4,7 +4,7 @@ function lineChartDraw(chartId, labels, data) {
         type: 'line',
         data: {
             labels: labels,
-            datasets: chartDrawDatasets(data, labels)
+            datasets: lineChartDrawDatasets(data, labels)
         },
         options: {
             scales: {

@@ -1,4 +1,4 @@
-function chartDrawDatasets(data, labels) {   
+function lineChartDrawDatasets(data, labels) {   
     var datasetsObjTable = []; /*Table to supply main chart*/
     var makes = labelMakeConditions(data, 10);
     for (var i=0; i<makes.length; i++) {
@@ -62,7 +62,7 @@ function unitsForDatasetsObjLeftAxle(data, labels) {
         }
         result = data.filter(search, query);
         if (result.length === 0) {
-            tiv.push(0);            
+            tivTable.push(0);            
         } else {
             tiv = result[0].tiv;
             tivTable.push(tiv);            

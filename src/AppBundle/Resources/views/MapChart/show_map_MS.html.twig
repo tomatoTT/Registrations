@@ -15,6 +15,7 @@
             {% include "@Web/svg/mapapolski.svg" %}        
     </div>
     <div id="mapDetails"></div>
+    <div id="lineChartContainer"></div>
 {% endblock %}
 
 {% block javascripts %}
@@ -26,7 +27,12 @@
     <script src="{{ asset('js/mapChart/sendInputMapChart.js') }}"></script>
     <script src="{{ asset('js/mapChart/countyClick/countyClickLoad.js') }}"></script>
     <script src="{{ asset('js/mapChart/hover/mapChartHover.js') }}"></script>
-
+    <script src="{{ asset('js/mainChart/chart.js') }}"></script>
+    <script src="{{ asset('js/lineChart/lineChartDraw.js') }}"></script>
+    <script src="{{ asset('js/lineChart/lineChartDrawDatasets.js') }}"></script>
+    <script src="{{ asset('js/lineChart/labelsForLineChart.js') }}"></script>
+    <script src="{{ asset('js/lineChart/loadDataForLineChart.js') }}"></script>
+    <script src="{{ asset('js/lineChart/labelMakeConditions.js') }}"></script>
     <script>
         $(document).ready(function() {        
             var input = [
@@ -52,6 +58,14 @@
                 regMonthMax: 12
             };            
             dataMapMSLoad("/mapChart/loadDataMS", inputData);
+            
+            $("#lineChartForMap").click(function() {
+                delete inputData.make;
+                console.log(inputData);
+                $("#lineChartContainer").append('<div id = "lineChart" class="chart-container"><canvas id="myChart"></canvas></div>');                
+                checkBoxLineChart("#lineChartForMap", inputData);
+                loadDataForLineChart("/lineChart/loadData", "myChart", inputData);
+            });
             
             $("#makeSubmit").click(function(){
                 var make = $("#makeList").val();

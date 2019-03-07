@@ -141,7 +141,6 @@ function mapChartDetailsCss(county, data) {
 function mapChartDetailsCssUpdate(inputData) {
     var pList, countyList = [], table, i, countyx;
     pList =$("#detailsTableCounty").find("p");
-    console.log(pList);
     if (pList.length === 0) {
         return;
     } else {
@@ -197,6 +196,35 @@ function mapChartDeatilsUpdate(data) {
                     <td>'+((data[i].units/data[i].tiv*100).toFixed(2))+'%</td>\n\
                 </tr>'                
                 );
+    }
+}
+
+function lineChartInputForMap(inputData) {
+    var pList, countyList = [], countyx, i;
+    pList =$("#detailsTableCounty").find("p");
+    delete inputData.county;
+    if (pList.length === 0) {
+        return;
+    } else {
+        for (i=0; i<pList.length; i++) {        
+            countyList.push(pList[i].innerText);
+            countyx = "county" + i;
+            inputData[countyx] = pList[i].innerText;
+        }
+        console.log(inputData);
+        return inputData;
+    }
+}
+
+function checkBoxLineChart(checkBoxSelecor, inputData) {
+    var checked;
+    checked = $(checkBoxSelecor).prop("checked");
+    console.log(checked);
+    if (checked) {
+        lineChartInputForMap(inputData);
+    } else {
+        console.log($("#lineChart").remove());
+        $("#lineChart").remove();
     }
 }
 

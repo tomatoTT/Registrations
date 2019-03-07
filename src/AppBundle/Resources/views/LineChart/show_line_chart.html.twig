@@ -1,10 +1,14 @@
 {% extends "base.html.twig" %}
 
 {% block title %}AppBundle:LineChart:loadData{% endblock %}
-
+{% block stylesheets %}
+    <link href="{{ asset('css/jquery-ui/jquery-ui.min.css') }}" type="text/css" rel="stylesheet" />
+{% endblock %}
 {% block body %}
-    <div class="chart-container" style="position: relative; height:80vh; width:80vw">
-        <h1>Wykres1</h1>        
+    <div id="inputForm"></div>
+    <div id="slider-range"></div>
+    <div>_____</div>
+    <div class="chart-container" style="position: relative; height:80vh; width:80vw">     
         <canvas id="myChart"></canvas>        
     </div>
 {% endblock %}
@@ -16,16 +20,59 @@
     <script src="{{ asset('js/lineChart/labelsForLineChart.js') }}"></script>
     <script src="{{ asset('js/lineChart/loadDataForLineChart.js') }}"></script>
     <script src="{{ asset('js/lineChart/labelMakeConditions.js') }}"></script>
-    
+    <script src="{{ asset('js/mapChart/countyClick/countyClickLoad.js') }}"></script>
+    <script src="{{ asset('js/mapChart/createInputMapChart.js') }}"></script>
+    <script src="{{ asset('js/mapChart/sendInputMapChart.js') }}"></script>
+    <script src="{{ asset('js/jquery-ui/jquery-ui.min.js') }}"></script>
+    <script src="{{ asset('js/mapChart/sendInputMapChart.js') }}"></script>
     <script>
         $(document).ready(function() {
+            var input = [
+                "YTD",
+                "Rolling12",
+                "QTD",
+                "Rolling3",
+                "Customize"
+            ];
+            createInputMapChart(
+                    input, 
+                    "#inputForm", 
+                    "#slider-range", 
+                    "/mapChart/slideRangeSource", 
+                    "/mapChart/makeListSource"
+            );
             var inputData = {
                 regYearMin: 2007,
                 regMonthMin: 1,
-                regYearMax: 2009,
+                regYearMax: 2007,
                 regMonthMax: 12
             };
             loadDataForLineChart("/lineChart/loadData", "myChart", inputData);
+            $("#YTD").click(function(){
+                inputData = ytd();
+                console.log(inputData);
+                loadDataForLineChart("/lineChart/loadData", "myChart", inputData);
+            });
+            $("#Rolling12").click(function(){
+                inputData = rolling12();
+                console.log(inputData);
+                loadDataForLineChart("/lineChart/loadData", "myChart", inputData);
+            });
+            $("#QTD").click(function(){
+                inputData = qtd();
+                console.log(inputData);
+                loadDataForLineChart("/lineChart/loadData", "myChart", inputData);
+            });
+            $("#Rolling3").click(function(){
+                inputData = rolling3();
+                console.log(inputData);
+                loadDataForLineChart("/lineChart/loadData", "myChart", inputData);
+            });
+            $("#submitCustomDates").click(function(){
+                inputData = customize("#hiddenRangeDate");
+                console.log(inputData);
+                loadDataForLineChart("/lineChart/loadData", "myChart", inputData);
+            });
         });    
     </script>
     

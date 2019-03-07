@@ -16,6 +16,7 @@ function createInputMapChart(
             };
         }        
     }
+    $(inputSelector).append('<input id="lineChartForMap" type="checkbox"/>');
     createSliderButtons(sliderSelector);
     sliderRangeLoad(urlSelector, sliderSelector);
     $(sliderSelector).hide();    
