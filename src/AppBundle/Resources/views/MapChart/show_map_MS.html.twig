@@ -9,6 +9,7 @@
 {% endblock %}
 
 {% block body %}
+    <div id="loadingImage"><h1>LOADING</h1></div>
     <div id="inputForm"></div>
     <div id="slider-range"></div>
     <div id="mapChart">
@@ -16,6 +17,7 @@
     </div>
     <div id="mapDetails"></div>
     <div id="lineChartContainer"></div>
+    
 {% endblock %}
 
 {% block javascripts %}
@@ -34,7 +36,8 @@
     <script src="{{ asset('js/lineChart/loadDataForLineChart.js') }}"></script>
     <script src="{{ asset('js/lineChart/labelMakeConditions.js') }}"></script>
     <script>
-        $(document).ready(function() {        
+        $(document).ready(function() {
+            $("h1").hide();
             var input = [
                 "Make",
                 "YTD",
@@ -52,19 +55,17 @@
             );
             var inputData = {
                 make: "JOHNDEERE",
-                regYearMin: 2007,
-                regMonthMin: 1,
-                regYearMax: 2007,
-                regMonthMax: 12
+                regYearMin: 2018,
+                regMonthMin: 3,
+                regYearMax: 2019,
+                regMonthMax: 2
             };            
             dataMapMSLoad("/mapChart/loadDataMS", inputData);
             
             $("#lineChartForMap").click(function() {
                 delete inputData.make;
-                console.log(inputData);
-                $("#lineChartContainer").append('<div id = "lineChart" class="chart-container"><canvas id="myChart"></canvas></div>');                
-                checkBoxLineChart("#lineChartForMap", inputData);
-                loadDataForLineChart("/lineChart/loadData", "myChart", inputData);
+                console.log(inputData);                
+                checkBoxLineChart("#lineChartForMap", inputData);                
             });
             
             $("#makeSubmit").click(function(){
@@ -80,6 +81,7 @@
                 console.log(inputData);
                 dataMapMSLoad("/mapChart/loadDataMS", inputData);
                 mapChartDetailsCssUpdate(inputData);
+                checkBoxLineChart("#lineChartForMap", inputData);
             });
             $("#Rolling12").click(function(){
                 var make = $("#makeList").val();
@@ -88,6 +90,7 @@
                 console.log(inputData);
                 dataMapMSLoad("/mapChart/loadDataMS", inputData);
                 mapChartDetailsCssUpdate(inputData);
+                checkBoxLineChart("#lineChartForMap", inputData);
             });
             $("#QTD").click(function(){
                 var make = $("#makeList").val();
@@ -96,6 +99,7 @@
                 console.log(inputData);
                 dataMapMSLoad("/mapChart/loadDataMS", inputData);
                 mapChartDetailsCssUpdate(inputData);
+                checkBoxLineChart("#lineChartForMap", inputData);
             });
             $("#Rolling3").click(function(){
                 var make = $("#makeList").val();
@@ -104,6 +108,7 @@
                 console.log(inputData);
                 dataMapMSLoad("/mapChart/loadDataMS", inputData);
                 mapChartDetailsCssUpdate(inputData);
+                checkBoxLineChart("#lineChartForMap", inputData);
             });
             $("#submitCustomDates").click(function(){
                 var make = $("#makeList").val();
@@ -112,6 +117,7 @@
                 console.log(inputData);
                 dataMapMSLoad("/mapChart/loadDataMS", inputData);
                 mapChartDetailsCssUpdate(inputData);
+                checkBoxLineChart("#lineChartForMap", inputData);
             });
             $(".st0, .st1").click(function(){
                 inputData.county = this.id;

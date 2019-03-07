@@ -7,6 +7,12 @@ function countyClickLoad(url, inputData, countyList) {
         success: function(data) {
                 mapChartDetailsCss(inputData.county, data);
         },
+        beforeSend: function() {
+            $("h1").show();
+        },
+        complete: function() {
+            $("h1").hide();
+        },
         error: function(xhr, textStatus, errorThrown) {
             alert(errorThrown, textStatus, xhr);
         }
@@ -217,13 +223,18 @@ function lineChartInputForMap(inputData) {
 }
 
 function checkBoxLineChart(checkBoxSelecor, inputData) {
-    var checked;
+    var checked, lineChartContainer;
     checked = $(checkBoxSelecor).prop("checked");
-    console.log(checked);
+    lineChartContainer = $("#lineChart").length;
+    console.log(lineChartContainer);
     if (checked) {
+        if (!lineChartContainer) {
+            $("#lineChartContainer").append('<div id = "lineChart" class="chart-container"><canvas id="myChart"></canvas></div>');
+        }
+        delete inputData.make;
         lineChartInputForMap(inputData);
+        loadDataForLineChart("/lineChart/loadData", "myChart", inputData);
     } else {
-        console.log($("#lineChart").remove());
         $("#lineChart").remove();
     }
 }

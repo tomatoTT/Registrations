@@ -11,6 +11,12 @@ function loadDataForLineChart(url, chartId, inputData) {
         },
         error: function(xhr, textStatus, errorThrown) {
             alert(errorThrown, textStatus, xhr);
+        },
+        beforeSend: function() {
+            $("h1").show();
+        },
+        complete: function() {
+            $("h1").hide();
         }
     });
 }
