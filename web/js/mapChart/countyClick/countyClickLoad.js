@@ -233,6 +233,7 @@ function checkBoxLineChart(checkBoxSelecor, inputData) {
         }
         delete inputData.make;
         lineChartInputForMap(inputData);
+        console.log(inputData);
         loadDataForLineChart("/lineChart/loadData", "myChart", inputData);
     } else {
         $("#lineChart").remove();

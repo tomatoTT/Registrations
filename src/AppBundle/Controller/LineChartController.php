@@ -82,7 +82,7 @@ class LineChartController extends Controller
                         $qb1->expr()->eq('r.countyName', $qb1->expr()->literal($condition))
                     );
                 }
-                $qb->andWhere($orStatements);
+                $qb1->andWhere($orStatements);
             }
             $resultMin = $q1->getQuery()->getResult();
             $qb2 = $em->createQueryBuilder();
