@@ -133,7 +133,24 @@
                 countyClickLoad("/mapChart/loadCountyDetails", inputData);                
             });
 
-
+             $.ajax({
+                type: 'POST',
+                url: "/lineChart/test",
+                data: {regYearMin: 2018, regMonthMin: 1, regYearMax: 2019, regMonthMax: 2, make: "JOHNDEERE", county0: "bielski"},
+                dataType: "json",
+                success: function(data) {
+                        console.log(data);
+                },
+                beforeSend: function() {
+                    $("h1").show();
+                },
+                complete: function() {
+                    $("h1").hide();
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    alert(errorThrown, textStatus, xhr);
+                }
+            });
 
         });    
     </script>
