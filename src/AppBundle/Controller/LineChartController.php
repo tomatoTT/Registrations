@@ -7,7 +7,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use AppBundle\Utils\InputForChart;
 use AppBundle\Utils\LoadDataForChart;
 
 /**
@@ -25,6 +24,8 @@ class LineChartController extends Controller
         if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1)
         {
             $em = $this->getDoctrine()->getManager();
+            $select = 'r.make, r.regYear, r.regMonth, r.units';
+            /**$result = LoadDataForChart::getDataForChart($em, $select);*/
             $postSize = \sizeof($_POST);
             $filters = array(
                     "regYearMin" => array('filter' => FILTER_SANITIZE_NUMBER_INT),
@@ -215,8 +216,8 @@ class LineChartController extends Controller
         {    
             $em = $this->getDoctrine()->getManager();
             
-
-          $jsonData = LoadDataForChart::getDataForChart($em);
+            $select = 'r.make, r.regYear, r.regMonth, r.units';
+          $jsonData = LoadDataForChart::getDataForChart($em, $select);
 
             
             return new JsonResponse($jsonData);

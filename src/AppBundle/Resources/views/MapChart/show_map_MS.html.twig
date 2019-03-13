@@ -54,16 +54,16 @@
                     "/mapChart/makeListSource"
             );
             var inputData = {
-                make: "JOHNDEERE",
                 regYearMin: 2018,
                 regMonthMin: 3,
                 regYearMax: 2019,
-                regMonthMax: 2
+                regMonthMax: 2,
+                make: "JOHNDEERE"
             };            
             dataMapMSLoad("/mapChart/loadDataMS", inputData);
             
             $("#lineChartForMap").click(function() {
-                delete inputData.make;
+
                 console.log(inputData);                
                 checkBoxLineChart("#lineChartForMap", inputData);                
             });
@@ -136,7 +136,7 @@
              $.ajax({
                 type: 'POST',
                 url: "/lineChart/test",
-                data: {regYearMin: 2018, regMonthMin: 1, regYearMax: 2019, regMonthMax: 2, make: "JOHNDEERE", county0: "bielski"},
+                data: {regYearMin: 2017, regMonthMin: 1, regYearMax: 2019, regMonthMax: 2, make: "JOHNDEERE", county0: "augustowski"},
                 dataType: "json",
                 success: function(data) {
                         console.log(data);

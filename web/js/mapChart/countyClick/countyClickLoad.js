@@ -1,4 +1,4 @@
-function countyClickLoad(url, inputData, countyList) {
+function countyClickLoad(url, inputData) {
     $.ajax({
         type: 'POST',
         url: url,
