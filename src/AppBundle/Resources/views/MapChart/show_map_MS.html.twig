@@ -58,12 +58,12 @@
                 regMonthMin: 3,
                 regYearMax: 2019,
                 regMonthMax: 2,
-                make: "JOHNDEERE"
+                make: "JOHNDEERE",
+                county: ""
             };            
             dataMapMSLoad("/mapChart/loadDataMS", inputData);
             
             $("#lineChartForMap").click(function() {
-
                 console.log(inputData);                
                 checkBoxLineChart("#lineChartForMap", inputData);                
             });
@@ -136,7 +136,7 @@
              $.ajax({
                 type: 'POST',
                 url: "/lineChart/test",
-                data: {regYearMin: 2017, regMonthMin: 1, regYearMax: 2019, regMonthMax: 2, make: "JOHNDEERE", county0: "augustowski"},
+                data: {regYearMin: 2017, regMonthMin: 1, regYearMax: 2019, regMonthMax: 2, make: "JOHNDEERE", county: "", county0: "augustowski"},
                 dataType: "json",
                 success: function(data) {
                         console.log(data);

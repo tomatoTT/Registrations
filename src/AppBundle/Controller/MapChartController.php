@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use AppBundle\Utils\LoadDataForChart;
 
 /**
  * Map Chart controller
@@ -25,7 +26,10 @@ class MapChartController extends Controller
         if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1)
         {
             $em = $this->getDoctrine()->getManager();
-            $filters = array(
+            $select = 'r.make, r.units, r.countyName';
+            $result = LoadDataForChart::getDataForChart($em, $select);
+            $make = LoadDataForChart::getInput()['make'];
+            /**$filters = array(
                 "make" => array('filter' => FILTER_SANITIZE_FULL_SPECIAL_CHARS),
                 "regYearMin" => array('filter' => FILTER_SANITIZE_NUMBER_INT),
                 "regYearMax" => array('filter' => FILTER_SANITIZE_NUMBER_INT),
@@ -94,7 +98,7 @@ class MapChartController extends Controller
                     $resultMid = [];
                 }
                 $result = array_merge($resultMin, $resultMid, $resultMax);
-            }
+            }*/
             $queryColor = $em->createQuery(
                     'SELECT c.make, c.color FROM AppBundle:Make c');
             $colorArray = $queryColor->getResult();

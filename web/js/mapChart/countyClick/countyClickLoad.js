@@ -140,8 +140,7 @@ function mapChartDetailsCss(county, data) {
                 $("#"+county).data("click", "on");
             }
         }
-        return true;
-    
+        return true;    
 }
 
 function mapChartDetailsCssUpdate(inputData) {
@@ -157,8 +156,6 @@ function mapChartDetailsCssUpdate(inputData) {
             countyx = "county" + i;
             inputData[countyx] = pList[i].innerText;
         }
-        delete inputData.make;
-        console.log(inputData);
         countyClickLoadUpdate("/mapChart/loadCountyDetailsUpdate", inputData);
         for (i=0; i<pList.length; i++) {        
             countyList.push(pList[i].innerText);
@@ -208,7 +205,6 @@ function mapChartDeatilsUpdate(data) {
 function lineChartInputForMap(inputData) {
     var pList, countyList = [], countyx, i;
     pList =$("#detailsTableCounty").find("p");
-    delete inputData.county;
     if (pList.length === 0) {
         return;
     } else {
@@ -217,7 +213,6 @@ function lineChartInputForMap(inputData) {
             countyx = "county" + i;
             inputData[countyx] = pList[i].innerText;
         }
-        console.log(inputData);
         return inputData;
     }
 }
@@ -226,14 +221,11 @@ function checkBoxLineChart(checkBoxSelecor, inputData) {
     var checked, lineChartContainer;
     checked = $(checkBoxSelecor).prop("checked");
     lineChartContainer = $("#lineChart").length;
-    console.log(lineChartContainer);
     if (checked) {
         if (!lineChartContainer) {
             $("#lineChartContainer").append('<div id = "lineChart" class="chart-container"><canvas id="myChart"></canvas></div>');
         }
-        delete inputData.make;
         lineChartInputForMap(inputData);
-        console.log(inputData);
         loadDataForLineChart("/lineChart/loadData", "myChart", inputData);
     } else {
         $("#lineChart").remove();

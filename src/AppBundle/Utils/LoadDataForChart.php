@@ -64,18 +64,19 @@ class LoadDataForChart {
         return $result;
     }
     
-    static private function getInput() {
+    static public function getInput() {
         $postSize = \sizeof($_POST);
         $filters = array(
-                "regYearMin" => array('filter' => FILTER_SANITIZE_NUMBER_INT),
-                "regYearMax" => array('filter' => FILTER_SANITIZE_NUMBER_INT),
-                "regMonthMin" => array('filter' => FILTER_SANITIZE_NUMBER_INT),
-                "regMonthMax" => array('filter' => FILTER_SANITIZE_NUMBER_INT),
-                "make" => array('filter' => FILTER_SANITIZE_FULL_SPECIAL_CHARS)
-            );
-        if ($postSize > 5) {
-            for ($i = 5; $i<$postSize; $i++) {
-                $filters["county".($i-5)] = array('filter' => FILTER_SANITIZE_STRING);
+            "regYearMin" => array('filter' => FILTER_SANITIZE_NUMBER_INT),
+            "regYearMax" => array('filter' => FILTER_SANITIZE_NUMBER_INT),
+            "regMonthMin" => array('filter' => FILTER_SANITIZE_NUMBER_INT),
+            "regMonthMax" => array('filter' => FILTER_SANITIZE_NUMBER_INT),
+            "make" => array('filter' => FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            "county" => array('filter' => FILTER_SANITIZE_FULL_SPECIAL_CHARS)
+        );
+        if ($postSize > 6) {
+            for ($i = 6; $i<$postSize; $i++) {
+                $filters["county".($i-6)] = array('filter' => FILTER_SANITIZE_STRING);
             }
         }
         $myPost = filter_input_array(INPUT_POST, $filters);
@@ -84,24 +85,25 @@ class LoadDataForChart {
             "regMonthMin" => $myPost['regMonthMin'],
             "regYearMax" => $myPost['regYearMax'],
             "regMonthMax" => $myPost['regMonthMax'],
-            "make" => $myPost['make']
+            "make" => $myPost['make'],
+            "county" => $myPost['county']
         ];
-        if ($postSize > 5) {
-            for ($i = 5; $i<$postSize; $i++) {
-                $conditions["county".($i-5)] = $myPost["county" . ($i-5)];
+        if ($postSize > 6) {
+            for ($i = 6; $i<$postSize; $i++) {
+                $conditions["county".($i-6)] = $myPost["county" . ($i-6)];
             }
         }
         return $conditions;
     }
     
     static private function countyNumCheck($conditions, $qb) {
-        if (\sizeof($conditions) > 5) {
-                    $orStatements = $qb->expr()->orX();
-                    foreach ($conditions as $condition) {
-                        $orStatements->add(
-                            $qb->expr()->eq('r.countyName', $qb->expr()->literal($condition))
-                        );
-                    }
+        if (\sizeof($conditions) > 6) {
+            $orStatements = $qb->expr()->orX();
+            foreach ($conditions as $condition) {
+                $orStatements->add(
+                $qb->expr()->eq('r.countyName', $qb->expr()->literal($condition))
+                );
+            }
             $qb->andWhere($orStatements);
         }
         return $qb;
