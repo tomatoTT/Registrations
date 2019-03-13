@@ -133,24 +133,7 @@
                 countyClickLoad("/mapChart/loadCountyDetails", inputData);                
             });
 
-             $.ajax({
-                type: 'POST',
-                url: "/lineChart/test",
-                data: {regYearMin: 2017, regMonthMin: 1, regYearMax: 2019, regMonthMax: 2, make: "JOHNDEERE", county: "", county0: "augustowski"},
-                dataType: "json",
-                success: function(data) {
-                        console.log(data);
-                },
-                beforeSend: function() {
-                    $("h1").show();
-                },
-                complete: function() {
-                    $("h1").hide();
-                },
-                error: function(xhr, textStatus, errorThrown) {
-                    alert(errorThrown, textStatus, xhr);
-                }
-            });
+             
 
         });    
     </script>

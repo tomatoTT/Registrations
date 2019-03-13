@@ -1,10 +1,5 @@
 function ytd() {
-    var today = new Date();
-    var yearMin;
-    var monthMin;
-    var yearMax;
-    var monthMax;
-    var inputData = {};    
+    var today = new Date(), yearMin, monthMin, yearMax, monthMax, inputData = {};    
     if (today.getMonth() === 0) {
         yearMin = today.getFullYear() -1;
         monthMin = 1;
@@ -20,18 +15,15 @@ function ytd() {
         regYearMin: yearMin,
         regMonthMin: monthMin,
         regYearMax: yearMax,
-        regMonthMax: monthMax
+        regMonthMax: monthMax,
+        make: "",
+        county: ""
     };    
     return inputData;
 }
 
 function rolling12() {
-    var today = new Date();
-    var yyyyMax;
-    var mmMax;
-    var yyyyMin;
-    var mmMin;
-    var inputData = {};
+    var today = new Date(), yyyyMax, mmMax, yyyyMin, mmMin, inputData = {};
     if (today.getMonth() === 0) {
         yyyyMin = today.getFullYear() - 1;
         yyyyMax = today.getFullYear() - 1;
@@ -47,18 +39,15 @@ function rolling12() {
         regYearMin: yyyyMin,
         regMonthMin: mmMin,
         regYearMax: yyyyMax,
-        regMonthMax: mmMax
+        regMonthMax: mmMax,
+        make: "",
+        county: ""
     };
     return inputData;
 }
 
 function qtd() {
-    var today = new Date();
-    var yyyyMax;
-    var mmMax;
-    var yyyyMin;
-    var mmMin;
-    var inputData = {};
+    var today = new Date(), yyyyMax, mmMax, yyyyMin, mmMin, inputData = {};
     if (today.getMonth() === 0) {
         yyyyMin = today.getFullYear() - 1;
         yyyyMax = today.getFullYear() - 1;
@@ -85,18 +74,15 @@ function qtd() {
         regYearMin: yyyyMin,
         regMonthMin: mmMin,
         regYearMax: yyyyMax,
-        regMonthMax: mmMax
+        regMonthMax: mmMax,
+        make: "",
+        county: ""
     };
     return inputData;
 }
     
 function rolling3() {
-    var today = new Date();
-    var yyyyMax;
-    var mmMax;
-    var yyyyMin;
-    var mmMin;
-    var inputData = {};
+    var today = new Date(), yyyyMax, mmMax, yyyyMin, mmMin, inputData = {};
     if (today.getMonth() === 0) {
         yyyyMin = today.getFullYear() - 1;
         yyyyMax = today.getFullYear() - 1;
@@ -117,7 +103,9 @@ function rolling3() {
         regYearMin: yyyyMin,
         regMonthMin: mmMin,
         regYearMax: yyyyMax,
-        regMonthMax: mmMax
+        regMonthMax: mmMax,
+        make: "",
+        county: ""
     };
     return inputData;
 }
@@ -128,8 +116,9 @@ function customize(selector) {
         regYearMin: parseInt(values[1]),
         regMonthMin: parseInt(values[0]),
         regYearMax: parseInt(values[3]),
-        regMonthMax: parseInt(values[2])
+        regMonthMax: parseInt(values[2]),
+        make: "",
+        county: ""
     };
-    return inputData;
-    
+    return inputData;    
 }

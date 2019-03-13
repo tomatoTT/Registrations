@@ -10,6 +10,12 @@ function dataMapMSLoad(url, inputData) {
             mapKeyMS(ms);
             mapKeyTitleMS(data);           
         },
+        beforeSend: function() {
+            $("h1").show();
+        },
+        complete: function() {
+            $("h1").hide();
+        },
         error: function(xhr, textStatus, errorThrown) {
             alert(errorThrown, textStatus, xhr);
         }
