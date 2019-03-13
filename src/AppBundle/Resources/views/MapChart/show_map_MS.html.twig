@@ -10,8 +10,8 @@
 
 {% block body %}
     <div id="loadingImage"><h1>LOADING</h1></div>
-    <div id="inputForm"></div>
-    <div id="slider-range"></div>
+    <div id="inputForm"><div id="slider-range"></div></div>
+
     <div id="mapChart">
             {% include "@Web/svg/mapapolski.svg" %}        
     </div>
@@ -35,6 +35,7 @@
     <script src="{{ asset('js/lineChart/labelsForLineChart.js') }}"></script>
     <script src="{{ asset('js/lineChart/loadDataForLineChart.js') }}"></script>
     <script src="{{ asset('js/lineChart/labelMakeConditions.js') }}"></script>
+    <script src="{{ asset('js/inputForChart/inputButtonsManage.js') }}"></script>
     <script>
         $(document).ready(function() {
             $("h1").hide();
@@ -67,6 +68,7 @@
                 console.log(inputData);                
                 checkBoxLineChart("#lineChartForMap", inputData);                
             });
+
             
             $("#makeSubmit").click(function(){
                 var make = $("#makeList").val();
@@ -74,59 +76,11 @@
                 console.log(inputData);
                 dataMapMSLoad("/mapChart/loadDataMS", inputData);                
             });
-            $("#YTD").click(function(){
-                $("#inputForm").children().prop("disabled", false);
-                $("#YTD").prop("disabled", true);
-                var make = $("#makeList").val();
-                inputData = ytd();
-                inputData.make = make;
-                console.log(inputData);
-                dataMapMSLoad("/mapChart/loadDataMS", inputData);
-                mapChartDetailsCssUpdate(inputData);
-                checkBoxLineChart("#lineChartForMap", inputData);
-            });
-            $("#Rolling12").click(function(){
-                $("#inputForm").children().prop("disabled", false);
-                $("#Rolling12").prop("disabled", true);
-                var make = $("#makeList").val();
-                inputData = rolling12();
-                inputData.make = make;
-                console.log(inputData);
-                dataMapMSLoad("/mapChart/loadDataMS", inputData);
-                mapChartDetailsCssUpdate(inputData);
-                checkBoxLineChart("#lineChartForMap", inputData);
-            });
-            $("#QTD").click(function(){
-                $("#inputForm").children().prop("disabled", false);
-                $("#QTD").prop("disabled", true);
-                var make = $("#makeList").val();
-                inputData = qtd();
-                inputData.make = make;
-                console.log(inputData);
-                dataMapMSLoad("/mapChart/loadDataMS", inputData);
-                mapChartDetailsCssUpdate(inputData);
-                checkBoxLineChart("#lineChartForMap", inputData);
-            });
-            $("#Rolling3").click(function(){
-                $("#inputForm").children().prop("disabled", false);
-                $("#Rolling3").prop("disabled", true);
-                var make = $("#makeList").val();
-                inputData = rolling3();
-                inputData.make = make;
-                console.log(inputData);
-                dataMapMSLoad("/mapChart/loadDataMS", inputData);
-                mapChartDetailsCssUpdate(inputData);
-                checkBoxLineChart("#lineChartForMap", inputData);
-            });
-            $("#submitCustomDates").click(function(){
-                var make = $("#makeList").val();
-                inputData = customize("#hiddenRangeDate");
-                inputData.make = make;
-                console.log(inputData);
-                dataMapMSLoad("/mapChart/loadDataMS", inputData);
-                mapChartDetailsCssUpdate(inputData);
-                checkBoxLineChart("#lineChartForMap", inputData);
-            });
+
+
+            inputButtonsManage();
+            console.log(inputData);
+            
             $(".st0, .st1").click(function(){
                 inputData.county = this.id;
                 console.log(inputData);
