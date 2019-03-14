@@ -21,7 +21,7 @@ function countyClickLoad(url, inputData) {
 
 function mapChartDetails(data, county) {
     $("#mapDetails").append('<div id="detailsTableCounty"></div>');
-    $("#detailsTableCounty").append('<p id="county'+county+'">'+county+'</p></br>');
+    $("#detailsTableCounty").append('<p id="county'+county+'">'+county+'</p>');
     $("#mapDetails").append('<table id="detailsTable"></table>');
     $("#detailsTable").append(
             '<tr>\n\
@@ -45,7 +45,7 @@ function mapChartDetails(data, county) {
 
 function mapChartDetailsAdd(data, county) {
     $("#detailsTableCounty").append('<p id="county'+county+'">'+county+'</p>');
-    var table, rows, i, j, make, makeIndex, units, tiv, newUnits, newTiv, rowsLength;
+    var table, rows, i, j, make, units, tiv, newUnits, rowsLength;
     table = document.getElementById("detailsTable");
     rows = table.rows;
     rowsLength = rows.length;
@@ -87,7 +87,6 @@ function mapChartDetailsSubtract(data, county) {
     table = document.getElementById("detailsTable");
     rows = table.rows;
     rowsLength = rows.length;
-    console.log(pList);
     if (pList.length === 0) {
         $("#detailsTableCounty").remove();
         $("#detailsTable").remove();
@@ -156,6 +155,7 @@ function mapChartDetailsCssUpdate(inputData) {
             countyx = "county" + i;
             inputData[countyx] = pList[i].innerText;
         }
+        console.log(inputData);
         countyClickLoadUpdate("/mapChart/loadCountyDetailsUpdate", inputData);
         for (i=0; i<pList.length; i++) {        
             countyList.push(pList[i].innerText);
@@ -203,29 +203,63 @@ function mapChartDeatilsUpdate(data) {
 }
 
 function lineChartInputForMap(inputData) {
-    var pList, countyList = [], countyx, i;
+    var pList, countyx, i, j = 0, temp, county, substract = false, lineChartContainer;
     pList =$("#detailsTableCounty").find("p");
+    lineChartContainer = $("#lineChart").length;
     if (pList.length === 0) {
         return;
     } else {
-        for (i=0; i<pList.length; i++) {        
-            countyList.push(pList[i].innerText);
-            countyx = "county" + i;
-            inputData[countyx] = pList[i].innerText;
+        temp = {
+            "regYearMin": inputData.regYearMin,
+            "regMonthMin": inputData.regMonthMin,
+            "regYearMax": inputData.regYearMax,            
+            "regMonthMax": inputData.regMonthMax,
+            "make": inputData.make,
+            "county": inputData.county
+        };
+        county = inputData.county;
+        if (!lineChartContainer) {
+            for (i=0; i<pList.length; i++) {
+                countyx = "county" + j;
+                temp[countyx] = pList[i].innerText;
+                j++;
+            }
+            $("#lineChartContainer")
+                    .append('<div id = "lineChart" class="chart-container"><canvas id="myChart"></canvas></div>');
+            inputData = temp;
+            return inputData;
+        } else {
+            for (i=0; i<pList.length; i++) {
+                if (county === pList[i].innerText) {
+                    substract = true;
+                } else {
+                    countyx = "county" + j;
+                    temp[countyx] = pList[i].innerText;
+                    j++;
+                }
+            }
+            if (substract === false) {
+                countyx = "county" + j;
+                temp[countyx] = county;
+            }
+            inputData = temp;
+            return inputData;
         }
-        return inputData;
     }
 }
 
 function checkBoxLineChart(checkBoxSelecor, inputData) {
-    var checked, lineChartContainer;
+    var checked, lineChartContainer, lineChart;
     checked = $(checkBoxSelecor).prop("checked");
     lineChartContainer = $("#lineChart").length;
     if (checked) {
-        if (!lineChartContainer) {
-            $("#lineChartContainer").append('<div id = "lineChart" class="chart-container"><canvas id="myChart"></canvas></div>');
+        lineChart = $("#myChart").length;;
+        console.log(lineChart);
+        if(lineChart) {
+            $("#myChart").remove();
         }
-        lineChartInputForMap(inputData);
+        inputData = lineChartInputForMap(inputData);
+        console.log(inputData);
         loadDataForLineChart("/lineChart/loadData", "myChart", inputData);
     } else {
         $("#lineChart").remove();

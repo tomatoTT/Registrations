@@ -63,32 +63,55 @@
                 county: ""
             };            
             dataMapMSLoad("/mapChart/loadDataMS", inputData);
+
+            $("#inputForm").click(function(e) {
+                switch(e.target.id) {
+                    case "YTD":
+                        inputData = ytd();
+                        break;
+                    case "Rolling12":
+                        inputData = rolling12() ;
+                        break;
+                    case "QTD":
+                        inputData = qtd();
+                        break;
+                    case "Rolling3":
+                        inputData = rolling3();
+                        break;
+                    case "submitCustomDates":
+                        inputData = customize("#hiddenRangeDate");
+                        break;
+                    case "Customize":
+                        return;
+                    case "lineChartForMap":
+                        return;
+                }
+                let make = $("#makeList").val();
+                inputData.make = make;
+                printChart(inputData);
+            });
             
             $("#lineChartForMap").click(function() {
                 console.log(inputData);                
-                checkBoxLineChart("#lineChartForMap", inputData);                
+                checkBoxLineChart("#lineChartForMap", inputData);
             });
-
             
-            $("#makeSubmit").click(function(){
+            $("#makeSubmit").click(function() {
                 var make = $("#makeList").val();
                 inputData.make = make;
                 console.log(inputData);
                 dataMapMSLoad("/mapChart/loadDataMS", inputData);                
             });
 
-
-            inputButtonsManage();
-            console.log(inputData);
             
-            $(".st0, .st1").click(function(){
+            
+            $(".st0, .st1").click(function() {
+                console.log(inputData)
                 inputData.county = this.id;
-                console.log(inputData);
-                countyClickLoad("/mapChart/loadCountyDetails", inputData);                
+                ;
+                countyClickLoad("/mapChart/loadCountyDetails", inputData);
+                checkBoxLineChart("#lineChartForMap", inputData);                
             });
-
-             
-
         });    
     </script>
 {% endblock %}
