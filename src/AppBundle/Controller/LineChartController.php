@@ -24,7 +24,7 @@ class LineChartController extends Controller
         if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1)
         {
             $em = $this->getDoctrine()->getManager();
-            $select = 'r.make, r.regYear, r.regMonth, r.units';
+            $select = 'r.make, r.regYear, r.regMonth, r.units, r.countyName';
             $result = LoadDataForChart::getDataForChart($em, $select);
             $colorArray = $em->createQuery('SELECT c.make, c.color FROM AppBundle:Make c')->getResult();
             $units[0] = [
@@ -34,7 +34,8 @@ class LineChartController extends Controller
                 "units" => $result[0]['units'],
                 "tiv" => $result[0]['units'],
                 "color" => $colorArray[array_search($result[0]["make"],
-                        array_column($colorArray, 'make'))]['color']
+                        array_column($colorArray, 'make'))]['color'],
+                "county" => $result[0]['countyName']
             ];
             $tiv[0] = [
                 "regYear" => $result[0]['regYear'],
@@ -57,7 +58,8 @@ class LineChartController extends Controller
                     "units" => $result[$i]['units'],
                     "tiv" => $result[$i]['units'],
                     "color" => $colorArray[array_search($result[$i]["make"],
-                            array_column($colorArray, 'make'))]['color']
+                            array_column($colorArray, 'make'))]['color'],
+                    "county" => $result[$i]['countyName']
                 ];
                 a:
                 for ($k=0; $k<count($tiv); $k++) {
@@ -108,10 +110,26 @@ class LineChartController extends Controller
         {    
             $em = $this->getDoctrine()->getManager();
             
-            $select = 'r.make, r.regYear, r.regMonth, r.units';
-          $jsonData = LoadDataForChart::getDataForChart($em, $select);
-
+            $select = 'r.make, r.regYear, r.regMonth, r.units, r.countyName';
+            $result = LoadDataForChart::getDataForChart($em, $select);
+            $jsonData = $result;
+            return new JsonResponse($jsonData);
+        } else {
+            return new Response('<html><body>nie ma jsona</body></html>');
+        }
+    }
+    
+    /**
+     * @Route("/test1")
+     */
+    public function test1Action(Request $request) {
+        if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1)
+        {    
+            $em = $this->getDoctrine()->getManager();
             
+            $select = 'r.make, r.regYear, r.regMonth, r.units, r.countyName';
+            $result = LoadDataForChart::getDataForChart($em, $select);
+            $jsonData = $result;
             return new JsonResponse($jsonData);
         } else {
             return new Response('<html><body>nie ma jsona</body></html>');

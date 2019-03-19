@@ -155,7 +155,6 @@ function mapChartDetailsCssUpdate(inputData) {
             countyx = "county" + i;
             inputData[countyx] = pList[i].innerText;
         }
-        console.log(inputData);
         countyClickLoadUpdate("/mapChart/loadCountyDetailsUpdate", inputData);
         for (i=0; i<pList.length; i++) {        
             countyList.push(pList[i].innerText);
@@ -253,13 +252,7 @@ function checkBoxLineChart(checkBoxSelecor, inputData) {
     checked = $(checkBoxSelecor).prop("checked");
     lineChartContainer = $("#lineChart").length;
     if (checked) {
-        lineChart = $("#myChart").length;;
-        console.log(lineChart);
-        if(lineChart) {
-            $("#myChart").remove();
-        }
         inputData = lineChartInputForMap(inputData);
-        console.log(inputData);
         loadDataForLineChart("/lineChart/loadData", "myChart", inputData);
     } else {
         $("#lineChart").remove();

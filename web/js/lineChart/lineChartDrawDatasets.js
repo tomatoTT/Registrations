@@ -68,6 +68,7 @@ function unitsForDatasetsObjLeftAxle(data, labels) {
             tivTable.push(tiv);            
         }
     }
+    console.log(tivTable);
     return tivTable;
 }
 

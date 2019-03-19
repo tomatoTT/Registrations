@@ -105,13 +105,14 @@
 
             
             
-            $(".st0, .st1").click(function() {
-                console.log(inputData)
+            $(".st0, .st1").click(function() {                
                 inputData.county = this.id;
-                ;
+                console.log(inputData);
                 countyClickLoad("/mapChart/loadCountyDetails", inputData);
                 checkBoxLineChart("#lineChartForMap", inputData);                
             });
+            
+            
         });    
     </script>
 {% endblock %}
