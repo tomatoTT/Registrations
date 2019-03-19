@@ -3,7 +3,7 @@ namespace AppBundle\Utils;
 
 class LoadDataForChart {
 
-    static public function getDataForChart($em, $select) {
+    static public function getDataForChart($em, $select, $from) {
         $conditions = self::getInput();
         $regYearMin = $conditions['regYearMin'];
         $regYearMax = $conditions['regYearMax'];
@@ -12,7 +12,7 @@ class LoadDataForChart {
         if ($regYearMin === $regYearMax) {
             $qb = $em->createQueryBuilder();
             $q = $qb->select($select)
-                    ->from('AppBundle:MainChartDataMSPowiat', 'r')
+                    ->from($from, 'r')
                     ->where(
                             $qb->expr()->andX(
                                     $qb->expr()->eq('r.regYear', $regYearMin),
@@ -24,7 +24,7 @@ class LoadDataForChart {
         } else {
             $qb1 = $em->createQueryBuilder();
             $q1 = $qb1->select($select)
-                    ->from('AppBundle:MainChartDataMSPowiat', 'r')
+                    ->from($from, 'r')
                     ->where(
                             $qb1->expr()->andX(
                                     $qb1->expr()->eq('r.regYear', $regYearMin),
@@ -35,7 +35,7 @@ class LoadDataForChart {
             $resultMin = $q1->getQuery()->getResult();
             $qb2 = $em->createQueryBuilder();
             $q2 = $qb2->select($select)
-                    ->from('AppBundle:MainChartDataMSPowiat', 'r')
+                    ->from($from, 'r')
                     ->where(
                             $qb2->expr()->andX(
                                     $qb2->expr()->eq('r.regYear', $regYearMax),
@@ -47,7 +47,7 @@ class LoadDataForChart {
             if ($regYearMax - $regYearMin > 1) {
                 $qb3 = $em->createQueryBuilder();
                 $q3 = $qb3->select($select)
-                        ->from('AppBundle:MainChartDataMSPowiat', 'r')
+                        ->from($from, 'r')
                         ->where(
                                 $qb3->expr()->andX(
                                         $qb3->expr()->between('r.regYear', $regYearMin+1, $regYearMax-1)

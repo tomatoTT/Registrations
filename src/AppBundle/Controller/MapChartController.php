@@ -27,7 +27,8 @@ class MapChartController extends Controller
         {
             $em = $this->getDoctrine()->getManager();
             $select = 'r.make, r.units, r.countyName';
-            $result = LoadDataForChart::getDataForChart($em, $select);
+            $from = 'AppBundle:MainChartDataMSPowiat';
+            $result = LoadDataForChart::getDataForChart($em, $select, $from);
             $make = LoadDataForChart::getInput()['make'];
             $queryColor = $em->createQuery(
                     'SELECT c.make, c.color FROM AppBundle:Make c');

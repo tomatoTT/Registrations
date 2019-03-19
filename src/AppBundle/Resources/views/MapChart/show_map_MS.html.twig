@@ -55,10 +55,10 @@
                     "/mapChart/makeListSource"
             );
             var inputData = {
-                regYearMin: 2018,
-                regMonthMin: 3,
-                regYearMax: 2019,
-                regMonthMax: 2,
+                regYearMin: 2016,
+                regMonthMin: 12,
+                regYearMax: 2018,
+                regMonthMax: 1,
                 make: "JOHNDEERE",
                 county: ""
             };            
@@ -85,9 +85,12 @@
                         return;
                     case "lineChartForMap":
                         return;
+                    case "inputForm":
+                        return;
                 }
                 let make = $("#makeList").val();
                 inputData.make = make;
+                console.log(inputData);
                 printChart(inputData);
             });
             

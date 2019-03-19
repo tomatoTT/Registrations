@@ -25,7 +25,8 @@ class LineChartController extends Controller
         {
             $em = $this->getDoctrine()->getManager();
             $select = 'r.make, r.regYear, r.regMonth, r.units, r.countyName';
-            $result = LoadDataForChart::getDataForChart($em, $select);
+            $from = 'AppBundle:MainChartDataMSPowiat';
+            $result = LoadDataForChart::getDataForChart($em, $select, $from);
             $colorArray = $em->createQuery('SELECT c.make, c.color FROM AppBundle:Make c')->getResult();
             $units[0] = [
                 "make" => $result[0]['make'],
