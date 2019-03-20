@@ -19,14 +19,13 @@ class LineChartController extends Controller
     /**
      * @Route("/loadData")
      */
-    public function loadDataAction(Request $request)
-    {
-        if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1)
-        {
+    public function loadDataAction(Request $request) {
+        if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1) {
             $em = $this->getDoctrine()->getManager();
             $select = 'r.make, r.regYear, r.regMonth, r.units, r.countyName';
             $from = 'AppBundle:MainChartDataMSPowiat';
-            $result = LoadDataForChart::getDataForChart($em, $select, $from);
+            $countyEngagement = false;
+            $result = LoadDataForChart::getDataForChart($em, $select, $from,$countyEngagement);
             $colorArray = $em->createQuery('SELECT c.make, c.color FROM AppBundle:Make c')->getResult();
             $units[0] = [
                 "make" => $result[0]['make'],
@@ -107,10 +106,8 @@ class LineChartController extends Controller
      * @Route("/test")
      */
     public function testAction(Request $request) {
-        if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1)
-        {    
-            $em = $this->getDoctrine()->getManager();
-            
+        if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1) {    
+            $em = $this->getDoctrine()->getManager();            
             $select = 'r.make, r.regYear, r.regMonth, r.units, r.countyName';
             $result = LoadDataForChart::getDataForChart($em, $select);
             $jsonData = $result;
@@ -124,10 +121,8 @@ class LineChartController extends Controller
      * @Route("/test1")
      */
     public function test1Action(Request $request) {
-        if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1)
-        {    
-            $em = $this->getDoctrine()->getManager();
-            
+        if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1) {    
+            $em = $this->getDoctrine()->getManager();            
             $select = 'r.make, r.regYear, r.regMonth, r.units, r.countyName';
             $result = LoadDataForChart::getDataForChart($em, $select);
             $jsonData = $result;
