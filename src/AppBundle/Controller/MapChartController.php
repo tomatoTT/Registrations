@@ -21,15 +21,13 @@ class MapChartController extends Controller
      * 
      * @Route("/loadDataMS")
      */
-    public function loadDataAction(Request $request)
-    {
-        if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1)
-        {
+    public function loadDataAction(Request $request) {
+        if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1) {
             $em = $this->getDoctrine()->getManager();
             $select = 'r.make, r.units, r.countyName';
             $from = 'AppBundle:MainChartDataMSPowiat';
-            $engagement = false;
-            $result = LoadDataForChart::getDataForChart($em, $select, $from, $engagement);
+            $countyEngagement = false;
+            $result = LoadDataForChart::getDataForChart($em, $select, $from, $countyEngagement);
             $make = LoadDataForChart::getInput()['make'];
             $queryColor = $em->createQuery(
                     'SELECT c.make, c.color FROM AppBundle:Make c');
@@ -37,11 +35,9 @@ class MapChartController extends Controller
             $color = $colorArray[\array_search($make, \array_column($colorArray, 'make'))]['color'];
             $tivList = [];
             $makeList = [];
-            foreach ($result as $resultSingle)
-            {
+            foreach ($result as $resultSingle) {
                 $countyKey = array_search($resultSingle["countyName"], array_column($tivList, "county"));
-                if (is_numeric($countyKey))
-                {
+                if (is_numeric($countyKey)) {
                     $tivList[$countyKey]["tiv"] += $resultSingle["units"];                                        
                 } else {
                     $tivList[] = [
@@ -49,11 +45,9 @@ class MapChartController extends Controller
                         "tiv" => $resultSingle["units"]
                     ];
                 }
-                if ($resultSingle["make"] === $make)
-                {
+                if ($resultSingle["make"] === $make) {
                     $makeKey = array_search($resultSingle["countyName"], array_column($makeList, "county"));
-                    if (is_numeric($makeKey))
-                    {
+                    if (is_numeric($makeKey)) {
                         $makeList[$makeKey]["units"] += $resultSingle["units"];
                     } else {
                         $makeList[] = [
@@ -65,8 +59,7 @@ class MapChartController extends Controller
                 }                
             }
             $sourceMap = [];
-            foreach ($makeList as $makeListSingle)
-            {
+            foreach ($makeList as $makeListSingle) {
                 $sourceMap[] = [
                     "make" => $make,
                     "units" => $makeListSingle["units"],
@@ -85,8 +78,7 @@ class MapChartController extends Controller
     /**
      * @Route("/showMapMS")
      */
-    public function showMapMSAction()
-    {           
+    public function showMapMSAction() {           
         return $this->render('@App/MapChart/show_map_MS.html.twig', array(
             // ...
         ));
@@ -97,74 +89,13 @@ class MapChartController extends Controller
      * 
      * @Route("/loadDataTopMake")
      */
-    public function loadDataTopMakeAction(Request $request)
-    {
-        if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1)
-        {
+    public function loadDataTopMakeAction(Request $request) {
+        if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1) {
             $em = $this->getDoctrine()->getManager();
-            $filters = array(
-                "regYearMin" => array('filter' => FILTER_SANITIZE_NUMBER_INT),
-                "regYearMax" => array('filter' => FILTER_SANITIZE_NUMBER_INT),
-                "regMonthMin" => array('filter' => FILTER_SANITIZE_NUMBER_INT),
-                "regMonthMax" => array('filter' => FILTER_SANITIZE_NUMBER_INT)
-            );
-            $myPost = filter_input_array(INPUT_POST, $filters);
-            $regYearMin = $myPost['regYearMin'];
-            $regMonthMin = $myPost['regMonthMin'];
-            $regYearMax = $myPost['regYearMax'];
-            $regMonthMax = $myPost['regMonthMax'];
-            
-            if ($regYearMin === $regYearMax)
-            {
-                $qb = $em->createQueryBuilder();
-                $q = $qb->select('r.make, r.regYear, r.regMonth, r.units, r.countyName')
-                        ->from('AppBundle:MainChartDataMSPowiat', 'r')
-                        ->where(
-                                $qb->expr()->andX(
-                                        $qb->expr()->eq('r.regYear', $regYearMin),
-                                        $qb->expr()->between('r.regMonth', $regMonthMin, $regMonthMax)
-                                        )
-                        )
-                        ->getQuery();
-                $result = $q->getResult();
-            } else {
-                $qb1 = $em->createQueryBuilder();
-                $q1 = $qb1->select('r.make, r.regYear, r.regMonth, r.units, r.countyName')
-                        ->from('AppBundle:MainChartDataMSPowiat', 'r')
-                        ->where(
-                                $qb1->expr()->andX(
-                                        $qb1->expr()->eq('r.regYear', $regYearMin),
-                                        $qb1->expr()->gte('r.regMonth', $regMonthMin)
-                                        )
-                        )
-                        ->getQuery();
-                $resultMin = $q1->getResult();
-                $qb2 = $em->createQueryBuilder();
-                $q2 = $qb2->select('r.make, r.regYear, r.regMonth, r.units, r.countyName')
-                        ->from('AppBundle:MainChartDataMSPowiat', 'r')
-                        ->where(
-                                $qb2->expr()->andX(
-                                        $qb2->expr()->eq('r.regYear', $regYearMax),
-                                        $qb2->expr()->lte('r.regMonth', $regMonthMax)
-                                        )
-                        )
-                        ->getQuery();
-                $resultMax = $q2->getResult();
-                if ($regYearMax - $regYearMin > 1)
-                {
-                    $qb3 = $em->createQueryBuilder();
-                    $q3 = $qb3->select('r.make, r.regYear, r.regMonth, r.units, r.countyName')
-                            ->from('AppBundle:MainChartDataMSPowiat', 'r')
-                            ->where(
-                                    $qb3->expr()->between('r.regYear', $regYearMin+1, $regYearMax-1)
-                            )
-                            ->getQuery();
-                    $resultMid = $q3->getResult(); 
-                } else {
-                    $resultMid = [];
-                }                
-                $result = array_merge($resultMin, $resultMid, $resultMax);
-            }
+            $select = 'r.make, r.regYear, r.regMonth, r.units, r.countyName';
+            $from = 'AppBundle:MainChartDataMSPowiat';
+            $countyEngagement = false;
+            $result = LoadDataForChart::getDataForChart($em, $select, $from, $countyEngagement);
             $queryColor = $em->createQuery(
                     'SELECT c.make, c.color FROM AppBundle:Make c');
             $colorArray = $queryColor->getResult();
@@ -175,13 +106,10 @@ class MapChartController extends Controller
                 "color" => $colorArray[array_search($result[0]["make"],
                         array_column($colorArray, 'make'))]['color']
             ];
-            for ($i=1; $i<count($result); $i++)
-            {
-                for ($j=0; $j<count($sourceMap); $j++)
-                {
+            for ($i=1; $i<count($result); $i++) {
+                for ($j=0; $j<count($sourceMap); $j++) {
                     if ($sourceMap[$j]['make'] === $result[$i]['make'] &&
-                        $sourceMap[$j]['county'] === $result[$i]['countyName'])
-                    {
+                        $sourceMap[$j]['county'] === $result[$i]['countyName']) {
                         $sourceMap[$j]['units'] += $result[$i]['units'];
                         goto a;
                     }
@@ -198,13 +126,11 @@ class MapChartController extends Controller
             $countySourceMap = array();
             $unique = array_unique(array_column($sourceMap, "county"));
             $i = "";
-            foreach ($unique as $valueCounty)
-            {
+            foreach ($unique as $valueCounty) {
                 $temp = array();
                 $countyKeys = array_keys(array_column($sourceMap, "county"), $valueCounty);
                 $i = $valueCounty;
-                foreach ($countyKeys as $countyKey)
-                {
+                foreach ($countyKeys as $countyKey) {
                     $temp[] = [
                         $sourceMap[$countyKey]["make"],
                         $sourceMap[$countyKey]["units"],
@@ -213,12 +139,10 @@ class MapChartController extends Controller
                 }
                 $topCounty = max(array_column($temp, "1"));
                 $max = array_keys(array_column($temp, "1"), $topCounty);
-                if (count($max)>1)
-                {
+                if (count($max)>1) {
                     $subCountySourceMap = array();
                     $j = "a";
-                    foreach ($max as $valueMax)
-                    {                    
+                    foreach ($max as $valueMax) {                    
                         $subCountySourceMap[$j] = [
                             "make" => $temp[$valueMax][0],
                             "color" => $temp[$valueMax][2]
@@ -255,84 +179,20 @@ class MapChartController extends Controller
      * 
      * @Route("/loadDataTiv")
      */
-    public function loadDataTivAction(Request $request)
-    {
-        if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1)
-        {
+    public function loadDataTivAction(Request $request) {
+        if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1) {
             $em = $this->getDoctrine()->getManager();
-            $filters = array(
-                "regYearMin" => array('filter' => FILTER_SANITIZE_NUMBER_INT),
-                "regYearMax" => array('filter' => FILTER_SANITIZE_NUMBER_INT),
-                "regMonthMin" => array('filter' => FILTER_SANITIZE_NUMBER_INT),
-                "regMonthMax" => array('filter' => FILTER_SANITIZE_NUMBER_INT)
-            );
-            $myPost = filter_input_array(INPUT_POST, $filters);
-            $regYearMin = $myPost['regYearMin'];
-            $regMonthMin = $myPost['regMonthMin'];
-            $regYearMax = $myPost['regYearMax'];
-            $regMonthMax = $myPost['regMonthMax'];
-            if ($regYearMin === $regYearMax)
-            {
-                $qb = $em->createQueryBuilder();
-                $q = $qb->select('r.regYear, r.regMonth, r.units, r.countyName')
-                        ->from('AppBundle:MainChartDataMSPowiat', 'r')
-                        ->where(
-                                $qb->expr()->andX(
-                                        $qb->expr()->eq('r.regYear', $regYearMin),
-                                        $qb->expr()->between('r.regMonth', $regMonthMin, $regMonthMax)
-                                        )
-                        )
-                        ->getQuery();
-                $result = $q->getResult();
-            } else {
-                $qb1 = $em->createQueryBuilder();
-                $q1 = $qb1->select('r.regYear, r.regMonth, r.units, r.countyName')
-                        ->from('AppBundle:MainChartDataMSPowiat', 'r')
-                        ->where(
-                                $qb1->expr()->andX(
-                                        $qb1->expr()->eq('r.regYear', $regYearMin),
-                                        $qb1->expr()->gte('r.regMonth', $regMonthMin)
-                                        )
-                        )
-                        ->getQuery();
-                $resultMin = $q1->getResult();
-
-                $qb2 = $em->createQueryBuilder();
-                $q2 = $qb2->select('r.regYear, r.regMonth, r.units, r.countyName')
-                        ->from('AppBundle:MainChartDataMSPowiat', 'r')
-                        ->where(
-                                $qb2->expr()->andX(
-                                        $qb2->expr()->eq('r.regYear', $regYearMax),
-                                        $qb2->expr()->lte('r.regMonth', $regMonthMax)
-                                        )
-                        )
-                        ->getQuery();
-                $resultMax = $q2->getResult();
-
-                if ($regYearMax - $regYearMin > 1)
-                {
-                    $qb3 = $em->createQueryBuilder();
-                    $q3 = $qb3->select('r.regYear, r.regMonth, r.units, r.countyName')
-                            ->from('AppBundle:MainChartDataMSPowiat', 'r')
-                            ->where(
-                                    $qb3->expr()->between('r.regYear', $regYearMin+1, $regYearMax-1)
-                            )
-                            ->getQuery();
-                    $resultMid = $q3->getResult(); 
-                } else {
-                    $resultMid = [];
-                }
-                $result = array_merge($resultMin, $resultMid, $resultMax);
-            }
+            $select = 'r.regYear, r.regMonth, r.units, r.countyName';
+            $from = 'AppBundle:MainChartDataMSPowiat';
+            $countyEngagement = false;
+            $result = LoadDataForChart::getDataForChart($em, $select, $from, $countyEngagement);
             $sourceMap[0] = [
                 "county" => $result[0]["countyName"],
                 "tiv" => $result[0]["units"]
             ];
-            for ($i=1; $i<count($result); $i++)
-            {
+            for ($i=1; $i<count($result); $i++) {
                 $countyKey = array_search($result[$i]["countyName"], array_column($sourceMap, "county"));
-                if ($countyKey)
-                {
+                if ($countyKey) {
                     $sourceMap[$countyKey]["tiv"] += $result[$i]["units"];
                 } else {
                     $sourceMap[] = [
@@ -351,8 +211,7 @@ class MapChartController extends Controller
     /**
      * @Route("/showMapTiv")
      */
-    public function showMapTivAction()
-    {
+    public function showMapTivAction() {
         return $this->render('@App/MapChart/show_map_tiv.html.twig', array(
             // ...
         ));
@@ -361,10 +220,8 @@ class MapChartController extends Controller
     /**
      * @Route("/slideRangeSource")
      */
-    public function slideRangeSourceAction(Request $request)
-    {
-        if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1)
-        {
+    public function slideRangeSourceAction(Request $request) {
+        if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1) {
             $em = $this->getDoctrine()->getManager();
             $qb = $em->createQueryBuilder();
             $qRegYearMax = $qb->select('MAX(r.regYear) AS max_regYear')
@@ -388,8 +245,7 @@ class MapChartController extends Controller
                     ->where($qb3->expr()->eq('r.regYear', $minRegYear))
                     ->getQuery();
             $minRegMonth = $qRegMonthMin->getResult()[0]['min_regMonth'];            
-            $jsonData = 
-            [
+            $jsonData = [
                 'yearMin' => $minRegYear,
                 'monthMin' => $minRegMonth,
                 'yearMax' => $maxRegYear,
@@ -404,10 +260,8 @@ class MapChartController extends Controller
     /**
      * @Route("/makeListSource")
      */
-    public function makeListSourceAction(Request $request)
-    {
-        if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1)
-        {
+    public function makeListSourceAction(Request $request) {
+        if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1) {
             $em = $this->getDoctrine()->getManager();
             $query = $em->createQuery(
                     'SELECT DISTINCT r.make FROM AppBundle:MainChartDataMSPowiat r'
@@ -424,10 +278,8 @@ class MapChartController extends Controller
     /**
      * @Route("/loadCountyList")
      */
-    public function loadCountyListAction(Request $request)
-    {
-        if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1)
-        {
+    public function loadCountyListAction(Request $request) {
+        if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1) {
             $em = $this->getDoctrine()->getManager();
             $query = $em->createQuery(
                     'SELECT c.countyName FROM AppBundle:TerytPow c'
@@ -448,8 +300,8 @@ class MapChartController extends Controller
             $em = $this->getDoctrine()->getManager();
             $select = 'r.make, r.regYear, r.regMonth, r.units, r.countyName';
             $from = 'AppBundle:MainChartDataMSPowiat';
-            $engagement = true;
-            $result = LoadDataForChart::getDataForChart($em, $select, $from, $engagement);
+            $countyEngagement = true;
+            $result = LoadDataForChart::getDataForChart($em, $select, $from, $countyEngagement);
             if (empty($result)) {
                 return new JsonResponse($result);
             } else {
@@ -497,6 +349,7 @@ class MapChartController extends Controller
      * @Route("/loadCountyDetailsUpdate")
      */
     public function loadCountyDetailsUpdateAction(Request $request) {
+        /**
         if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1)
         {
             $em = $this->getDoctrine()->getManager();
@@ -626,6 +479,6 @@ class MapChartController extends Controller
             }
         } else {
             return new Response('<html><body>nie ma jsona</body></html>');
-        }
+        }*/
     }
 }
