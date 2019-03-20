@@ -28,7 +28,8 @@ class MapChartController extends Controller
             $em = $this->getDoctrine()->getManager();
             $select = 'r.make, r.units, r.countyName';
             $from = 'AppBundle:MainChartDataMSPowiat';
-            $result = LoadDataForChart::getDataForChart($em, $select, $from);
+            $engagement = false;
+            $result = LoadDataForChart::getDataForChart($em, $select, $from, $engagement);
             $make = LoadDataForChart::getInput()['make'];
             $queryColor = $em->createQuery(
                     'SELECT c.make, c.color FROM AppBundle:Make c');
@@ -443,82 +444,13 @@ class MapChartController extends Controller
      * @Route("/loadCountyDetails")
      */
     public function loadCountyDetailsAction(Request $request) {
-        if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1)
-        {
+        if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1) {
             $em = $this->getDoctrine()->getManager();
-            $filters = array(
-                "regYearMin" => array('filter' => FILTER_SANITIZE_NUMBER_INT),
-                "regYearMax" => array('filter' => FILTER_SANITIZE_NUMBER_INT),
-                "regMonthMin" => array('filter' => FILTER_SANITIZE_NUMBER_INT),
-                "regMonthMax" => array('filter' => FILTER_SANITIZE_NUMBER_INT),
-                "county" => array('filter' => FILTER_SANITIZE_STRING)
-            );
-            $myPost = filter_input_array(INPUT_POST, $filters);            
-            $regYearMin = $myPost['regYearMin'];
-            $regMonthMin = $myPost['regMonthMin'];
-            $regYearMax = $myPost['regYearMax'];
-            $regMonthMax = $myPost['regMonthMax'];
-            $county = $myPost['county'];
-
-            if ($regYearMin === $regYearMax)
-            {
-                $qb = $em->createQueryBuilder();
-                $q = $qb->select('r.make, r.regYear, r.regMonth, r.units, r.countyName')
-                        ->from('AppBundle:MainChartDataMSPowiat', 'r')
-                        ->where(
-                                $qb->expr()->andX(
-                                        $qb->expr()->eq('r.regYear', $regYearMin),
-                                        $qb->expr()->between('r.regMonth', $regMonthMin, $regMonthMax),
-                                        $qb->expr()->eq('r.countyName', $qb->expr()->literal($county))
-                                        )
-                        )
-                        ->getQuery();
-                $result = $q->getResult();
-            } else {
-                $qb1 = $em->createQueryBuilder();
-                $q1 = $qb1->select('r.make, r.regYear, r.regMonth, r.units, r.countyName')
-                        ->from('AppBundle:MainChartDataMSPowiat', 'r')
-                        ->where(
-                                $qb1->expr()->andX(
-                                        $qb1->expr()->eq('r.regYear', $regYearMin),
-                                        $qb1->expr()->gte('r.regMonth', $regMonthMin),
-                                        $qb1->expr()->eq('r.countyName', $qb1->expr()->literal($county))
-                                        )
-                        )
-                        ->getQuery();
-                $resultMin = $q1->getResult();
-                $qb2 = $em->createQueryBuilder();
-                $q2 = $qb2->select('r.make, r.regYear, r.regMonth, r.units, r.countyName')
-                        ->from('AppBundle:MainChartDataMSPowiat', 'r')
-                        ->where(
-                                $qb2->expr()->andX(
-                                        $qb2->expr()->eq('r.regYear', $regYearMax),
-                                        $qb2->expr()->lte('r.regMonth', $regMonthMax),
-                                        $qb2->expr()->eq('r.countyName', $qb2->expr()->literal($county))
-                                        )
-                        )
-                        ->getQuery();
-                $resultMax = $q2->getResult();
-                if ($regYearMax - $regYearMin > 1)
-                {
-                    $qb3 = $em->createQueryBuilder();
-                    $q3 = $qb3->select('r.make, r.regYear, r.regMonth, r.units, r.countyName ')
-                            ->from('AppBundle:MainChartDataMSPowiat', 'r')
-                            ->where(
-                                    $q3->expr()->andX(
-                                            $qb3->expr()->between('r.regYear', $regYearMin+1, $regYearMax-1),
-                                            $qb3->expr()->eq('r.countyName', $qb3->expr()->literal($county))
-                                            )
-                            )
-                            ->getQuery();
-                    $resultMid = $q3->getResult(); 
-                } else {
-                    $resultMid = [];
-                }
-                $result = array_merge($resultMin, $resultMid, $resultMax);
-            }
-            if (empty($result))
-            {
+            $select = 'r.make, r.regYear, r.regMonth, r.units, r.countyName';
+            $from = 'AppBundle:MainChartDataMSPowiat';
+            $engagement = true;
+            $result = LoadDataForChart::getDataForChart($em, $select, $from, $engagement);
+            if (empty($result)) {
                 return new JsonResponse($result);
             } else {
                 $tiv = 0;
@@ -531,13 +463,9 @@ class MapChartController extends Controller
                     "tiv" => $tiv,
                     "county" => $result[0]["countyName"]
                 ];
-                for ($i=1; $i<count($result); $i++)
-                {
-                    
-                    for ($j=0; $j<count($sourceMap); $j++)
-                    {
-                        if ($sourceMap[$j]['make'] === $result[$i]['make'])
-                        {
+                for ($i=1; $i<count($result); $i++) {                    
+                    for ($j=0; $j<count($sourceMap); $j++) {
+                        if ($sourceMap[$j]['make'] === $result[$i]['make']) {
                             $sourceMap[$j]['units'] += $result[$i]['units'];
                             goto a;
                         }

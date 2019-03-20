@@ -3,7 +3,7 @@ namespace AppBundle\Utils;
 
 class LoadDataForChart {
 
-    static public function getDataForChart($em, $select, $from) {
+    static public function getDataForChart($em, $select, $from, $engagement) {
         $conditions = self::getInput();
         $regYearMin = $conditions['regYearMin'];
         $regYearMax = $conditions['regYearMax'];
@@ -19,6 +19,7 @@ class LoadDataForChart {
                                     $qb->expr()->between('r.regMonth', $regMonthMin, $regMonthMax)
                                     )
                     );
+            self::countyEngagement($conditions, $engagement, $qb);
             self::countyNumCheck($conditions, $qb);             
             $result = $q->getQuery()->getResult();                 
         } else {
@@ -31,6 +32,7 @@ class LoadDataForChart {
                                     $qb1->expr()->gte('r.regMonth', $regMonthMin)
                                     )
                     );
+            self::countyEngagement($conditions, $engagement, $qb1);
             self::countyNumCheck($conditions, $qb1);             
             $resultMin = $q1->getQuery()->getResult();
             $qb2 = $em->createQueryBuilder();
@@ -42,6 +44,7 @@ class LoadDataForChart {
                                     $qb2->expr()->lte('r.regMonth', $regMonthMax)
                                     )
                     );
+            self::countyEngagement($conditions, $engagement, $qb2);
             self::countyNumCheck($conditions, $qb2);
             $resultMax = $q2->getQuery()->getResult();
             if ($regYearMax - $regYearMin > 1) {
@@ -53,6 +56,7 @@ class LoadDataForChart {
                                         $qb3->expr()->between('r.regYear', $regYearMin+1, $regYearMax-1)
                                         )
                         );
+                self::countyEngagement($conditions, $engagement, $qb3);
                 self::countyNumCheck($conditions, $qb3);
                 $resultMid = $q3->getQuery()->getResult(); 
             } else {
@@ -107,5 +111,15 @@ class LoadDataForChart {
         }
         return $qb;
     }
-
+    
+    static private function countyEngagement($conditions, $engagement, $qb) {
+        if ($engagement) {
+            $eqStatement = $qb->expr()->andX(
+                    $qb->expr()->eq('r.countyName', $qb->expr()->literal($conditions["county"]))
+                    );
+            /**$eqStatement->add($qb->expr()->eq('r.countyName', $qb->expr()->literal($conditions["county"])));*/
+            $qb->andWhere($eqStatement);            
+        }
+        return $qb;
+    }
 }

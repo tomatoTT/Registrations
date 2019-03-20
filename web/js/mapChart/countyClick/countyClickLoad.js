@@ -4,7 +4,9 @@ function countyClickLoad(url, inputData) {
         url: url,
         data: inputData,
         dataType: "json",
+        async: false,
         success: function(data) {
+            console.log(data);
                 mapChartDetailsCss(inputData.county, data);
         },
         beforeSend: function() {
@@ -84,7 +86,6 @@ function mapChartDetailsSubtract(data, county) {
     var table, rows, i, j, make, units, tiv, newUnits, rowsLength, pList;
     $("#county"+county).remove(); //remove p county element
     pList = $("#detailsTableCounty").find("p");
-    console.log(pList);
     table = document.getElementById("detailsTable");
     rows = table.rows;
     rowsLength = rows.length;
@@ -143,67 +144,26 @@ function mapChartDetailsCss(county, data) {
         return true;    
 }
 
+
 function mapChartDetailsCssUpdate(inputData) {
-    var pList, countyList = [], table, i, countyx;
+    var pList, i;
     pList =$("#detailsTableCounty").find("p");
     if (pList.length === 0) {
         return;
     } else {
-        table = document.getElementById("detailsTable");
+        $("#detailsTableCounty").remove();
         $("#detailsTable").remove();
+        $(".st0, .st1").css("stroke-width", "1");
+        $(".st0, .st1").data("click", "off");
         for (i=0; i<pList.length; i++) {        
-            countyList.push(pList[i].innerText);
-            countyx = "county" + i;
-            inputData[countyx] = pList[i].innerText;
-        }
-        countyClickLoadUpdate("/mapChart/loadCountyDetailsUpdate", inputData);
-        for (i=0; i<pList.length; i++) {        
-            countyList.push(pList[i].innerText);
-            countyx = "county" + i;
-            delete inputData[countyx];
+            inputData.county = pList[i].innerText;
+            countyClickLoad("/mapChart/loadCountyDetails", inputData);
         }
     }    
 }
 
-function countyClickLoadUpdate(url, inputData) {
-    $.ajax({
-        type: 'POST',
-        url: url,
-        data: inputData,
-        dataType: "json",
-        success: function(data) {
-                mapChartDeatilsUpdate(data);
-        },
-        error: function(xhr, textStatus, errorThrown) {
-            alert(errorThrown, textStatus, xhr);
-        }
-    });
-}
-
-function mapChartDeatilsUpdate(data) {
-    $("#mapDetails").append('<table id="detailsTable"></table>');
-        $("#detailsTable").append(
-                '<tr>\n\
-                    <th>Make</th>\n\
-                    <th>Units</th>\n\
-                    <th>TIV</th>\n\
-                    <th>MS</th>\n\
-                </tr>'
-                );
-    for (var i=0; i<data.length; i++) {
-        $("#detailsTable").append('\
-                <tr>\n\
-                    <td>'+data[i].make+'</td>\n\
-                    <td>'+data[i].units+'</td>\n\
-                    <td>'+data[i].tiv+'</td>\n\
-                    <td>'+((data[i].units/data[i].tiv*100).toFixed(2))+'%</td>\n\
-                </tr>'                
-                );
-    }
-}
-
 function lineChartInputForMap(inputData) {
-    var pList, countyx, i, j = 0, temp, county, substract = false, lineChartContainer;
+    var pList, countyx, i, temp, lineChartContainer;
     pList =$("#detailsTableCounty").find("p");
     console.log(pList);
     lineChartContainer = $("#lineChart").length;
@@ -220,34 +180,16 @@ function lineChartInputForMap(inputData) {
             "make": inputData.make,
             "county": inputData.county
         };
-        county = inputData.county;
         if (!lineChartContainer) {
-            for (i=0; i<pList.length; i++) {
-                countyx = "county" + j;
-                temp[countyx] = pList[i].innerText;
-                j++;
-            }
             $("#lineChartContainer")
                 .append('<div id = "lineChart" class="chart-container"><canvas id="myChart"></canvas></div>');
-            inputData = temp;
-            return inputData;
-        } else {
-            for (i=0; i<pList.length; i++) {
-                if (county === pList[i].innerText) {
-                    substract = true;
-                } else {
-                    countyx = "county" + j;
-                    temp[countyx] = pList[i].innerText;
-                    j++;
-                }
-            }
-            if (substract === false) {
-                countyx = "county" + j;
-                temp[countyx] = county;
-            }
-            inputData = temp;
-            return inputData;
         }
+        for (i=0; i<pList.length; i++) {                
+            countyx = "county" + i;
+            temp[countyx] = pList[i].innerText;
+        }            
+        inputData = temp;
+        return inputData;        
     }
 }
 
