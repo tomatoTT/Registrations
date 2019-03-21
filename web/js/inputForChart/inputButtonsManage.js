@@ -1,5 +1,4 @@
 function inputButtonsManage(inputData) {
-
     $("#inputForm").click(function(e) {
         switch(e.target.id) {
             case "YTD":
@@ -26,8 +25,9 @@ function inputButtonsManage(inputData) {
         inputData.make = make;
         console.log(inputData);
         printChart(inputData);
-        return inputData;
+        
     });
+    return inputData;
 }
 
 function printChart(inputData) {

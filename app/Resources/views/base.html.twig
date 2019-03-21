@@ -2,13 +2,19 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        <title>{% block title %}{% endblock %}</title>
+        {% block stylesheetsForMapChart %}{% endblock %}
+        {% block javascriptLinkForMapChart %}{% endblock %}
+        <link href="{{ asset('css/jquery-ui/jquery-ui.min.css') }}" type="text/css" rel="stylesheet" />
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
         <script src="{{ asset('js/jquery/jquery.min.js') }}"></script>
+        <script src="{{ asset('js/jquery-ui/jquery-ui.min.js') }}"></script>
     </head>
     <body>
         {% block body %}{% endblock %}
+        {% block bodyForMpaChart %}{% endblock %}
+        
         {% block javascripts %}{% endblock %}
+        {% block javascriptsForMapChart %}{% endblock %}
     </body>
 </html>

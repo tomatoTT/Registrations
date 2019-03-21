@@ -101,34 +101,4 @@ class LineChartController extends Controller
             // ...
         ));
     }
-    
-    /**
-     * @Route("/test")
-     */
-    public function testAction(Request $request) {
-        if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1) {    
-            $em = $this->getDoctrine()->getManager();            
-            $select = 'r.make, r.regYear, r.regMonth, r.units, r.countyName';
-            $result = LoadDataForChart::getDataForChart($em, $select);
-            $jsonData = $result;
-            return new JsonResponse($jsonData);
-        } else {
-            return new Response('<html><body>nie ma jsona</body></html>');
-        }
-    }
-    
-    /**
-     * @Route("/test1")
-     */
-    public function test1Action(Request $request) {
-        if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1) {    
-            $em = $this->getDoctrine()->getManager();            
-            $select = 'r.make, r.regYear, r.regMonth, r.units, r.countyName';
-            $result = LoadDataForChart::getDataForChart($em, $select);
-            $jsonData = $result;
-            return new JsonResponse($jsonData);
-        } else {
-            return new Response('<html><body>nie ma jsona</body></html>');
-        }
-    }
 }

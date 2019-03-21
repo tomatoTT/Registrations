@@ -1,0 +1,63 @@
+{% extends "base.html.twig" %}
+
+{% block stylesheetsForMapChart %}
+    <link href="{{ asset('css/mapChart/mapapolski.css') }}" type="text/css" rel="stylesheet" />
+    <link href="{{ asset('css/mapChart/mapChartMS.css') }}" type="text/css" rel="stylesheet" />
+{% endblock %}
+
+{% block javascriptLinkForMapChart %}
+    <script src="{{ asset('js/mapChart/dataMapLoad.js') }}"></script>
+    <script src="{{ asset('js/mapChart/dataMapMSCss.js') }}"></script>
+    <script src="{{ asset('js/mapChart/dataMapMS.js') }}"></script>
+    <script src="{{ asset('js/mapChart/createInputMapChart.js') }}"></script>
+    <script src="{{ asset('js/mapChart/sendInputMapChart.js') }}"></script>
+    <script src="{{ asset('js/mapChart/countyClick/countyClickLoad.js') }}"></script>
+    <script src="{{ asset('js/lineChart/Chart.js') }}"></script>
+    <script src="{{ asset('js/lineChart/lineChartDraw.js') }}"></script>
+    <script src="{{ asset('js/lineChart/lineChartDrawDatasets.js') }}"></script>
+    <script src="{{ asset('js/lineChart/labelsForLineChart.js') }}"></script>
+    <script src="{{ asset('js/lineChart/loadDataForLineChart.js') }}"></script>
+    <script src="{{ asset('js/lineChart/labelMakeConditions.js') }}"></script>
+    <script src="{{ asset('js/inputForChart/inputButtonsManage.js') }}"></script>
+    <script src="{{ asset('js/inputForChart/inputButtonsDefinition.js') }}"></script>
+    
+{% endblock %}
+
+{% block bodyForMpaChart %}
+    <div id="loadingImage"><h1>LOADING</h1></div>
+    <div id="inputForm"><div id="slider-range"></div></div>
+    <div id="mapChart">
+            {% include "@Web/svg/mapapolski.svg" %}
+    </div>
+    <div id="mapDetails"></div>
+    <div id="lineChartContainer"></div>
+{% endblock %}
+
+{% block javascriptsForMapChart %}
+    <script>
+        $(document).ready(function() {
+            let inputData, siteTitle, urlList = [];
+            siteTitle = $("title").first().text();
+            urlList = {
+                'Map MS': '/mapChart/loadDataMS'
+            };
+
+            inputData = {
+                regYearMin: 2016,
+                regMonthMin: 12,
+                regYearMax: 2018,
+                regMonthMax: 1,
+                make: "JOHNDEERE",
+                county: ""
+            };
+            dataMapLoad(urlList, inputData, siteTitle);
+            inputButtonsDefinition(siteTitle);
+            inputButtonsManage(inputData);
+        });
+    </script>
+{% endblock %}
+
+
+
+
+

@@ -1,98 +1,16 @@
-{% extends "base.html.twig" %}
 
-{% block title %}AppBundle:MapChart:showMap{% endblock %}
-    
-{% block stylesheets %}
-    <link href="{{ asset('css/mapChart/mapapolski.css') }}" type="text/css" rel="stylesheet" />
-    <link href="{{ asset('css/jquery-ui/jquery-ui.min.css') }}" type="text/css" rel="stylesheet" />
-    <link href="{{ asset('css/mapChart/mapChartMS.css') }}" type="text/css" rel="stylesheet" />
-{% endblock %}
-
-{% block body %}
-    <div id="loadingImage"><h1>LOADING</h1></div>
-    <div id="inputForm"><div id="slider-range"></div></div>
-
-    <div id="mapChart">
-            {% include "@Web/svg/mapapolski.svg" %}        
-    </div>
-    <div id="mapDetails"></div>
-    <div id="lineChartContainer"></div>
-    
-{% endblock %}
-
+{% extends "@App/MapChart/map_chart_base.html.twig" %}
+{% block title %}Map MS{% endblock %}
+{% block body %}{% endblock %}
 {% block javascripts %}
-    <script src="{{ asset('js/mapChart/dataMapMSLoad.js') }}"></script>
-    <script src="{{ asset('js/mapChart/dataMapMSCss.js') }}"></script>
-    <script src="{{ asset('js/mapChart/dataMapMS.js') }}"></script>
-    <script src="{{ asset('js/jquery-ui/jquery-ui.min.js') }}"></script>
-    <script src="{{ asset('js/mapChart/createInputMapChart.js') }}"></script>
-    <script src="{{ asset('js/mapChart/sendInputMapChart.js') }}"></script>
-    <script src="{{ asset('js/mapChart/countyClick/countyClickLoad.js') }}"></script>
-    <script src="{{ asset('js/mapChart/hover/mapChartHover.js') }}"></script>
-    <script src="{{ asset('js/mainChart/chart.js') }}"></script>
-    <script src="{{ asset('js/lineChart/lineChartDraw.js') }}"></script>
-    <script src="{{ asset('js/lineChart/lineChartDrawDatasets.js') }}"></script>
-    <script src="{{ asset('js/lineChart/labelsForLineChart.js') }}"></script>
-    <script src="{{ asset('js/lineChart/loadDataForLineChart.js') }}"></script>
-    <script src="{{ asset('js/lineChart/labelMakeConditions.js') }}"></script>
-    <script src="{{ asset('js/inputForChart/inputButtonsManage.js') }}"></script>
+    
     <script>
         $(document).ready(function() {
             $("h1").hide();
-            var input = [
-                "Make",
-                "YTD",
-                "Rolling12",
-                "QTD",
-                "Rolling3",
-                "Customize"
-            ];
-            createInputMapChart(
-                    input, 
-                    "#inputForm", 
-                    "#slider-range", 
-                    "/mapChart/slideRangeSource", 
-                    "/mapChart/makeListSource"
-            );
-            var inputData = {
-                regYearMin: 2016,
-                regMonthMin: 12,
-                regYearMax: 2018,
-                regMonthMax: 1,
-                make: "JOHNDEERE",
-                county: ""
-            };            
-            dataMapMSLoad("/mapChart/loadDataMS", inputData);
+            
+            
 
-            $("#inputForm").click(function(e) {
-                switch(e.target.id) {
-                    case "YTD":
-                        inputData = ytd();
-                        break;
-                    case "Rolling12":
-                        inputData = rolling12() ;
-                        break;
-                    case "QTD":
-                        inputData = qtd();
-                        break;
-                    case "Rolling3":
-                        inputData = rolling3();
-                        break;
-                    case "submitCustomDates":
-                        inputData = customize("#hiddenRangeDate");
-                        break;
-                    case "Customize":
-                        return;
-                    case "lineChartForMap":
-                        return;
-                    case "inputForm":
-                        return;
-                }
-                let make = $("#makeList").val();
-                inputData.make = make;
-                console.log(inputData);
-                printChart(inputData);
-            });
+            
             
             $("#lineChartForMap").click(function() {
                 console.log(inputData);                

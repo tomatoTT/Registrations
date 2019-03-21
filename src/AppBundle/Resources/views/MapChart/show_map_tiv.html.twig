@@ -9,12 +9,13 @@
 {% endblock %}
 
 {% block body %}
-    <div id="inputForm"></div>
-    <div id="slider-range"></div>
+    <div id="loadingImage"><h1>LOADING</h1></div>
+    <div id="inputForm"><div id="slider-range"></div></div>
     <div id="mapChart">
             {% include "@Web/svg/mapapolski.svg" %}        
     </div>
     <div id="mapDetails"></div>
+    <div id="lineChartContainer"></div>
 {% endblock %}
 
 {% block javascripts %}
