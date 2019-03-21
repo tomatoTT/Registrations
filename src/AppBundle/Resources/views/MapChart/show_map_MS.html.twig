@@ -2,38 +2,4 @@
 {% extends "@App/MapChart/map_chart_base.html.twig" %}
 {% block title %}Map MS{% endblock %}
 {% block body %}{% endblock %}
-{% block javascripts %}
-    
-    <script>
-        $(document).ready(function() {
-            $("h1").hide();
-            
-            
-
-            
-            
-            $("#lineChartForMap").click(function() {
-                console.log(inputData);                
-                checkBoxLineChart("#lineChartForMap", inputData);
-            });
-            
-            $("#makeSubmit").click(function() {
-                var make = $("#makeList").val();
-                inputData.make = make;
-                console.log(inputData);
-                dataMapMSLoad("/mapChart/loadDataMS", inputData);                
-            });
-
-            
-            
-            $(".st0, .st1").click(function() {                
-                inputData.county = this.id;
-                console.log(inputData);
-                countyClickLoad("/mapChart/loadCountyDetails", inputData);
-                checkBoxLineChart("#lineChartForMap", inputData);                
-            });
-            
-            
-        });    
-    </script>
-{% endblock %}
+{% block javascripts %}{% endblock %}

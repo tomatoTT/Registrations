@@ -36,12 +36,12 @@
 {% block javascriptsForMapChart %}
     <script>
         $(document).ready(function() {
-            let inputData, siteTitle, urlList = [];
+            $("h1").hide();
+            let inputData, siteTitle, urlList;
             siteTitle = $("title").first().text();
             urlList = {
                 'Map MS': '/mapChart/loadDataMS'
             };
-
             inputData = {
                 regYearMin: 2016,
                 regMonthMin: 12,
@@ -52,7 +52,18 @@
             };
             dataMapLoad(urlList, inputData, siteTitle);
             inputButtonsDefinition(siteTitle);
-            inputButtonsManage(inputData);
+            inputButtonsManage(urlList, inputData, siteTitle);
+            
+            $(".st0, .st1").click(function() {                
+                inputData.county = this.id;
+                console.log(inputData);
+                countyClickLoad("/mapChart/loadCountyDetails", inputData);
+                checkBoxLineChart("#lineChartForMap", inputData);                
+            });
+            $("#lineChartForMap").click(function() {
+                console.log(inputData);                
+                checkBoxLineChart("#lineChartForMap", inputData);
+            });
         });
     </script>
 {% endblock %}

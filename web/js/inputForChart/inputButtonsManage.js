@@ -1,4 +1,4 @@
-function inputButtonsManage(inputData) {
+function inputButtonsManage(urlList, inputData, siteTitle) {
     $("#inputForm").click(function(e) {
         switch(e.target.id) {
             case "YTD":
@@ -20,18 +20,18 @@ function inputButtonsManage(inputData) {
                 return;
             case "lineChartForMap":
                 return;
+            case "makeSubmit":
+                break;
         }
-        let make = $("#makeList").val();
-        inputData.make = make;
-        console.log(inputData);
-        printChart(inputData);
-        
+        printChart(urlList, inputData, siteTitle);
     });
     return inputData;
 }
 
-function printChart(inputData) {
-    dataMapMSLoad("/mapChart/loadDataMS", inputData);
+function printChart(urlList, inputData, siteTitle) {
+    inputData.make = $("#makeList").val();
+    console.log(inputData);
+    dataMapLoad(urlList, inputData, siteTitle);
     mapChartDetailsCssUpdate(inputData);
     checkBoxLineChart("#lineChartForMap", inputData);
 }
