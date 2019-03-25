@@ -4,6 +4,9 @@ function dataMapLoad(urlList, inputData, siteTitle) {
         case "Map MS":
             url = urlList[siteTitle];
             break;
+        case "Map TIV":
+            url = urlList[siteTitle];
+            break;
     }
     $.ajax({
         type: 'POST',
@@ -17,6 +20,9 @@ function dataMapLoad(urlList, inputData, siteTitle) {
                     dataMapMSCss(ms);
                     mapKeyMS(ms);
                     mapKeyTitleMS(data);
+                    return;
+                case "Map TIV":
+                    dataMapTivCss(data);
                     return;
             }          
         },

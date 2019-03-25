@@ -9,6 +9,7 @@
     <script src="{{ asset('js/mapChart/dataMapLoad.js') }}"></script>
     <script src="{{ asset('js/mapChart/dataMapMSCss.js') }}"></script>
     <script src="{{ asset('js/mapChart/dataMapMS.js') }}"></script>
+    <script src="{{ asset('js/mapChart/dataMapTivCss.js') }}"></script>
     <script src="{{ asset('js/inputForChart/createInputMapChart.js') }}"></script>
     <script src="{{ asset('js/mapChart/sendInputMapChart.js') }}"></script>
     <script src="{{ asset('js/mapChart/countyClick/countyClickLoad.js') }}"></script>
@@ -40,7 +41,8 @@
             let inputData, siteTitle, urlList;
             siteTitle = $("title").first().text();
             urlList = {
-                'Map MS': '/mapChart/loadDataMS'
+                'Map MS': '/mapChart/loadDataMS',
+                'Map TIV': '/mapChart/loadDataTiv'
             };
             inputData = {
                 regYearMin: 2016,
@@ -60,10 +62,7 @@
                 countyClickLoad("/mapChart/loadCountyDetails", inputData);
                 checkBoxLineChart("#lineChartForMap", inputData);                
             });
-            $("#lineChartForMap").click(function() {
-                console.log(inputData);                
-                checkBoxLineChart("#lineChartForMap", inputData);
-            });
+
         });
     </script>
 {% endblock %}

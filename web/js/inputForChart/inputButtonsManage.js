@@ -19,6 +19,7 @@ function inputButtonsManage(urlList, inputData, siteTitle) {
             case "Customize":
                 return;
             case "lineChartForMap":
+                checkBoxLineChart("#lineChartForMap", inputData);
                 return;
             case "makeSubmit":
                 break;
