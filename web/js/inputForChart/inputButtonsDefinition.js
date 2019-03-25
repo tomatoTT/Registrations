@@ -20,6 +20,15 @@ function inputButtonsDefinition(siteTitle) {
                 "Customize"
             ];
             break;
+        case "Map TOP":
+            input = [
+                "YTD",
+                "Rolling12",
+                "QTD",
+                "Rolling3",
+                "Customize"
+            ];
+            break;
     }
     createInputMapChart(
         input, 

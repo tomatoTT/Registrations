@@ -1,13 +1,5 @@
 function dataMapLoad(urlList, inputData, siteTitle) {
-    let url;
-    switch(siteTitle) {
-        case "Map MS":
-            url = urlList[siteTitle];
-            break;
-        case "Map TIV":
-            url = urlList[siteTitle];
-            break;
-    }
+    let url = urlList[siteTitle];
     $.ajax({
         type: 'POST',
         url: url,
@@ -24,6 +16,10 @@ function dataMapLoad(urlList, inputData, siteTitle) {
                 case "Map TIV":
                     dataMapTivCss(data);
                     return;
+                case "Map TOP":
+                    dataMapTopCss(data);
+                    makeTopSelect(data);
+                    return;
             }          
         },
         beforeSend: function() {
@@ -37,5 +33,3 @@ function dataMapLoad(urlList, inputData, siteTitle) {
         }
     });
 }
-
-

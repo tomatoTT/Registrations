@@ -6,5 +6,3 @@ function dataMapMS(data) {
     }
     return ms;
 }
-
-

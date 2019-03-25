@@ -21,14 +21,14 @@
     <script src="{{ asset('js/lineChart/labelMakeConditions.js') }}"></script>
     <script src="{{ asset('js/inputForChart/inputButtonsManage.js') }}"></script>
     <script src="{{ asset('js/inputForChart/inputButtonsDefinition.js') }}"></script>
-    
+    <script src="{{ asset('js/mapChart/dataMapTopCss.js') }}"></script>
 {% endblock %}
 
 {% block bodyForMpaChart %}
     <div id="loadingImage"><h1>LOADING</h1></div>
     <div id="inputForm"><div id="slider-range"></div></div>
     <div id="mapChart">
-            {% include "@Web/svg/mapapolski.svg" %}
+        {% include "@Web/svg/mapapolski.svg" %}
     </div>
     <div id="mapDetails"></div>
     <div id="lineChartContainer"></div>
@@ -42,7 +42,8 @@
             siteTitle = $("title").first().text();
             urlList = {
                 'Map MS': '/mapChart/loadDataMS',
-                'Map TIV': '/mapChart/loadDataTiv'
+                'Map TIV': '/mapChart/loadDataTiv',
+                'Map TOP': '/mapChart/loadDataTopMake'
             };
             inputData = {
                 regYearMin: 2016,
@@ -51,8 +52,7 @@
                 regMonthMax: 1,
                 make: "JOHNDEERE",
                 county: ""
-            };
-            
+            };            
             inputButtonsDefinition(siteTitle);
             inputButtonsManage(urlList, inputData, siteTitle);
             dataMapLoad(urlList, inputData, siteTitle);
@@ -66,8 +66,3 @@
         });
     </script>
 {% endblock %}
-
-
-
-
-

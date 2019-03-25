@@ -35,4 +35,3 @@ function mapKeyTitleMS(data) {
     var make = data[0].make;
     $("#mapKeyTitleMake").text(make);
 }
-
