@@ -1,4 +1,5 @@
 function countyClickLoad(url, inputData) {
+    console.log(inputData);
     $.ajax({
         type: 'POST',
         url: url,
@@ -10,10 +11,10 @@ function countyClickLoad(url, inputData) {
                 mapChartDetailsCss(inputData.county, data);
         },
         beforeSend: function() {
-            $("h1").show();
+            $("#loadingImage").show();
         },
         complete: function() {
-            $("h1").hide();
+            $("#loadingImage").hide();
         },
         error: function(xhr, textStatus, errorThrown) {
             alert(errorThrown, textStatus, xhr);

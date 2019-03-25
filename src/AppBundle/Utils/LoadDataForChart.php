@@ -117,7 +117,6 @@ class LoadDataForChart {
             $eqStatement = $qb->expr()->andX(
                     $qb->expr()->eq('r.countyName', $qb->expr()->literal($conditions["county"]))
                     );
-            /**$eqStatement->add($qb->expr()->eq('r.countyName', $qb->expr()->literal($conditions["county"])));*/
             $qb->andWhere($eqStatement);            
         }
         return $qb;

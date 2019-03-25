@@ -9,6 +9,7 @@ function dataMapLoad(urlList, inputData, siteTitle) {
             switch(siteTitle) {
                 case "Map MS":
                     let ms = dataMapMS(data);
+                    console.log(ms);
                     dataMapMSCss(ms);
                     mapKeyMS(ms);
                     mapKeyTitleMS(data);
