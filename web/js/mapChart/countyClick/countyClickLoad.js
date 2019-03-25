@@ -43,6 +43,7 @@ function mapChartDetails(data, county) {
                 </tr>'                
                 );
     }
+    sortTable("detailsTable", 1);
 }
 
 function mapChartDetailsAdd(data, county) {
@@ -80,6 +81,7 @@ function mapChartDetailsAdd(data, county) {
         rows[i].getElementsByTagName("TD")[2].innerText = tiv;
         rows[i].getElementsByTagName("TD")[3].innerText = (units/tiv*100).toFixed(2)+'%';
     }
+    sortTable("detailsTable", 1);
 }
 
 function mapChartDetailsSubtract(data, county) {
@@ -123,6 +125,7 @@ function mapChartDetailsSubtract(data, county) {
         rows[i].getElementsByTagName("TD")[2].innerText = tiv;
         rows[i].getElementsByTagName("TD")[3].innerText = (units/tiv*100).toFixed(2)+'%';
     }
+    sortTable("detailsTable", 1);
 }
 
 function mapChartDetailsCss(county, data) {

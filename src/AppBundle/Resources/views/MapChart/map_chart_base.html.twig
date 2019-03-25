@@ -22,6 +22,7 @@
     <script src="{{ asset('js/inputForChart/inputButtonsManage.js') }}"></script>
     <script src="{{ asset('js/inputForChart/inputButtonsDefinition.js') }}"></script>
     <script src="{{ asset('js/mapChart/dataMapTopCss.js') }}"></script>
+    <script src="{{ asset('js/mapChart/countyClick/sortTable.js') }}"></script>
 {% endblock %}
 
 {% block bodyForMpaChart %}
@@ -37,7 +38,7 @@
 {% block javascriptsForMapChart %}
     <script>
         $(document).ready(function() {
-            $("h1").hide();
+            $("#loadingImage").hide();
             let inputData, siteTitle, urlList;
             siteTitle = $("title").first().text();
             urlList = {

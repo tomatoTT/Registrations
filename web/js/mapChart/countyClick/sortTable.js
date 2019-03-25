@@ -1,6 +1,6 @@
 function sortTable(tableId, columnNumber) {
     var table, rows, switching, i, x, y, shouldSwitch;
-    table = document.getElementById("detailsTable");
+    table = document.getElementById(tableId);
     switching = true;
     /*Make a loop that will continue until
      no switching has been done:*/
@@ -18,7 +18,7 @@ function sortTable(tableId, columnNumber) {
             x = rows[i].getElementsByTagName("TD")[columnNumber];
             y = rows[i + 1].getElementsByTagName("TD")[columnNumber];
             //check if the two rows should switch place:
-            if (Number(x.innerHTML) > Number(y.innerHTML)) {
+            if (Number(x.innerHTML) < Number(y.innerHTML)) {
                 //if so, mark as a switch and break the loop:
                 shouldSwitch = true;
                 break;

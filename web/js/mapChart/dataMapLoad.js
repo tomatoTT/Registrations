@@ -23,10 +23,10 @@ function dataMapLoad(urlList, inputData, siteTitle) {
             }          
         },
         beforeSend: function() {
-            $("h1").show();
+            $("#loadingImage").show();
         },
         complete: function() {
-            $("h1").hide();
+            $("#loadingImage").hide();
         },
         error: function(xhr, textStatus, errorThrown) {
             alert(errorThrown, textStatus, xhr);
