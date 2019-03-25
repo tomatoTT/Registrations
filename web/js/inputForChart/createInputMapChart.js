@@ -41,9 +41,9 @@ function createMakeInputButtons(selector, data) {
     data.sort();
     for (var i=0; i<data.length; i++) {
         if (data[i] === "JOHNDEERE") {
-            option += '<option value="'+data[i]+'" selected>'+data[i]+'</option>';
+            option += '<option id="makeListSelect" value="'+data[i]+'" selected>'+data[i]+'</option>';
         } else {
-            option += '<option value="'+data[i]+'">'+data[i]+'</option>';
+            option += '<option id="makeListSelect" value="'+data[i]+'">'+data[i]+'</option>';
         }
     }
     $(selector).before(

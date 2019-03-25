@@ -1,4 +1,5 @@
 function inputButtonsDefinition(siteTitle) {
+    let input;
     switch(siteTitle) {
         case "Map MS":
         input =  [

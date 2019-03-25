@@ -22,6 +22,12 @@ function inputButtonsManage(urlList, inputData, siteTitle) {
                 return;
             case "makeSubmit":
                 break;
+            case "makeList":
+                return;
+            case "inputForm":
+                return;
+            case "makeListSelect":
+                return;
         }
         printChart(urlList, inputData, siteTitle);
     });
@@ -35,5 +41,3 @@ function printChart(urlList, inputData, siteTitle) {
     mapChartDetailsCssUpdate(inputData);
     checkBoxLineChart("#lineChartForMap", inputData);
 }
-
-

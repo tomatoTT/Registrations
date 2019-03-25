@@ -9,7 +9,7 @@
     <script src="{{ asset('js/mapChart/dataMapLoad.js') }}"></script>
     <script src="{{ asset('js/mapChart/dataMapMSCss.js') }}"></script>
     <script src="{{ asset('js/mapChart/dataMapMS.js') }}"></script>
-    <script src="{{ asset('js/mapChart/createInputMapChart.js') }}"></script>
+    <script src="{{ asset('js/inputForChart/createInputMapChart.js') }}"></script>
     <script src="{{ asset('js/mapChart/sendInputMapChart.js') }}"></script>
     <script src="{{ asset('js/mapChart/countyClick/countyClickLoad.js') }}"></script>
     <script src="{{ asset('js/lineChart/Chart.js') }}"></script>
@@ -50,10 +50,10 @@
                 make: "JOHNDEERE",
                 county: ""
             };
-            dataMapLoad(urlList, inputData, siteTitle);
+            
             inputButtonsDefinition(siteTitle);
             inputButtonsManage(urlList, inputData, siteTitle);
-            
+            dataMapLoad(urlList, inputData, siteTitle);
             $(".st0, .st1").click(function() {                
                 inputData.county = this.id;
                 console.log(inputData);
