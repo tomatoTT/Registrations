@@ -2,7 +2,7 @@ function dataMapLoad(urlList, siteTitle) {
     let url = urlList[siteTitle],
         inputData = inputDataSet();
         inputData.make = $("#makeList").val();;
-        console.log($("#makeList"));
+        console.log(inputData);
     $.ajax({
         type: 'POST',
         url: url,
@@ -12,11 +12,7 @@ function dataMapLoad(urlList, siteTitle) {
             switch(siteTitle) {
                 case "Map MS":
                     console.log(data);
-                    let ms = dataMapMS(data);
-                    console.log(ms);
-                    dataMapMSCss(ms);
-                    mapKeyMS(ms);
-                    mapKeyTitleMS(data);
+                    dataMapMSCss(data);
                     return;
                 case "Map TIV":
                     console.log(data);

@@ -39,7 +39,7 @@ function createMakeInputButtons(selector, data) {
     $(selector).before(
         '<select id="makeList">'+option+'</seclect>'
     );
-    $("#makeList").val("JCB");
+    $("#makeList").val("JOHNDEERE");
 }
 
 function sliderRangeLoad(url, selector) {

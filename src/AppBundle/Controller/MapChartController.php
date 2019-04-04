@@ -24,7 +24,7 @@ class MapChartController extends Controller
     public function loadDataAction(Request $request) {
         if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1) {
             $em = $this->getDoctrine()->getManager();
-            $select = 'r.make, r.units, r.countyName';
+            $select = 'r.make, r.units, r.countyCode';
             $from = 'AppBundle:MainChartDataMSPowiat';
             $countyEngagement = false;
             $result = LoadDataForChart::getDataForChart($em, $select, $from, $countyEngagement);
@@ -36,23 +36,23 @@ class MapChartController extends Controller
             $tivList = [];
             $makeList = [];
             foreach ($result as $resultSingle) {
-                $countyKey = array_search($resultSingle["countyName"], array_column($tivList, "county"));
+                $countyKey = array_search($resultSingle["countyCode"], array_column($tivList, "countyCode"));
                 if (is_numeric($countyKey)) {
                     $tivList[$countyKey]["tiv"] += $resultSingle["units"];                                        
                 } else {
                     $tivList[] = [
-                        "county" => $resultSingle["countyName"],
+                        "countyCode" =>$resultSingle["countyCode"],
                         "tiv" => $resultSingle["units"]
                     ];
                 }
                 if ($resultSingle["make"] === $make) {
-                    $makeKey = array_search($resultSingle["countyName"], array_column($makeList, "county"));
+                    $makeKey = array_search($resultSingle["countyCode"], array_column($makeList, "countyCode"));
                     if (is_numeric($makeKey)) {
                         $makeList[$makeKey]["units"] += $resultSingle["units"];
                     } else {
                         $makeList[] = [
                             "make" => $make,
-                            "county" => $resultSingle["countyName"],
+                            "countyCode" =>$resultSingle["countyCode"],
                             "units" => $resultSingle["units"]
                         ];
                     }
@@ -63,8 +63,8 @@ class MapChartController extends Controller
                 $sourceMap[] = [
                     "make" => $make,
                     "units" => $makeListSingle["units"],
-                    "tiv" => $tivList[array_search($makeListSingle["county"], array_column($tivList, "county"))]["tiv"],
-                    "county" => $makeListSingle["county"],
+                    "tiv" => $tivList[array_search($makeListSingle["countyCode"], array_column($tivList, "countyCode"))]["tiv"],
+                    "countyCode" => $makeListSingle["countyCode"],
                     "color" => $color
                 ];
             }           

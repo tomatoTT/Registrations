@@ -3,11 +3,7 @@ function dataMapTivCss(data) {
     $(".st1").css('fill', 'rgba(255,255,255,0)');
     var maxTiv = Math.max.apply(Math, data.map(function(o) { return o.tiv; }));    
     for (var i=0; i<data.length; i++) {
-        if (data[i].countyCode.length === 3) {
-            $("#0" + data[i].countyCode).css('fill', 'rgba(0, 0, 0, '+data[i].tiv/maxTiv+')');
-        } else {
             $("#" + data[i].countyCode).css('fill', 'rgba(0, 0, 0, '+data[i].tiv/maxTiv+')');
-        }        
     }
     mapKeyTiv ();
     mapKeyTitleTiv (maxTiv);
