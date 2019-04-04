@@ -1,4 +1,5 @@
-function inputButtonsManage(urlList, inputData, siteTitle) {
+function inputButtonsManage(urlList, siteTitle) {
+    let inputData = inputDataSet();
     $("#inputForm").click(function(e) {
         switch(e.target.id) {
             case "YTD":
@@ -31,14 +32,23 @@ function inputButtonsManage(urlList, inputData, siteTitle) {
                 return;
         }
         printChart(urlList, inputData, siteTitle);
+        console.log(inputData);
+        updateDateRange(inputData);
     });
-    return inputData;
+    
 }
 
 function printChart(urlList, inputData, siteTitle) {
     inputData.make = $("#makeList").val();
-    console.log(inputData);
+    
     dataMapLoad(urlList, inputData, siteTitle);
     mapChartDetailsCssUpdate(inputData);
     checkBoxLineChart("#lineChartForMap", inputData);
+}
+
+function updateDateRange(inputData) {
+     $("#regYearMin").text(inputData.regYearMin);
+     $("#regMonthMin").text(inputData.regMonthMin);
+     $("#regYearMax").text(inputData.regYearMax);
+     $("#regMonthMax").text(inputData.regMonthMax);
 }

@@ -182,26 +182,24 @@ class MapChartController extends Controller
     public function loadDataTivAction(Request $request) {
         if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1) {
             $em = $this->getDoctrine()->getManager();
-            $select = 'r.regYear, r.regMonth, r.units, r.countyName';
+            $select = 'r.regYear, r.regMonth, r.units, r.countyName, r.countyCode';
             $from = 'AppBundle:MainChartDataMSPowiat';
             $countyEngagement = false;
             $result = LoadDataForChart::getDataForChart($em, $select, $from, $countyEngagement);
-            $sourceMap[0] = [
-                "county" => $result[0]["countyName"],
-                "tiv" => $result[0]["units"]
-            ];
-            for ($i=1; $i<count($result); $i++) {
-                $countyKey = array_search($result[$i]["countyName"], array_column($sourceMap, "county"));
-                if ($countyKey) {
+            $sourceMap = [];
+            for ($i=0; $i<count($result); $i++) {
+                $countyKey = array_search($result[$i]["countyCode"], array_column($sourceMap, "countyCode"));
+                if (is_integer($countyKey)) {
                     $sourceMap[$countyKey]["tiv"] += $result[$i]["units"];
                 } else {
                     $sourceMap[] = [
+                        "countyCode" => $result[$i]["countyCode"],
                         "county" => $result[$i]["countyName"],
                         "tiv" => $result[$i]["units"]
                     ];
                 }
             }
-            $jsonData = $sourceMap;            
+            $jsonData = $sourceMap;
             return new JsonResponse($jsonData);
         } else {
             return new Response('<html><body>nie ma jsona</body></html>');

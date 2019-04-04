@@ -1,5 +1,8 @@
-function dataMapLoad(urlList, inputData, siteTitle) {
-    let url = urlList[siteTitle];
+function dataMapLoad(urlList, siteTitle) {
+    let url = urlList[siteTitle],
+        inputData = inputDataSet();
+        inputData.make = $("#makeList").val();;
+        console.log($("#makeList"));
     $.ajax({
         type: 'POST',
         url: url,
@@ -8,6 +11,7 @@ function dataMapLoad(urlList, inputData, siteTitle) {
         success: function(data) {
             switch(siteTitle) {
                 case "Map MS":
+                    console.log(data);
                     let ms = dataMapMS(data);
                     console.log(ms);
                     dataMapMSCss(ms);
@@ -15,6 +19,7 @@ function dataMapLoad(urlList, inputData, siteTitle) {
                     mapKeyTitleMS(data);
                     return;
                 case "Map TIV":
+                    console.log(data);
                     dataMapTivCss(data);
                     return;
                 case "Map TOP":

@@ -46,6 +46,8 @@
 
 #mapDetails {
     position: absolute;
-    
+}
 
+#dateRange p {
+    display: inline;
 }

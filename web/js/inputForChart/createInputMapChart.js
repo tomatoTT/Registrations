@@ -1,11 +1,5 @@
 /*Generate input buttons*/
-function createInputMapChart(
-    input=Array, 
-    inputSelector, 
-    sliderSelector,
-    urlSelector, 
-    urlMakeLIst)
-{
+function createInputMapChart(input=Array, inputSelector, sliderSelector, urlSliderRange, urlMakeLIst) {
     if (Array.isArray(input)) {
         for (var i=0; i<input.length; i++) {
             $(inputSelector).append('<input id="'+input[i]+'" class="inputButton" type="button" value="'+input[i]+'">');
@@ -18,7 +12,7 @@ function createInputMapChart(
     }
     $(inputSelector).append('<input id="lineChartForMap" type="checkbox"/>');
     createSliderButtons(sliderSelector);
-    sliderRangeLoad(urlSelector, sliderSelector);
+    sliderRangeLoad(urlSliderRange, sliderSelector);
     $(sliderSelector).hide();    
     $("#"+input[i - 1]).click(function(){
         $(sliderSelector).toggle();
@@ -40,15 +34,12 @@ function createMakeInputButtons(selector, data) {
     var option = "";
     data.sort();
     for (var i=0; i<data.length; i++) {
-        if (data[i] === "JOHNDEERE") {
-            option += '<option id="makeListSelect" value="'+data[i]+'" selected>'+data[i]+'</option>';
-        } else {
-            option += '<option id="makeListSelect" value="'+data[i]+'">'+data[i]+'</option>';
-        }
+        option += '<option class="makeListSelect" value="'+data[i]+'">'+data[i]+'</option>';
     }
     $(selector).before(
         '<select id="makeList">'+option+'</seclect>'
     );
+    $("#makeList").val("JCB");
 }
 
 function sliderRangeLoad(url, selector) {
@@ -114,6 +105,7 @@ function makeListLoad(url, selector) {
         type: 'POST',
         url: url,
         dataType: 'json',
+        async: false,
         success: function(data) {
             createMakeInputButtons(selector, data);
         },
@@ -122,4 +114,3 @@ function makeListLoad(url, selector) {
         }
     });
 }
-

@@ -1,5 +1,9 @@
 function countyClickLoad(url, inputData) {
-    console.log(inputData);
+    let countyName = $("#"+inputData.county).data('county'),
+        countyCode = inputData.county;
+    if (countyCode.charAt(0) === "0") {
+        inputData.county = countyCode.substring(1, 4);
+    }
     $.ajax({
         type: 'POST',
         url: url,
@@ -7,8 +11,7 @@ function countyClickLoad(url, inputData) {
         dataType: "json",
         async: false,
         success: function(data) {
-            console.log(data);
-                mapChartDetailsCss(inputData.county, data);
+            mapChartDetailsCss(countyCode, countyName, data);
         },
         beforeSend: function() {
             $("#loadingImage").show();
@@ -22,9 +25,9 @@ function countyClickLoad(url, inputData) {
     });
 }
 
-function mapChartDetails(data, county) {
+function mapChartDetails(data, county, countyName) {    
     $("#mapDetails").append('<div id="detailsTableCounty"></div>');
-    $("#detailsTableCounty").append('<p id="county'+county+'">'+county+'</p>');
+    $("#detailsTableCounty").append('<p id="list'+county+'">'+countyName+'</p>');
     $("#mapDetails").append('<table id="detailsTable"></table>');
     $("#detailsTable").append(
             '<tr>\n\
@@ -47,8 +50,8 @@ function mapChartDetails(data, county) {
     sortTable("detailsTable", 1);
 }
 
-function mapChartDetailsAdd(data, county) {
-    $("#detailsTableCounty").append('<p id="county'+county+'">'+county+'</p>');
+function mapChartDetailsAdd(data, county, countyName) {
+    $("#detailsTableCounty").append('<p id="list'+county+'">'+countyName+'</p>');
     var table, rows, i, j, make, units, tiv, newUnits, rowsLength;
     table = document.getElementById("detailsTable");
     rows = table.rows;
@@ -87,7 +90,7 @@ function mapChartDetailsAdd(data, county) {
 
 function mapChartDetailsSubtract(data, county) {
     var table, rows, i, j, make, units, tiv, newUnits, rowsLength, pList;
-    $("#county"+county).remove(); //remove p county element
+    $("#list"+county).remove(); //remove p county element
     pList = $("#detailsTableCounty").find("p");
     table = document.getElementById("detailsTable");
     rows = table.rows;
@@ -129,18 +132,18 @@ function mapChartDetailsSubtract(data, county) {
     sortTable("detailsTable", 1);
 }
 
-function mapChartDetailsCss(county, data) {
+function mapChartDetailsCss(county, countyName, data) {
         if ($("#"+county).data("click") === "on") {
-            mapChartDetailsSubtract(data, county);
+            mapChartDetailsSubtract(data, county, countyName);
             $("#"+county).css("stroke-width", "1");
             $("#"+county).data("click", "off");
         } else {
             if (document.getElementById("detailsTable")) {
-                mapChartDetailsAdd(data, county);
+                mapChartDetailsAdd(data, county, countyName);
                 $("#"+county).css("stroke-width", "3");
                 $("#"+county).data("click", "on");
             } else {
-                mapChartDetails(data, county);
+                mapChartDetails(data, county, countyName);
                 $("#"+county).css("stroke-width", "3");
                 $("#"+county).data("click", "on");
             }
@@ -160,7 +163,7 @@ function mapChartDetailsCssUpdate(inputData) {
         $(".st0, .st1").css("stroke-width", "1");
         $(".st0, .st1").data("click", "off");
         for (i=0; i<pList.length; i++) {        
-            inputData.county = pList[i].innerText;
+            inputData.county = pList[i].id.substring(4, 8);
             countyClickLoad("/mapChart/loadCountyDetails", inputData);
         }
     }    

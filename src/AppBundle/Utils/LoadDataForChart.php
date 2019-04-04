@@ -115,7 +115,7 @@ class LoadDataForChart {
     static private function countyEngagement($conditions, $engagement, $qb) {
         if ($engagement) {
             $eqStatement = $qb->expr()->andX(
-                    $qb->expr()->eq('r.countyName', $qb->expr()->literal($conditions["county"]))
+                    $qb->expr()->eq('r.countyCode', $qb->expr()->literal($conditions["county"]))
                     );
             $qb->andWhere($eqStatement);            
         }

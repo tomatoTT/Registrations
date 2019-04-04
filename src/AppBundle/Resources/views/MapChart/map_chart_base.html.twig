@@ -23,13 +23,24 @@
     <script src="{{ asset('js/inputForChart/inputButtonsDefinition.js') }}"></script>
     <script src="{{ asset('js/mapChart/dataMapTopCss.js') }}"></script>
     <script src="{{ asset('js/mapChart/countyClick/sortTable.js') }}"></script>
+    <script src="{{ asset('js/inputForChart/inputDataSet.js') }}"></script>
 {% endblock %}
 
 {% block bodyForMpaChart %}
     <div id="loadingImage"><h1>LOADING</h1></div>
     <div id="inputForm"><div id="slider-range"></div></div>
+    <div id="dateRange">
+        <p>Zakres dat:</p>
+        <p id="regMonthMin">1</p>
+        <p>/</p>
+        <p id="regYearMin">2017</p>
+        <p>-</p>
+        <p id="regMonthMax">12</p>
+        <p>/</p>
+        <p id="regYearMax">2017</p>
+    </div>
     <div id="mapChart">
-        {% include "@Web/svg/mapapolski.svg" %}
+        {% include "@Web/svg/polandCounty.svg" %}
     </div>
     <div id="mapDetails"></div>
     <div id="lineChartContainer"></div>
@@ -46,18 +57,12 @@
                 'Map TIV': '/mapChart/loadDataTiv',
                 'Map TOP': '/mapChart/loadDataTopMake'
             };
-            inputData = {
-                regYearMin: 2017,
-                regMonthMin: 1,
-                regYearMax: 2017,
-                regMonthMax: 12,
-                make: "JOHNDEERE",
-                county: ""
-            };            
-            inputButtonsDefinition(siteTitle);
-            inputButtonsManage(urlList, inputData, siteTitle);
-            dataMapLoad(urlList, inputData, siteTitle);
-            $(".st0, .st1").click(function() {                
+
+            inputButtonsDefinition(siteTitle);            
+            inputButtonsManage(urlList, siteTitle);
+            dataMapLoad(urlList, siteTitle);
+            $(".st0, .st1").click(function() {
+                inputData = inputDataSet();
                 inputData.county = this.id;
                 console.log(inputData);
                 countyClickLoad("/mapChart/loadCountyDetails", inputData);
