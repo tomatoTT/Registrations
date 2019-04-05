@@ -1,7 +1,6 @@
 function dataMapLoad(urlList, siteTitle) {
     let url = urlList[siteTitle],
         inputData = inputDataSet();
-        inputData.make = $("#makeList").val();;
         console.log(inputData);
     $.ajax({
         type: 'POST',

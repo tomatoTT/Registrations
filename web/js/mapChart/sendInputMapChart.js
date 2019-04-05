@@ -109,16 +109,3 @@ function rolling3() {
     };
     return inputData;
 }
-
-function customize(selector) {
-    var values = $(selector).val().split("/");
-    var inputData = {
-        regYearMin: parseInt(values[1]),
-        regMonthMin: parseInt(values[0]),
-        regYearMax: parseInt(values[3]),
-        regMonthMax: parseInt(values[2]),
-        make: "",
-        county: ""
-    };
-    return inputData;    
-}

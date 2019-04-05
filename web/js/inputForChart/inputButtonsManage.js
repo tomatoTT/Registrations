@@ -14,8 +14,8 @@ function inputButtonsManage(urlList, siteTitle) {
             case "Rolling3":
                 inputData = rolling3();
                 break;
-            case "submitCustomDates":
-                inputData = customize("#hiddenRangeDate");
+            case "Accept":
+                inputData = inputDataSet();
                 break;
             case "Customize":
                 return;
@@ -31,17 +31,15 @@ function inputButtonsManage(urlList, siteTitle) {
             case "makeListSelect":
                 return;
         }
-        printChart(urlList, inputData, siteTitle);
-        console.log(inputData);
+        $("#inputForm").children().prop("disabled", false);
+        $("#"+e.target.id).prop("disabled", true);
         updateDateRange(inputData);
-    });
-    
+        printChart(urlList, inputData, siteTitle);  
+    });    
 }
 
 function printChart(urlList, inputData, siteTitle) {
-    inputData.make = $("#makeList").val();
-    
-    dataMapLoad(urlList, inputData, siteTitle);
+    dataMapLoad(urlList, siteTitle);
     mapChartDetailsCssUpdate(inputData);
     checkBoxLineChart("#lineChartForMap", inputData);
 }

@@ -4,7 +4,7 @@ function inputDataSet() {
         regMonthMin: $("#regMonthMin").text(),
         regYearMax: $("#regYearMax").text(),
         regMonthMax: $("#regMonthMax").text(),
-        make: "",
+        make: $("#makeList").val(),
         county: ""
     };
 }

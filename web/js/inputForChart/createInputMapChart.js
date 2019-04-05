@@ -1,42 +1,38 @@
 /*Generate input buttons*/
-function createInputMapChart(input=Array, inputSelector, sliderSelector, urlSliderRange, urlMakeLIst) {
+function createInputMapChart(input=Array, inputSelector, urlSliderRange, urlMakeLIst) {
     if (Array.isArray(input)) {
-        for (var i=0; i<input.length; i++) {
-            $(inputSelector).append('<input id="'+input[i]+'" class="inputButton" type="button" value="'+input[i]+'">');
-            if (input[i] === "Make") {
-                $("#"+input[i]).attr("type","hidden");
-                makeListLoad(urlMakeLIst, "#"+input[i]);
-                $("#"+input[i]).after('<button id="makeSubmit">Wybierz</button></br>');
+        for (var i=0; i<input.length; i++) {            
+            if (input[i] === "Make") {                
+                makeListLoad(urlMakeLIst, inputSelector);
+                $("#makeList").after('<button id="makeSubmit">Wybierz</button></br>');
+            } else {
+                $(inputSelector).append('<input id="'+input[i]+'" class="inputButton" type="button" value="'+input[i]+'">');
             };
         }        
     }
-    $(inputSelector).append('<input id="lineChartForMap" type="checkbox"/>');
-    createSliderButtons(sliderSelector);
-    sliderRangeLoad(urlSliderRange, sliderSelector);
-    $(sliderSelector).hide();    
-    $("#"+input[i - 1]).click(function(){
-        $(sliderSelector).toggle();
+    $(inputSelector).append('<input id="lineChartForMap" type="checkbox"/>');    
+    $("#Accept").hide();
+    $("#Customize").click(function(){        
+        if ($("#slider-range").length) {
+            console.log($("#slider-range"));
+            $("#Accept").toggle();
+            $("#slider-range").remove();
+        } else {
+            console.log("czy to");
+            $("#Accept").toggle();
+            $("#sliderContainer").append('<div id="slider-range"></div>');
+            sliderRangeLoad(urlSliderRange, "#slider-range");
+        }        
     });
 }
 
-function createSliderButtons(selector) {
-    $(selector).append(
-        '<p>\n\
-            <label for="rangeDate">Zakres dat:</label>\n\
-            <input type="text" id="rangeDate" value="1/2007 12/2007">\n\
-            <input type="hidden" id="hiddenRangeDate" value="1/2007/12/2007">\n\
-            <button id="submitCustomDates">Akceptuj</button>\n\
-        </p>'
-    );
-}
-
-function createMakeInputButtons(selector, data) {
+function createMakeInputButtons(data, inputSelector) {
     var option = "";
     data.sort();
     for (var i=0; i<data.length; i++) {
         option += '<option class="makeListSelect" value="'+data[i]+'">'+data[i]+'</option>';
     }
-    $(selector).before(
+    $(inputSelector).append(
         '<select id="makeList">'+option+'</seclect>'
     );
     $("#makeList").val("JOHNDEERE");
@@ -48,8 +44,7 @@ function sliderRangeLoad(url, selector) {
         url: url,
         dataType: 'json',
         success: function(data) {
-            var max = rangeArray(data);
-            var dates = rangeDates(max, data);
+            let max = rangeArray(data), dates = rangeDates(max, data);
             rangeSlider(selector, max, dates);
         },
         error: function(xhr, textStatus, errorThrown) {
@@ -63,10 +58,12 @@ function rangeSlider(selector, maximum, dates) {
         range: true,
         min: 1,
         max: maximum,
-        values: [1, 12],
-        slide: function( event, ui ) {
-            $("#rangeDate").val(dates[ui.values[0]] + " " + dates[ui.values[1]]);
-            $("#hiddenRangeDate").val(dates[ui.values[0]] + "/" + dates[ui.values[1]]);
+        values: valuesForSlider(dates),
+        slide: function(event, ui) {
+            $("#regYearMin").text(dates[ui.values[0]].split('.')[1]);
+            $("#regMonthMin").text(dates[ui.values[0]].split('.')[0]);
+            $("#regYearMax").text(dates[ui.values[1]].split('.')[1]);
+            $("#regMonthMax").text(dates[ui.values[1]].split('.')[0]);
         }
     });
 }
@@ -84,12 +81,10 @@ function rangeArray(data) {
 }
 
 function rangeDates(max, data) {
-    var dates = [];
-    var counterMonth = parseInt(data.monthMin);
-    var counterYear = parseInt(data.yearMin);
-    for (var i=1; i<=max; i++) {
+    let i, dates = [], counterMonth = parseInt(data.monthMin), counterYear = parseInt(data.yearMin);
+    for (i=1; i<=max; i++) {
         if (counterMonth <= 12) {
-            dates[i] = counterMonth+"/"+counterYear;
+            dates[i] = counterMonth+'.'+counterYear;
             counterMonth++;
         } else {
             counterMonth = 1;
@@ -100,17 +95,27 @@ function rangeDates(max, data) {
     return dates;
 }
 
-function makeListLoad(url, selector) {
+function makeListLoad(url, inputSelector) {
     $.ajax({
         type: 'POST',
         url: url,
         dataType: 'json',
         async: false,
         success: function(data) {
-            createMakeInputButtons(selector, data);
+            createMakeInputButtons(data, inputSelector);
         },
         error: function(xhr, textStatus, errorThrown) {
             alert(errorThrown, textStatus, xhr);
         }
     });
+}
+
+function valuesForSlider(dates) {
+    let values = [
+        dates.indexOf($("#regMonthMin").text()+'.'+$("#regYearMin").text()),
+        dates.indexOf($("#regMonthMax").text()+'.'+$("#regYearMax").text())
+    ];
+    console.log(dates[values[0]].split('.'));
+    console.log(values);
+    return values;
 }

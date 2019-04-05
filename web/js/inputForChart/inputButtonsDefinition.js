@@ -8,7 +8,8 @@ function inputButtonsDefinition(siteTitle) {
                 "Rolling12",
                 "QTD",
                 "Rolling3",
-                "Customize"
+                "Customize",
+                "Accept"
             ];
             break;
         case "Map TIV":
@@ -17,7 +18,8 @@ function inputButtonsDefinition(siteTitle) {
                 "Rolling12",
                 "QTD",
                 "Rolling3",
-                "Customize"
+                "Customize",
+                "Accept"
             ];
             break;
         case "Map TOP":
@@ -26,14 +28,14 @@ function inputButtonsDefinition(siteTitle) {
                 "Rolling12",
                 "QTD",
                 "Rolling3",
-                "Customize"
+                "Customize",
+                "Accept"
             ];
             break;
     }
     createInputMapChart(
         input, 
-        "#inputForm", 
-        "#slider-range", 
+        "#inputForm",
         "/mapChart/slideRangeSource", 
         "/mapChart/makeListSource"
     );

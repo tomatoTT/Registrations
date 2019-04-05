@@ -2,7 +2,6 @@ function dataMapMSCss(data) {
     $(".st0").css('fill', 'rgba(255,255,255,0)');
     $(".st1").css('fill', 'rgba(255,255,255,0)');
     let ms = dataMapMS(data);
-    console.log(ms);
     mapKeyMS(ms);
     mapKeyTitleMS(data);
     for (var i=0; i<ms.length; i++) {
