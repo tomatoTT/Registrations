@@ -12,18 +12,6 @@ function createInputMapChart(input=Array, inputSelector, urlSliderRange, urlMake
     }
     $(inputSelector).append('<input id="lineChartForMap" type="checkbox"/>');    
     $("#Accept").hide();
-    $("#Customize").click(function(){        
-        if ($("#slider-range").length) {
-            console.log($("#slider-range"));
-            $("#Accept").toggle();
-            $("#slider-range").remove();
-        } else {
-            console.log("czy to");
-            $("#Accept").toggle();
-            $("#sliderContainer").append('<div id="slider-range"></div>');
-            sliderRangeLoad(urlSliderRange, "#slider-range");
-        }        
-    });
 }
 
 function createMakeInputButtons(data, inputSelector) {
@@ -60,10 +48,13 @@ function rangeSlider(selector, maximum, dates) {
         max: maximum,
         values: valuesForSlider(dates),
         slide: function(event, ui) {
-            $("#regYearMin").text(dates[ui.values[0]].split('.')[1]);
-            $("#regMonthMin").text(dates[ui.values[0]].split('.')[0]);
-            $("#regYearMax").text(dates[ui.values[1]].split('.')[1]);
-            $("#regMonthMax").text(dates[ui.values[1]].split('.')[0]);
+            let inputData = {
+                regYearMin: dates[ui.values[0]].split('.')[1],
+                regMonthMin: dates[ui.values[0]].split('.')[0],
+                regYearMax: dates[ui.values[1]].split('.')[1],
+                regMonthMax: dates[ui.values[1]].split('.')[0]
+            };
+            updateDateRange(inputData);
         }
     });
 }
@@ -115,7 +106,5 @@ function valuesForSlider(dates) {
         dates.indexOf($("#regMonthMin").text()+'.'+$("#regYearMin").text()),
         dates.indexOf($("#regMonthMax").text()+'.'+$("#regYearMax").text())
     ];
-    console.log(dates[values[0]].split('.'));
-    console.log(values);
     return values;
 }

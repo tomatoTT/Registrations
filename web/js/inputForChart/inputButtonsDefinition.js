@@ -35,7 +35,7 @@ function inputButtonsDefinition(siteTitle) {
     }
     createInputMapChart(
         input, 
-        "#inputForm",
+        "#inputButtons",
         "/mapChart/slideRangeSource", 
         "/mapChart/makeListSource"
     );
