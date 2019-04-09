@@ -15,9 +15,7 @@ function inputButtonsManage(urlList, siteTitle) {
                 inputData = rolling3();
                 break;
             case "Accept":
-                inputData = inputDataSet();
-                $("#Accept").prop("disabled", true);
-                printChart(urlList, inputData, siteTitle);
+                acceptCustomizeSelect(urlList, siteTitle);
                 return;
             case "Customize":
                 customizeBehavior();
@@ -35,19 +33,20 @@ function inputButtonsManage(urlList, siteTitle) {
                 return;
             case "inputButtons":
                 return;
+            case "slider-range":
+                return;
         }
         $("#inputForm").children().prop("disabled", false);
         $("#"+e.target.id).not("#Accept").prop("disabled", true);
         updateDateRange(inputData);
-        printChart(urlList, inputData, siteTitle);
-        console.log(e.target.id);
+        printChart(urlList, siteTitle);
     });    
 }
 
-function printChart(urlList, inputData, siteTitle) {
+function printChart(urlList, siteTitle) {
     dataMapLoad(urlList, siteTitle);
-    mapChartDetailsCssUpdate(inputData);
-    checkBoxLineChart("#lineChartForMap", inputData);
+    mapChartDetailsCssUpdate();
+    checkBoxLineChart("#lineChartForMap");
 }
 
 function updateDateRange(inputData) {
@@ -57,19 +56,46 @@ function updateDateRange(inputData) {
      $("#regMonthMax").text(inputData.regMonthMax);
 }
 
-function customizeBehavior() {       
+function customizeBehavior() {
+    let inputData;
     if ($("#slider-range").length) {
+        inputData = {
+            regYearMin: $("#regYearMinHidden").text(),
+            regMonthMin: $("#regMonthMinHidden").text(),
+            regYearMax: $("#regYearMaxHidden").text(),
+            regMonthMax: $("#regMonthMaxHidden").text(),
+            make: $("#makeList").val(),
+            county: ""
+        };
+        updateDateRange(inputData);
         $("#Accept").toggle();
         $("#slider-range").remove();
-        $("#inputForm").children().prop("disabled", false);
+        $("#inputButtons").children().prop("disabled", false);
     } else {
         $("#Accept").toggle();
         $("#inputButtons").children().not("#Accept, #Customize").prop("disabled", true);
         $("#sliderContainer").append('<div id="slider-range"></div>');
         sliderRangeLoad("/mapChart/slideRangeSource", "#slider-range");
+        inputData = inputDataSet();
+        $("#slider-range").append('<div id="dateRangeHidden" hidden>\n\
+                                    <p id="regMonthMinHidden">1</p>\n\
+                                    <p id="regYearMinHidden">2017</p>\n\
+                                    <p id="regMonthMaxHidden">12</p>\n\
+                                    <p id="regYearMaxHidden">2017</p></div>');
+        updateDateRangeHidden(inputData);
     }
 }
 
-function acceptCustomizeSelect() {
-        $("#Accept").prop("disabled", true);
+function acceptCustomizeSelect(urlList, siteTitle) {
+    $("#Accept").toggle();
+    $("#slider-range").remove();
+    $("#inputButtons").children().prop("disabled", false);
+    printChart(urlList, siteTitle);
+}
+
+function updateDateRangeHidden(inputData) {
+     $("#regYearMinHidden").text(inputData.regYearMin);
+     $("#regMonthMinHidden").text(inputData.regMonthMin);
+     $("#regYearMaxHidden").text(inputData.regYearMax);
+     $("#regMonthMaxHidden").text(inputData.regMonthMax);
 }
