@@ -51,13 +51,39 @@
 #dateRange p {
     display: inline;
 }
-svg:hover #3204 {
-    fill: rgba(0,0,0,1);
+
+
+.st0 {
+    transition: all 0.5s ease-out;
+
 }
 
-svg #3204 {
-    transition: 200ms;
-    transition-timing-function: ease-in-out;
-    -webkit-transition: 200ms;
-    -webkit-transition-timing-function: ease-in-out;
+.st0:hover {
+    fill: red;
+    stroke-width: 3;
+}
+
+#cicleTest {
+
+
+  transition: all 2s ease-out;
+}
+
+#cicleTest:hover {
+  fill: pink;
+
+  stroke-width: 10;
+}
+
+#test {
+    transition: all 1s ease-out;
+}
+
+#test:hover {
+    fill: pink;
+
+  stroke-width: 10;
+}
+#tooltip {
+    position: absolute;
 }

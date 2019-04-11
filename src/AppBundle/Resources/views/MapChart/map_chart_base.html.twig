@@ -23,6 +23,7 @@
     <script src="{{ asset('js/mapChart/dataMapTopCss.js') }}"></script>
     <script src="{{ asset('js/mapChart/countyClick/sortTable.js') }}"></script>
     <script src="{{ asset('js/inputForChart/inputDataSet.js') }}"></script>
+    <script src="{{ asset('js/mapChart/hover/mapChartHover.js') }}"></script>
 {% endblock %}
 
 {% block bodyForMpaChart %}
@@ -42,6 +43,7 @@
     </div>
     <div id="mapDetails"></div>
     <div id="lineChartContainer"></div>
+    
 {% endblock %}
 
 {% block javascriptsForMapChart %}
@@ -68,6 +70,7 @@
                 checkBoxLineChart("#lineChartForMap", inputData);                
             });
 
+            mapChartHover();
         });
     </script>
 {% endblock %}
