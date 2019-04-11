@@ -36,8 +36,8 @@ function inputButtonsManage(urlList, siteTitle) {
             case "slider-range":
                 return;
         }
-        $("#inputForm").children().prop("disabled", false);
-        $("#"+e.target.id).not("#Accept").prop("disabled", true);
+        $("#inputButtons").children().prop("disabled", false);
+        $("#"+e.target.id).prop("disabled", true);
         updateDateRange(inputData);
         printChart(urlList, siteTitle);
     });    

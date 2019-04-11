@@ -13,10 +13,10 @@ function loadDataForLineChart(url, chartId, inputData) {
             alert(errorThrown, textStatus, xhr);
         },
         beforeSend: function() {
-            $("h1").show();
+            $("#loadingImage").show();
         },
         complete: function() {
-            $("h1").hide();
+            $("#loadingImage").hide();
         }
     });
 }

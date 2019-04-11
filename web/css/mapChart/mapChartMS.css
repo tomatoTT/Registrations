@@ -51,3 +51,13 @@
 #dateRange p {
     display: inline;
 }
+svg:hover #3204 {
+    fill: rgba(0,0,0,1);
+}
+
+svg #3204 {
+    transition: 200ms;
+    transition-timing-function: ease-in-out;
+    -webkit-transition: 200ms;
+    -webkit-transition-timing-function: ease-in-out;
+}
