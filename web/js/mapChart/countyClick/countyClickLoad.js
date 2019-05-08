@@ -90,7 +90,7 @@ function mapChartDetailsAdd(data, county, countyName) {
 
 function mapChartDetailsSubtract(data, county) {
     var table, rows, i, j, make, units, tiv, newUnits, rowsLength, pList;
-    $("#list"+county).remove(); //remove p county element
+    $("#list"+county).remove();
     pList = $("#detailsTableCounty").find("p");
     table = document.getElementById("detailsTable");
     rows = table.rows;

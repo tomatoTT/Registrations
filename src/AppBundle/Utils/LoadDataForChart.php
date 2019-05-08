@@ -20,8 +20,8 @@ class LoadDataForChart {
                                     )
                     );
             self::countyEngagement($conditions, $engagement, $qb);
-            self::countyNumCheck($conditions, $qb);             
-            $result = $q->getQuery()->getResult();                 
+            self::countyNumCheck($conditions, $qb);
+            $result = $q->getQuery()->getResult();
         } else {
             $qb1 = $em->createQueryBuilder();
             $q1 = $qb1->select($select)
