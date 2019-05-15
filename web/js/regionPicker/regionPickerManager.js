@@ -32,5 +32,6 @@ function selectListCounty(data) {
     for (i=0; i<data.length; i++) {
         option += '<label for="county'+data[i].pow+'"><input type="checkbox" id="county'+data[i].pow+'" />'+data[i].nazwa+'</label>'
     }
+    $('#checkboxesCounty').children().remove();
     $('#checkboxesCounty').append(option);
 }

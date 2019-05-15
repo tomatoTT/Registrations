@@ -35,14 +35,16 @@
             regionLoad('/teryt/getProvince');
             regionLoad('/teryt/getCounty');
             $('#checkboxesProvince').click(function(e) {
-                let selected = [], i, input = [];
+                let selected = [], i, input = {};
                 $('#checkboxesProvince input:checked').each(function() {
                     selected.push($(this).attr('id').substring(8, 10));
                 });
                 console.log(selected);
                 for (i=0; i<selected.length; i++) {
                     input["province"+i] = selected[i];
+                    
                 }
+                console.log(input);
                 regionLoad('/teryt/getCounty', input);
             });
 
