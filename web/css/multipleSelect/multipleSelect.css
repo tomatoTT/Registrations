@@ -24,6 +24,7 @@
     border: 1px #dadada solid;
     max-height: 400px;
     overflow-y: scroll;
+    position: absolute;
 }
 
 .checkboxes label {

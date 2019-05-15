@@ -6,7 +6,7 @@
 
 {% block body %}
     <div class="multiselect">
-        <div class="selectBox" onclick="showCheckboxes('checkboxesProvince')">
+        <div class="selectBox" onclick="showCheckboxes('checkboxesProvince');">
             <select>
                 <option>Wybierz wojweództwo</option>
             </select>
@@ -15,7 +15,7 @@
         <div id="checkboxesProvince" class="checkboxes"></div>
     </div>
     <div class="multiselect">
-        <div class="selectBox" onclick="showCheckboxes('checkboxesCounty')">
+        <div class="selectBox" onclick="showCheckboxes('checkboxesCounty');">
             <select>
                 <option>Wybierz powiat</option>
             </select>
@@ -34,7 +34,7 @@
         $(document).ready(function() {
             regionLoad('/teryt/getProvince');
             regionLoad('/teryt/getCounty');
-            $('#checkboxesProvince').click(function(e) {
+            $('#checkboxesProvince').click(function() {
                 let selected = [], i, input = {};
                 $('#checkboxesProvince input:checked').each(function() {
                     selected.push($(this).attr('id').substring(8, 10));

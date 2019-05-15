@@ -1,5 +1,4 @@
 let expanded = false;
-
 function showCheckboxes(id) {
     let checkboxes = document.getElementById(id);
     if (!expanded) {
