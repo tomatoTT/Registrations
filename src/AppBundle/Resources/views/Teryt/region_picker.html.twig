@@ -1,11 +1,51 @@
 {% extends "base.html.twig" %}
-
+{% block multipleSelectCss %}
+    <link href="{{ asset('css/multipleSelect/multipleSelect.css') }}" type="text/css" rel="stylesheet" />
+{% endblock %}
 {% block title %}AppBundle:Teryt:getProvince{% endblock %}
 
 {% block body %}
-<h1>Welcome to the Teryt:getProvince page</h1>
-<div id="regionPicker">
-    <select id="provincePicker"></select>
-    <select id="countyPicker"></select>
-</div>
+    <div class="multiselect">
+        <div class="selectBox" onclick="showCheckboxes('checkboxesProvince')">
+            <select>
+                <option>Wybierz wojweództwo</option>
+            </select>
+            <div class="overSelect"></div>
+        </div>
+        <div id="checkboxesProvince" class="checkboxes"></div>
+    </div>
+    <div class="multiselect">
+        <div class="selectBox" onclick="showCheckboxes('checkboxesCounty')">
+            <select>
+                <option>Wybierz powiat</option>
+            </select>
+            <div class="overSelect"></div>
+        </div>
+        <div id="checkboxesCounty" class="checkboxes"></div>
+    </div>
+   
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/regionPicker/regionPickerManager.js') }}"></script>
+    <script src="{{ asset('js/regionPicker/multipleSelect.js') }}"></script>
+    <script>
+        
+        $(document).ready(function() {
+            regionLoad('/teryt/getProvince');
+            regionLoad('/teryt/getCounty');
+            $('#checkboxesProvince').click(function(e) {
+                let selected = [], i, input = [];
+                $('#checkboxesProvince input:checked').each(function() {
+                    selected.push($(this).attr('id').substring(8, 10));
+                });
+                console.log(selected);
+                for (i=0; i<selected.length; i++) {
+                    input["province"+i] = selected[i];
+                }
+                regionLoad('/teryt/getCounty', input);
+            });
+
+        });
+    </script>
 {% endblock %}

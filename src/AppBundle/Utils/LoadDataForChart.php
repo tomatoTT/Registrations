@@ -83,7 +83,7 @@ class LoadDataForChart {
             }
         }
         $myPost = filter_input_array(INPUT_POST, $filters);
-        $conditions = [
+        /**$conditions = [
             "regYearMin" => $myPost['regYearMin'],
             "regMonthMin" => $myPost['regMonthMin'],
             "regYearMax" => $myPost['regYearMax'],
@@ -95,8 +95,8 @@ class LoadDataForChart {
             for ($i=6; $i<$postSize; $i++) {
                 $conditions["county".($i-6)] = $myPost["county" . ($i-6)];
             }
-        }
-        return $conditions;
+        }*/
+        return $myPost;
     }
     
     static private function countyNumCheck($conditions, $qb) {
@@ -104,7 +104,7 @@ class LoadDataForChart {
             $orStatements = $qb->expr()->orX();
             for ($i=6; $i<\sizeof($conditions); $i++) {
                 $orStatements->add(
-                $qb->expr()->eq('r.countyName', $qb->expr()->literal($conditions["county".($i-6)]))
+                    $qb->expr()->eq('r.countyName', $qb->expr()->literal($conditions["county".($i-6)]))
                 );
             }
             $qb->andWhere($orStatements);
