@@ -25,6 +25,8 @@
     max-height: 400px;
     overflow-y: scroll;
     position: absolute;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
 }
 
 .checkboxes label {

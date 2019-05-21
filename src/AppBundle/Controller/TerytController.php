@@ -57,7 +57,7 @@ class TerytController extends Controller
             }            
             $em = $this->getDoctrine()->getManager();
             $qb = $em->createQueryBuilder();
-            $q = $qb->select('t.nazwa, t.pow')
+            $q = $qb->select('t.nazwa, t.woj, t.pow')
                     ->from('AppBundle:Teryt', 't')
                     ->where(
                         $qb->expr()->andX(

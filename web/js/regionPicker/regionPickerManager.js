@@ -5,12 +5,11 @@ function regionLoad(url, input) {
         data: input,
         dataType: 'json',
         success: function(data) {
-            console.log(input);
             console.log(data);
-            if (data[0].woj) {
-                selectListProvince(data);
-            } else if (data[0].pow) {
+            if (data[0].pow) {                
                 selectListCounty(data);
+            } else {
+                selectListProvince(data);
             }
         },
         error: function(xhr, textStatus, errorThrown) {
@@ -22,7 +21,7 @@ function regionLoad(url, input) {
 function selectListProvince(data) {
     let i, option = '';
     for (i=0; i<data.length; i++) {
-        option += '<label for="province'+data[i].woj+'"><input type="checkbox" id="province'+data[i].woj+'" />'+data[i].nazwa+'</label>'
+        option += '<label for="province'+data[i].woj+'"><input type="checkbox" id="province'+data[i].woj+'" />'+data[i].nazwa+'</label>';
     }
     $('#checkboxesProvince').append(option);
 }
@@ -30,8 +29,36 @@ function selectListProvince(data) {
 function selectListCounty(data) {
     let i, option = '';
     for (i=0; i<data.length; i++) {
-        option += '<label for="county'+data[i].pow+'"><input type="checkbox" id="county'+data[i].pow+'" />'+data[i].nazwa+'</label>'
+        let id = '';
+        if (data[i].pow < 10) {
+            id = data[i].woj.toString() + '0' + data[i].pow.toString();
+        } else {
+            id = data[i].woj.toString() + data[i].pow.toString();
+        }
+        option += '<label for="county'+id+'"><input type="checkbox" id="county'+id+'" />'+data[i].nazwa+'</label>';
     }
     $('#checkboxesCounty').children().remove();
     $('#checkboxesCounty').append(option);
+}
+
+function regionPickermanager() {
+    $('#checkboxesProvince').click(function() {
+        let i, inputProvince = {}, selectedProvince = [];
+        $('#checkboxesProvince input:checked').each(function() {
+            selectedProvince.push($(this).attr('id').substring(8, 10));
+        });
+        
+        for (i=0; i<selectedProvince.length; i++) {
+            inputProvince["province"+i] = selectedProvince[i];
+        }
+        regionLoad('/teryt/getCounty', inputProvince);
+    });
+    $('#checkboxesCounty').click(function() {
+        let selectedCounty = [];
+        $('#checkboxesCounty input:checked').each(function() {
+        
+            selectedCounty.push($(this).attr('id').substring(6, 8));
+        });        
+        console.log(selectedCounty);
+    });
 }

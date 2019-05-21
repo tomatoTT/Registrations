@@ -31,12 +31,15 @@
     <div id="inputForm">
         <div id="inputButtons"></div>
         <div id="sliderContainer"></div>
+    </div>
+    <div id="regionPicker">
+        {% include "@App/Teryt/region_picker.html.twig" %}
     </div>    
     <div id="dateRange">
         <p>Zakres dat:</p>
         <p id="regMonthMin"></p><p>/</p><p id="regYearMin"></p>
         <p>-</p>
-        <p id="regMonthMax"></p><p>/</p><p id="regYearMax"></p>
+        <p id="regMonthMax"></p><p>/</p><p id="regYearMax"></p>        
     </div>
     <div id="mapChart">
         {% include "@Web/svg/polandCounty.svg" %}
