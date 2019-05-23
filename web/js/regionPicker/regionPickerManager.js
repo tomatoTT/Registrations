@@ -41,7 +41,7 @@ function selectListCounty(data) {
     $('#checkboxesCounty').append(option);
 }
 
-function regionPickermanager() {
+function regionPickerManager() {
     $('#checkboxesProvince').click(function() {
         let i, inputProvince = {}, selectedProvince = [];
         $('#checkboxesProvince input:checked').each(function() {
@@ -53,12 +53,14 @@ function regionPickermanager() {
         }
         regionLoad('/teryt/getCounty', inputProvince);
     });
-    $('#checkboxesCounty').click(function() {
-        let selectedCounty = [];
-        $('#checkboxesCounty input:checked').each(function() {
+    $('#checkboxesCounty').click(function(e) {
+        let myTarget = e.target.querySelector('input'), inputData;
+        if (myTarget) {
+            inputData = inputDataSet();
+            inputData.county = myTarget.id.substring(6, 10);
+            countyClickLoad("/mapChart/loadCountyDetails", inputData);
+            checkBoxLineChart("#lineChartForMap", inputData);
+        }
         
-            selectedCounty.push($(this).attr('id').substring(6, 8));
-        });        
-        console.log(selectedCounty);
     });
 }

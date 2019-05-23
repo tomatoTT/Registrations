@@ -147,8 +147,7 @@ function mapChartDetailsCss(county, countyName, data) {
                 $("#"+county).css("stroke-width", "3");
                 $("#"+county).data("click", "on");
             }
-        }
-        return true;    
+        }    
 }
 
 
@@ -210,5 +209,18 @@ function checkBoxLineChart(checkBoxSelecor) {
         loadDataForLineChart("/lineChart/loadData", "myChart", inputData);
     } else {
         $("#lineChart").remove();
+    }
+}
+
+function combineCounty() {
+    let table, rows, rowsLength, make, i;
+    table = document.getElementById("detailsTable");
+    rows = table.rows;
+    rowsLength = rows.length;
+    make = $("#makeList").val();
+    for (i=1; i<rowsLength; i++) {
+        if (make === rows[i].getElementsByTagName("TD")[0].innerText) {
+            console.log(rows[i].getElementsByTagName("TD")[0].innerText);
+        }        
     }
 }

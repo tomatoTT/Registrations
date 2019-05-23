@@ -24,7 +24,8 @@ function inputButtonsManage(urlList, siteTitle) {
                 checkBoxLineChart("#lineChartForMap", inputData);
                 return;
             case "makeSubmit":
-                break;
+                printChart(urlList, siteTitle);
+                return;
             case "makeList":
                 return;
             case "inputForm":
@@ -34,6 +35,8 @@ function inputButtonsManage(urlList, siteTitle) {
             case "inputButtons":
                 return;
             case "slider-range":
+                return;
+            case "makeListSelect":
                 return;
         }
         $("#inputButtons").children().prop("disabled", false);

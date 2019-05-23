@@ -18,7 +18,7 @@ function createMakeInputButtons(data, inputSelector) {
     var option = "";
     data.sort();
     for (var i=0; i<data.length; i++) {
-        option += '<option class="makeListSelect" value="'+data[i]+'">'+data[i]+'</option>';
+        option += '<option id="makeListSelect" class="makeListSelect" value="'+data[i]+'">'+data[i]+'</option>';
     }
     $(inputSelector).append(
         '<select id="makeList">'+option+'</seclect>'
