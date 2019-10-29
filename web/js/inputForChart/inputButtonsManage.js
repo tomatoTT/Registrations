@@ -24,7 +24,7 @@ function inputButtonsManage(urlList, siteTitle) {
                 checkBoxLineChart("#lineChartForMap", inputData);
                 return;
             case "makeSubmit":
-                printChart(urlList, siteTitle);
+                dataMapLoad(urlList, siteTitle);
                 return;
             case "makeList":
                 return;

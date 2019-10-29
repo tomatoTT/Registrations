@@ -133,23 +133,20 @@ function mapChartDetailsSubtract(data, county) {
 }
 
 function mapChartDetailsCss(county, countyName, data) {
-        if ($("#"+county).data("click") === "on") {
-            mapChartDetailsSubtract(data, county, countyName);
-            $("#"+county).css("stroke-width", "1");
-            $("#"+county).data("click", "off");
-        } else {
-            if (document.getElementById("detailsTable")) {
-                mapChartDetailsAdd(data, county, countyName);
-                $("#"+county).css("stroke-width", "3");
-                $("#"+county).data("click", "on");
-            } else {
-                mapChartDetails(data, county, countyName);
-                $("#"+county).css("stroke-width", "3");
-                $("#"+county).data("click", "on");
-            }
-        }    
+    if ($("#"+county).data("click") === "on") {
+        mapChartDetailsSubtract(data, county, countyName);
+        $("#"+county).css("stroke-width", "1");
+        $("#"+county).data("click", "off");
+    } else  if (document.getElementById("detailsTable")) {
+        mapChartDetailsAdd(data, county, countyName);
+        $("#"+county).css("stroke-width", "3");
+        $("#"+county).data("click", "on");
+    } else {
+        mapChartDetails(data, county, countyName);
+        $("#"+county).css("stroke-width", "3");
+        $("#"+county).data("click", "on");
+    }    
 }
-
 
 function mapChartDetailsCssUpdate() {
     var pList, i, inputData;
@@ -212,15 +209,29 @@ function checkBoxLineChart(checkBoxSelecor) {
     }
 }
 
-function combineCounty() {
-    let table, rows, rowsLength, make, i;
-    table = document.getElementById("detailsTable");
-    rows = table.rows;
-    rowsLength = rows.length;
-    make = $("#makeList").val();
-    for (i=1; i<rowsLength; i++) {
-        if (make === rows[i].getElementsByTagName("TD")[0].innerText) {
-            console.log(rows[i].getElementsByTagName("TD")[0].innerText);
+function combineCounty() {    
+    if (document.getElementById("detailsTable")) {
+        let table, rows, rowsLength, make, i, pList, pId, ms, color, colorArray;
+        table = document.getElementById("detailsTable");
+        rows = table.rows;
+        rowsLength = rows.length;
+        make = $("#makeList").val();
+        for (i=1; i<rowsLength; i++) {
+            if (make === rows[i].getElementsByTagName("TD")[0].innerText) {
+                ms = parseInt(rows[i].getElementsByTagName("TD")[1].innerText)/parseInt(rows[i].getElementsByTagName("TD")[2].innerText);
+                console.log(rows[i].getElementsByTagName("TD")[0].innerText);
+                console.log(parseInt(rows[i].getElementsByTagName("TD")[1].innerText)/parseInt(rows[i].getElementsByTagName("TD")[2].innerText));
+                break;
+            }        
+        }
+        pList =$("#detailsTableCounty").find("p");
+        pId = pList[0].getAttribute("id").substring(4, 8);
+        color = $("#"+pId).css("fill");
+        colorArray = color.split(',');
+        color = colorArray[0] + "," + colorArray[1] + "," + colorArray[2] + "," + ms + ")";
+        console.log(color);
+        for (i=0; i<pList.length; i++) {
+            $("#"+pList[i].getAttribute("id").substring(4, 8)).css("fill", color);
         }        
-    }
+    }    
 }
