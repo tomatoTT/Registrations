@@ -197,15 +197,25 @@ function lineChartInputForMap(inputData) {
     }
 }
 
-function checkBoxLineChart(checkBoxSelecor) {
+function checkBoxLineChart(checkBoxSelector) {
     let checked, inputData;
     inputData = inputDataSet();
-    checked = $(checkBoxSelecor).prop("checked");
+    checked = $(checkBoxSelector).prop("checked");
     if (checked) {
         inputData = lineChartInputForMap(inputData);
         loadDataForLineChart("/lineChart/loadData", "myChart", inputData);
     } else {
         $("#lineChart").remove();
+    }
+}
+
+function checkBoxCombineCounty(checkBoxSelector) {
+    let checked;
+    checked = $(checkBoxSelector).prop("checked");
+    if (checked) {
+        combineCounty();
+    } else {
+        mapChartDetailsCssUpdate();
     }
 }
 
@@ -233,5 +243,9 @@ function combineCounty() {
         for (i=0; i<pList.length; i++) {
             $("#"+pList[i].getAttribute("id").substring(4, 8)).css("fill", color);
         }        
-    }    
+    }
+}
+
+function dicCombineCounty() {
+    
 }

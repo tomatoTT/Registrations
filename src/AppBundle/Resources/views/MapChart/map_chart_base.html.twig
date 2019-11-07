@@ -29,6 +29,7 @@
 {% block bodyForMpaChart %}
     <div id="loadingImage"><h1>LOADING</h1></div>
     <div id="inputForm">
+        <div>połącz powiaty <input id="combineCounty" type="checkbox"/></div>
         <div id="inputButtons"></div>
         <div id="sliderContainer"></div>
     </div>
@@ -74,6 +75,7 @@
                 
             });
             mapChartHover();
+            
         });
     </script>
 {% endblock %}

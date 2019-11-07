@@ -38,6 +38,9 @@ function inputButtonsManage(urlList, siteTitle) {
                 return;
             case "makeListSelect":
                 return;
+            case "combineCounty":
+                checkBoxCombineCounty("#combineCounty");
+                return;
         }
         $("#inputButtons").children().prop("disabled", false);
         $("#"+e.target.id).prop("disabled", true);
