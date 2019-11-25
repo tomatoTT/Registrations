@@ -337,21 +337,6 @@ class MapChartController extends Controller
     }
     
     /**
-     * @Route("/combineCounty")
-     */
-    public function combineCountyAction(Request $request) {
-        if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1) {
-            $em = $this->getDoctrine()->getManager();
-            $select = 'r.make, r.regYear, r.regMonth, r.units, r.countyCode, r.countyName';
-            $from = 'AppBundle:MainChartDataMSPowiat';
-            $countyEngagement = true;
-            
-        } else {
-            return new Response('<html><body>nie ma jsona</body></html>');
-        }
-    }
-    
-    /**
      * @Route("/testy")
      */
     public function testyAction() {

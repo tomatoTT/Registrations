@@ -27,7 +27,7 @@ function countyClickLoad(url, inputData) {
 
 function mapChartDetails(data, county, countyName) {    
     $("#mapDetails").append('<div id="detailsTableCounty"></div>');
-    $("#detailsTableCounty").append('<p id="list'+county+'">'+countyName+'</p>');
+    $("#detailsTableCounty").append('<p id="list'+county+'" data-color="'+$("#"+county).css("fill")+'">'+countyName+'</p>');
     $("#mapDetails").append('<table id="detailsTable"></table>');
     $("#detailsTable").append(
             '<tr>\n\
@@ -51,7 +51,7 @@ function mapChartDetails(data, county, countyName) {
 }
 
 function mapChartDetailsAdd(data, county, countyName) {
-    $("#detailsTableCounty").append('<p id="list'+county+'">'+countyName+'</p>');
+    $("#detailsTableCounty").append('<p id="list'+county+'" data-color="'+$("#"+county).css("fill")+'">'+countyName+'</p>');
     var table, rows, i, j, make, units, tiv, newUnits, rowsLength;
     table = document.getElementById("detailsTable");
     rows = table.rows;
@@ -215,7 +215,7 @@ function checkBoxCombineCounty(checkBoxSelector) {
     if (checked) {
         combineCounty();
     } else {
-        mapChartDetailsCssUpdate();
+        disCombineCounty();
     }
 }
 
@@ -228,9 +228,8 @@ function combineCounty() {
         make = $("#makeList").val();
         for (i=1; i<rowsLength; i++) {
             if (make === rows[i].getElementsByTagName("TD")[0].innerText) {
-                ms = parseInt(rows[i].getElementsByTagName("TD")[1].innerText)/parseInt(rows[i].getElementsByTagName("TD")[2].innerText);
-                console.log(rows[i].getElementsByTagName("TD")[0].innerText);
-                console.log(parseInt(rows[i].getElementsByTagName("TD")[1].innerText)/parseInt(rows[i].getElementsByTagName("TD")[2].innerText));
+                ms = parseInt(rows[i].getElementsByTagName("TD")[1].innerText)/
+                        parseInt(rows[i].getElementsByTagName("TD")[2].innerText);
                 break;
             }        
         }
@@ -239,13 +238,17 @@ function combineCounty() {
         color = $("#"+pId).css("fill");
         colorArray = color.split(',');
         color = colorArray[0] + "," + colorArray[1] + "," + colorArray[2] + "," + ms + ")";
-        console.log(color);
         for (i=0; i<pList.length; i++) {
             $("#"+pList[i].getAttribute("id").substring(4, 8)).css("fill", color);
         }        
     }
 }
 
-function dicCombineCounty() {
-    
+function disCombineCounty() {
+    let pList, i, color;
+    pList =$("#detailsTableCounty").find("p");
+    for (i=0; i<pList.length; i++) {
+        color = pList[i].dataset.color;
+        $("#"+pList[i].getAttribute("id").substring(4, 8)).css("fill", color);        
+    }    
 }

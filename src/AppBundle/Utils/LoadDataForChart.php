@@ -83,19 +83,6 @@ class LoadDataForChart {
             }
         }
         $myPost = filter_input_array(INPUT_POST, $filters);
-        /**$conditions = [
-            "regYearMin" => $myPost['regYearMin'],
-            "regMonthMin" => $myPost['regMonthMin'],
-            "regYearMax" => $myPost['regYearMax'],
-            "regMonthMax" => $myPost['regMonthMax'],
-            "make" => $myPost['make'],
-            "county" => $myPost['county']
-        ];
-        if ($postSize > 6) {
-            for ($i=6; $i<$postSize; $i++) {
-                $conditions["county".($i-6)] = $myPost["county" . ($i-6)];
-            }
-        }*/
         return $myPost;
     }
     
