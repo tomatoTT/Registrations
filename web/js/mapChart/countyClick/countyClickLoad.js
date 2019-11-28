@@ -27,7 +27,8 @@ function countyClickLoad(url, inputData) {
 
 function mapChartDetails(data, county, countyName) {    
     $("#mapDetails").append('<div id="detailsTableCounty"></div>');
-    $("#detailsTableCounty").append('<p id="list'+county+'" data-color="'+$("#"+county).css("fill")+'">'+countyName+'</p>');
+    $("#detailsTableCounty")
+        .append('<p id="list'+county+'" data-color="'+$("#"+county).css("fill")+'">'+countyName+'</p>');
     $("#mapDetails").append('<table id="detailsTable"></table>');
     $("#detailsTable").append(
             '<tr>\n\
@@ -161,6 +162,7 @@ function mapChartDetailsCssUpdate() {
         $(".st0, .st1").data("click", "off");
         for (i=0; i<pList.length; i++) {        
             inputData.county = pList[i].id.substring(4, 8);
+            console.log(inputData);
             countyClickLoad("/mapChart/loadCountyDetails", inputData);
         }
     }    
@@ -169,7 +171,6 @@ function mapChartDetailsCssUpdate() {
 function lineChartInputForMap(inputData) {
     var pList, countyx, i, temp, lineChartContainer;
     pList =$("#detailsTableCounty").find("p");
-    console.log(pList);
     lineChartContainer = $("#lineChart").length;
     if (pList.length === 0) {
         $("#lineChartContainer")

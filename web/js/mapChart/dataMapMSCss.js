@@ -1,6 +1,9 @@
 function dataMapMSCss(data) {
     $(".st0").css('fill', 'rgba(255,255,255,0)');
     $(".st1").css('fill', 'rgba(255,255,255,0)');
+    if (data.length === 0) {
+        return;
+    }
     let ms = dataMapMS(data);
     mapKeyMS(ms);
     mapKeyTitleMS(data);

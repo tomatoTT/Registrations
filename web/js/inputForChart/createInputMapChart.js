@@ -1,5 +1,5 @@
 /*Generate input buttons*/
-function createInputMapChart(input=Array, inputSelector, urlSliderRange, urlMakeLIst) {
+function createInputMapChart(input=Array, inputSelector, urlMakeLIst) {
     if (Array.isArray(input)) {
         for (var i=0; i<input.length; i++) {            
             if (input[i] === "Make") {                

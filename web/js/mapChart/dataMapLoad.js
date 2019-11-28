@@ -1,20 +1,18 @@
 function dataMapLoad(urlList, siteTitle) {
     let url = urlList[siteTitle],
         inputData = inputDataSet();
-        console.log(inputData);
     $.ajax({
         type: 'POST',
         url: url,
         data: inputData,
         dataType: "json",
+        async: false,
         success: function(data) {
             switch(siteTitle) {
                 case "Map MS":
-                    console.log(data);
                     dataMapMSCss(data);
                     return;
                 case "Map TIV":
-                    console.log(data);
                     dataMapTivCss(data);
                     return;
                 case "Map TOP":

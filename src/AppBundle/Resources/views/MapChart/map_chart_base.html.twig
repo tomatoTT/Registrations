@@ -69,13 +69,10 @@
             $(".st0, .st1").click(function() {
                 inputData = inputDataSet();
                 inputData.county = this.id;
-                console.log(inputData);
                 countyClickLoad("/mapChart/loadCountyDetails", inputData);
-                checkBoxLineChart("#lineChartForMap", inputData);
-                
+                checkBoxLineChart("#lineChartForMap", inputData);                
             });
-            mapChartHover();
-            
+            mapChartHover();            
         });
     </script>
 {% endblock %}
